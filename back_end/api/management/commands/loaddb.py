@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand, CommandError
-from api.models import BloodType
+from api.models import *
 
 from openpyxl import load_workbook
 
@@ -11,50 +11,66 @@ class Command(BaseCommand):
         #parser.add_argument('poll_ids', nargs='+', type=int)
         pass
 
-    def handle(self, *args, **optiSons):
-        # pass
-       
-        file = "xlsx/loaddata.xlsx"
-        wb = load_workbook(file, read_only=True)
- 
-        allwb = wb.get_sheet_names()
+    def load(self, wb, sheet_name, column_names):
+        print(f'กำลัง load ... {sheet_name}')
+        ws = wb[sheet_name]
+        count = int(ws['A1'].value)
 
-        for i in allwb:
-            print(i)
-            ws = wb[i]
-            count = int(ws['A1'].value)
-            for r in range(count):
-                # countcol = int(ws['L1'].value)
-                
-                string_cols = 'ABCDEFHIJKLMNOP'
-                for element in range(0, len(string_cols)): 
-                    print(string_cols[element]) 
+        print(f'count = {count}')
+        data = []
+        for i in range(count):  # 0,1,2,3
+            # print(f'i = {i}')
+            sheet_values = [
+                ws[f'{chr(65+j)}{3+i}'].value for j in range(len(column_names))
+            ]
+            data.append(
+                dict((k, v) for k, v in zip(column_names, sheet_values)))
 
-                aaaa = str(ws['B1'].value)
-                print(aaaa)
-                
-              
-                # q = aaaa(**{
+        return data
+
+    def handle(self, *args, **options):
+
+        from openpyxl import load_workbook
+        filename = "xlsx/loaddata123.xlsx"
+        wb = load_workbook(filename, data_only=True)
+
+        for b in self.load(wb, 'BloodType', ['id', 'bloodtype']):
+            print("data  =  ",b)
+            q = BloodType(**b)
+            q.save()
+        print("seve...Blood")
+        for n in self.load(wb, 'NakSus', ['id', 'naksus']):
+            print("data =  ", n)
+            q = NakSus(**n)
+            q.save()
+        # print("seve...Blood")
+        for d in self.load(wb, 'DaysofWeek', ['id', 'daysofweek']):
+            print("DaysofWeek =  ", d)
+            # (**w).save()
+            q = DaysofWeek(**d)
+            q.save()
+        for d in self.load(wb, 'RaSi', ['id', 'rasi']):
+            print("RaSi =  ", d)
+            # (**w).save()
+            q = RaSi(**d)
+            q.save()
+        for d in self.load(wb, 'PictureURL', ['id',	'picpost'	,'discription'	,'created_at'	,'updated_at']):
+            print("PictureURL =  ", d)
+            # (**w).save()
+            q = PictureURL(**d)
+            q.save()
 
 
-                # })
+        for d in self.load(wb, 'Member', ['id'	,'email'	,'password'	,'first_name'	,'last_name'	,'birthday'	,'age','dayofbirth'	,'rasi'	,'bloodtype'	,'naksus',	'gender'	,'testes'	,'profileurl'	,'discription'	,'characterneed'	,'values'	,'created_at'	,'update_at']):
+            # print(d)
+            q = Member(**d)
 
-                print(r)
+            q.save()
 
+        # print('กำลัง load ... Work_status')
+        # for d in self.load(wb, 'Work_status', ['id', 'work_status']):
+        #     Work_status(**d).save()
 
-
-
-        #     cols = [ ws[f'{c}2'].value  ]
-        #     print(cols)
-        
-
-        # cols = [ ws[f'{c}2'].value for c in 'ABC']
-        # print(cols)
-        # for i in range(count): # 0,1,2,3
-        #     q = BloodType(**{
-        #         "id": int(ws[f'A{3+i}'].value),
-        #         "bloodtype" : str(ws[f'B{3+i}'].value),
-                
-
-        #         }) 
-        #     q.save()
+        # print('กำลัง load ... Money_status')
+        # for d in self.load(wb, 'Money_status', ['id', 'money_status']):
+        #     Money_status(**d).save()

@@ -3,58 +3,41 @@ from django.db import models
 # Create your models here.
 from django.db.models.deletion import CASCADE
 
-
 class BloodType(models.Model):
-   
+
     bloodtype =models.CharField(max_length=10)
-    
+
     def __str__(self) -> str:
         return f'{self.bloodtype}'
 
-class DayOfBirth(models.Model):
-    dayofbirth = models.CharField(max_length=20)
+class DaysofWeek(models.Model):
+    daysofweek = models.CharField(max_length=100)
 
     def __str__(self):
-        return f'{self.dayofbirth}'
+        return f'{self.daysofweek}'
 
 
 class NakSus(models.Model):
-    naksus = models.CharField(max_length=20)
+    naksus = models.CharField(max_length=100)
 
     def __str__(self):
         return f'{self.naksus}'
 
 class RaSi(models.Model):
-    rasi = models.CharField(max_length=20)
+    rasi = models.CharField(max_length=100)
 
     def __str__(self):
         return f'{self.rasi}'
 
 
-class Birthday(models.Model):
-    defaulAge = int(18)  
-    age = models.IntegerField(default=DayOfBirth)
-    birthday = models.DateField(auto_now=True)
-    dayofbirth = models.ForeignKey(DayOfBirth,on_delete=models.CASCADE)
-    rasi = models.ForeignKey(RaSi,on_delete=models.CASCADE)
-    bloodtype = models.ForeignKey(BloodType,on_delete=models.CASCADE)
-    naksus = models.ForeignKey(NakSus,on_delete=models.CASCADE)
-    
-    def __str__(self) -> str:
-        return f'{self.birthday} {self.age}'
+class PictureURL(models.Model):
+    picpost = models.TextField(blank=True, default="")
+    discription = models.CharField(max_length=1000, default="")
+    created_at = models.DateTimeField(auto_now_add=True)  # When it was create
+    updated_at = models.DateTimeField(auto_now=True)  # When i was update
 
-class Sexual(models.Model):
-    sexual = models.CharField(max_length=100)
-    
-    
-    def __str__(self) -> str:
-        return f'{self.sexual}'
-
-class SexTest(models.Model):
-    sextest = models.CharField(max_length=100)
-
-    def __str__(self) -> str:
-        return f'{self.sextest}'
+    def __str__(self):
+        return f'{self.discription}'
 
 
 class Member(models.Model):
@@ -62,91 +45,52 @@ class Member(models.Model):
     password = models.CharField(max_length=200)
     first_name = models.CharField(max_length=300)
     last_name = models.CharField(max_length=300)
-    birthday = models.ForeignKey(Birthday, on_delete=models.CASCADE)
-    sexaul = models.ForeignKey(Sexual,on_delete=models.CASCADE)
-    sextest = models.ForeignKey(SexTest,on_delete=models.CASCADE)
-    profileurl = models.TextField(blank=True ,default="")
+    birthday = models.DateField(auto_now=True)
+    age = models.IntegerField(default=DaysofWeek)
+    dayofbirth = models.ForeignKey(DaysofWeek,  verbose_name=id,on_delete=models.CASCADE)
+    rasi = models.ForeignKey(RaSi, verbose_name=id,on_delete=models.CASCADE)
+    bloodtype = models.ForeignKey(BloodType, verbose_name=id,on_delete=models.CASCADE)
+    naksus = models.ForeignKey(NakSus, verbose_name=id,on_delete=models.CASCADE)
+    gender = models.CharField(max_length=100)
+    testes = models.CharField(max_length=100) # sex of Testes
+    # profileurl = models.TextField(blank=True ,default="")
+    profileurl = models.ForeignKey(PictureURL, verbose_name=id,on_delete=models.CASCADE)
     discription = models.CharField(max_length=1000,default="")
+    characterneed = models.IntegerField()# ลักษณนิสัย คะแนน ที่เป็น ขั้วบวก = 1,ขั้วลบ =0 ที่ต้องการ
+    values = models.IntegerField() # like = 1 nope =0
     created_at = models.DateTimeField(auto_now_add=True) # When it was create
     updated_at = models.DateTimeField(auto_now=True) # When it was update
 
     def __str__(self) -> str:
-        return f'{self.first_name} {self.last_name}  '
-
-class PictureURL(models.Model):
-    member = models.ForeignKey(Member,on_delete=models.CASCADE)
-    picurl = models.TextField(blank=True ,default="")
-    discription = models.CharField(max_length=1000,default="")
-    created_at = models.DateTimeField(auto_now_add=True) # When it was create
-    updated_at = models.DateTimeField(auto_now=True) # When i was update
-
-    def __str__(self):
-        return f'{self.discription}'
-
-class LikeMember (models.Model):
-    # pass
-    member = models.ForeignKey(Member,on_delete=models.CASCADE)
-
-class LikeOfAll(models.Model):
-    likeUall = models.BooleanField(default=True)
-    member = models.ForeignKey(Member,on_delete=models.CASCADE)
-    addscroce = models.IntegerField(10)
-
-    def __str__(self):
-        return f'{self.likeUall}'
-
-class NopeOfALl(models.Model):
-    nopeUall = models.BooleanField(default=True)
-    member = models.ForeignKey(Member,on_delete=models.CASCADE)
-    deductscroce = models.IntegerField(-10)
-
-    def __str__(self):
-        return f'{self.nopeUall} {self.deductscroce}'
-    
-
-class Goldmember(models.Model):
-    goldmember = models.ForeignKey(Member, on_delete=models.CASCADE)
-    likeUall = models.ForeignKey(LikeOfAll,on_delete=models.CASCADE)
-    # goldmember = models.ManyToManyField(LikeOfAll)
-    # displayLikeyou = 
-
-
-
-class Matched(models.Model):
-    birthday = models.ForeignKey(Birthday, on_delete=models.CASCADE)
-    member = models.ForeignKey(Member,on_delete=models.CASCADE)
-    
-    def __str__(self) -> str:
-        return f'{self.birthday} {self.member}'
-
-class FilterType(models.Model):
-    filttertype =models.CharField(max_length=20)
-
-    def __str__(self):
-        return f'{self.filttertype}'
-
-class FilteredBy (models.Model):
-    member = models.ForeignKey(Member,on_delete=models.CASCADE)
-    age = models.ForeignKey(Birthday,on_delete=models.CASCADE)
-    filtertype =models.ForeignKey(FilterType,on_delete=models.CASCADE)
+        return f'{self.first_name} {self.last_name} '
 
 
 class Conversation(models.Model):
-    # 
-    newmember = models.ForeignKey(Member,on_delete=models.CASCADE)
-    created_at = models.DateTimeField(auto_now_add=True) # When it was create
-    updated_at = models.DateTimeField(auto_now=True) # When i was update
+    member = models.ForeignKey(Member,verbose_name=id,on_delete=models.CASCADE)
+    message = models.TextField(blank=True ,default="")
+    block = models.BooleanField(default=False)
+    rejected = models.BooleanField(default=False)
+    reviewe_value = models.IntegerField() # แสดงให้คนคุยมากกว่า 1 weeks or คนที่คุยกันมากกว่า 50 times
+    joined_at = models.DateTimeField(auto_now_add=True)  # When it was create
+    updated_at = models.DateTimeField(auto_now=True)  # When i was update
 
-class Participant (models.Model):
-    member = models.ForeignKey(Member,on_delete=models.CASCADE)
-    conversation = models.ForeignKey(Conversation,on_delete=models.CASCADE)
-    joined_at = models.DateTimeField(auto_now_add=True) # When it was create
-    updated_at = models.DateTimeField(auto_now=True) # When i was update
+    def __str__(self) -> str:
+        return f'{self.reviewe_value} {self.messge}'
 
-class Message(models.Model):
-    participant_id = models.ForeignKey(Participant,on_delete=models.CASCADE)
-    message_text = models.TextField(blank=True ,default="")
-    time_at = models.DateTimeField(auto_now_add=True) # When it was create
+
+class ValuesOfall(models.Model): #แยกเพราะคิดว่าจะได้ใช้ id ValuesOfall and id Member ==> Primary Key
+    member = models.ForeignKey(Member, verbose_name=id,on_delete=models.CASCADE)
+    like = models.IntegerField()
+    nope = models.IntegerField()
 
     def __str__(self):
-        return self.message_text
+        return f'{self.like}'
+
+
+class Goldmember(models.Model):
+    goldmember = models.ForeignKey(Member, verbose_name=id,on_delete=models.CASCADE)
+    values = models.ForeignKey(ValuesOfall, verbose_name=id,on_delete=models.CASCADE)
+    conversation =models.ForeignKey(Conversation, verbose_name=id,on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'{self.id}'
