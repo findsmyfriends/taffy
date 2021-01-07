@@ -47,7 +47,7 @@ class Member(models.Model):
     last_name = models.CharField(max_length=300)
     birthday = models.DateField(auto_now=True)
     age = models.IntegerField(default=DaysofWeek)
-    dayofbirth = models.ForeignKey(DaysofWeek,  verbose_name=id,on_delete=models.CASCADE)
+    dayofbirth = models.ForeignKey(DaysofWeek,  verbose_name="วันประจำวันเกิด",on_delete=models.CASCADE)
     rasi = models.ForeignKey(RaSi, verbose_name=id,on_delete=models.CASCADE)
     bloodtype = models.ForeignKey(BloodType, verbose_name=id,on_delete=models.CASCADE)
     naksus = models.ForeignKey(NakSus, verbose_name=id,on_delete=models.CASCADE)
