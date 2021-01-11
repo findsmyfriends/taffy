@@ -1,5 +1,6 @@
 from django.core.management.base import BaseCommand, CommandError
 from api.models import *
+from datetime import date
 
 from openpyxl import load_workbook
 
@@ -44,33 +45,95 @@ class Command(BaseCommand):
             q = NakSus(**n)
             q.save()
         # print("seve...Blood")
-        for d in self.load(wb, 'DaysofWeek', ['id', 'daysofweek']):
-            print("DaysofWeek =  ", d)
-            # (**w).save()
-            q = DaysofWeek(**d)
-            q.save()
+
         for d in self.load(wb, 'RaSi', ['id', 'rasi']):
             print("RaSi =  ", d)
             # (**w).save()
             q = RaSi(**d)
             q.save()
-        for d in self.load(wb, 'PictureURL', ['id',	'picpost'	,'discription'	,'created_at'	,'updated_at']):
-            print("PictureURL =  ", d)
+        for d in self.load(wb, 'Gender', ['id', 'gender']):
+            print("Gender =  ", d)
             # (**w).save()
-            q = PictureURL(**d)
+            q = Gender(**d)
+            q.save()
+        for d in self.load(wb, 'Testes', ['id', 'testes']):
+            print("Testes =  ", d)
+            # (**w).save()
+            q = Testes(**d)
+            q.save()
+        for d in self.load(wb, 'DaysOfWeek', ['id', 'daysofweek']):
+            print("DaysofWeek =  ", d)
+            # (**w).save()
+            q = DaysOfWeek(**d)
             q.save()
 
+        for d in self.load(wb, 'Member', [
+                'id', 'username', 'email', 'password', 'first_name',
+                'last_name', 'birthday', 'age', 'dayofbirth', 'rasi',
+                'bloodtype', 'naksus', 'gender', 'testes', 'profileurl',
+                'discription', 'characterneed', 'values', 'created_at',
+                'updated_at'
+        ]):
 
-        for d in self.load(wb, 'Member', ['id'	,'email'	,'password'	,'first_name'	,'last_name'	,'birthday'	,'age','dayofbirth'	,'rasi'	,'bloodtype'	,'naksus',	'gender'	,'testes'	,'profileurl'	,'discription'	,'characterneed'	,'values'	,'created_at'	,'update_at']):
-            # print(d)
+            dayofbirth = DaysOfWeek.objects.get(pk=d['dayofbirth'])
+            d.pop('dayofbirth', None)
+
+            rasi = RaSi.objects.get(pk=d['rasi'])
+            d.pop('rasi', None)
+
+            bloodType = BloodType.objects.get(pk=d['bloodtype'])
+            d.pop('bloodtype', None)
+
+            nakSus = NakSus.objects.get(pk=d['naksus'])
+            d.pop('naksus', None)
+
+            genDer = Gender.objects.get(pk=d['gender'])
+            d.pop('gender', None)
+
+            testes = Testes.objects.get(pk=d['testes'])
+            d.pop('testes', None)
+
+
             q = Member(**d)
 
+
+            q.dayofbirth = dayofbirth
+            q.rasi = rasi
+            q.bloodtype = bloodType
+            q.naksus = nakSus
+            q.gender = genDer
+            q.testes = testes
+            # q.updated_at = updateAt
+
             q.save()
 
-        # print('กำลัง load ... Work_status')
-        # for d in self.load(wb, 'Work_status', ['id', 'work_status']):
-        #     Work_status(**d).save()
+        for d in self.load(wb, 'Conversation', [
+                'id', 'member', 'message', 'block', 'rejected',
+                'reviewe_value', 'joined_at', 'updated_at'
+        ]):
+            print("Conversation =  ", d)
+            # (**w).save()
+            member = Member.objects.get(pk=d['member'])
+            d.pop('member', None)
 
-        # print('กำลัง load ... Money_status')
-        # for d in self.load(wb, 'Money_status', ['id', 'money_status']):
-        #     Money_status(**d).save()
+
+            q = Conversation(**d)
+            q.member = member
+            q.save()
+
+        for d in self.load(wb, 'Goldmember', [
+               'id' ,'goldmember' ,'conversation'
+
+        ]):
+            print("Goldmember =  ", d)
+            # (**w).save()
+            goldmember = Member.objects.get(pk=d['goldmember'])
+            d.pop('goldmember', None)
+            conversation = Conversation.objects.get(pk=d['conversation'])
+            d.pop('conversation', None)
+
+            q = Goldmember(**d)
+
+            q.goldmember = goldmember
+            q.conversation = conversation
+            q.save()
