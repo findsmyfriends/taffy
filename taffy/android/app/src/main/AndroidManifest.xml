@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.taffy">
+    package="com.example.tinder_clone">
    <application
-        android:label="taffy"
+        android:label="tinder_clone"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
