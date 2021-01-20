@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'Animation/FadeAnimation.dart';
+import 'package:intl/intl.dart';
 
 class SignUp extends StatefulWidget {
   @override
@@ -10,6 +11,20 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   @override
+  final format = DateFormat('dd MMM yyyy');
+  String _value = 'Birthday';
+
+  Future _selectDate() async {
+    DateTime picked = await showDatePicker(
+        context: context,
+        initialDate: new DateTime.now(),
+        firstDate: new DateTime(2021),
+        lastDate: new DateTime(2025));
+    if (picked != null) setState(() => _value = picked.toString());
+  }
+
+  // final format = DateFormat("yyyy-MM-dd");
+
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -74,11 +89,13 @@ class _SignUpState extends State<SignUp> {
                                                 color: Colors.grey))),
                                     child: TextField(
                                       style: TextStyle(
-                                        color: Colors.white,
+                                        fontSize: 20,
+                                        color: Colors.black87,
                                       ),
                                       decoration: InputDecoration(
-                                          fillColor: Colors.white,
-                                          hintText: "Mobile Number or Email",
+                                          fillColor: Colors.black,
+                                          helperStyle: TextStyle(fontSize: 50),
+                                          hintText: "Email",
                                           hintStyle: TextStyle(
                                               color: Colors.grey, fontSize: 14),
                                           border: new UnderlineInputBorder(
@@ -97,8 +114,7 @@ class _SignUpState extends State<SignUp> {
                                                 color: Colors.grey))),
                                     child: TextField(
                                       style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                          color: Colors.black87, fontSize: 20),
                                       decoration: InputDecoration(
                                           fillColor: Colors.white,
                                           hintText: "UserName",
@@ -107,6 +123,62 @@ class _SignUpState extends State<SignUp> {
                                           border: new UnderlineInputBorder(
                                               borderSide: new BorderSide(
                                                   color: Colors.blueAccent))),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    // padding: EdgeInsets.symmetric(
+                                    //     horizontal: 20, vertical: 5),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Colors.grey))),
+                                    // child: TextField(
+                                    //   // new Text("data")
+                                    //   style: TextStyle(
+
+                                    //       color: Colors.black87, fontSize: 20),
+
+                                    //   decoration: InputDecoration(
+                                    //       fillColor: Colors.white,
+                                    //       hintText: _value,
+                                    //       hintStyle: TextStyle(
+                                    //           color: Colors.grey, fontSize: 14),
+                                    //       border: new UnderlineInputBorder(
+                                    //           borderSide: new BorderSide(
+                                    //               color: Colors.blueAccent))),
+                                    // ),
+                                    child: Column(
+                                      children: <Widget>[
+                                        // Text("data"),
+                                        DateTimeField(
+                                          style: TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20),
+                                          format: format,
+                                          onShowPicker:
+                                              (context, currentValue) async {
+                                            return showDatePicker(
+                                                context: context,
+                                                firstDate: DateTime(1900),
+                                                initialDate: currentValue ??
+                                                    DateTime.now(),
+                                                lastDate: DateTime(2100));
+                                          },
+                                          decoration: InputDecoration(
+                                              fillColor: Colors.white,
+                                              hintText: _value,
+                                              hintStyle: TextStyle(
+                                                  color: Colors.grey,
+                                                  fontSize: 14),
+                                              border: new UnderlineInputBorder(
+                                                  borderSide: new BorderSide(
+                                                      color:
+                                                          Colors.blueAccent))),
+                                        ),
+                                      ],
                                     ),
                                   ),
                                   SizedBox(
@@ -122,8 +194,7 @@ class _SignUpState extends State<SignUp> {
                                     child: TextField(
                                       obscureText: true,
                                       style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                          color: Colors.black26, fontSize: 20),
                                       decoration: InputDecoration(
                                           hintText: "Password",
                                           hintStyle: TextStyle(
@@ -147,8 +218,8 @@ class _SignUpState extends State<SignUp> {
                                             borderRadius:
                                                 BorderRadius.circular(20),
                                             gradient: LinearGradient(colors: [
-                                              Color(0xFFffb421),
-                                              Color(0xFFff7521)
+                                              Color(0xFFFF21AA),
+                                              Color(0xFFFF9AD8)
                                             ]),
                                           ),
                                           child: GestureDetector(
@@ -169,61 +240,61 @@ class _SignUpState extends State<SignUp> {
                                 ],
                               ),
                             )),
-                        SizedBox(height: 20),
-                        FadeAnimation(
-                          1.6,
-                          Text(
-                            'Or sign up with another\naccount.',
-                            style: TextStyle(
-                                color: Color(0xFF909093),
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
-                        FadeAnimation(
-                          1.6,
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                child: SvgPicture.asset(
-                                  "assets/icons/icons-facebook.svg",
-                                  height: 35,
-                                  width: 35,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 50,
-                              ),
-                              Container(
-                                child: SvgPicture.asset(
-                                  "assets/icons/icons-twitter.svg",
-                                  height: 35,
-                                  width: 35,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 50,
-                              ),
-                              Container(
-                                child: SvgPicture.asset(
-                                  "assets/icons/icons-google.svg",
-                                  height: 35,
-                                  width: 35,
-                                ),
-                              ),
-                              SizedBox(
-                                width: 50,
-                              ),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: 20,
-                        ),
+                        // SizedBox(height: 20),
+                        // FadeAnimation(
+                        //   1.6,
+                        //   Text(
+                        //     'Or sign up with another\naccount.',
+                        //     style: TextStyle(
+                        //         color: Color(0xFF909093),
+                        //         fontSize: 25,
+                        //         fontWeight: FontWeight.bold),
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
+                        // FadeAnimation(
+                        //   1.6,
+                        //   Row(
+                        //     mainAxisAlignment: MainAxisAlignment.center,
+                        //     children: [
+                        //       Container(
+                        //         child: SvgPicture.asset(
+                        //           "assets/icons/icons-facebook.svg",
+                        //           height: 35,
+                        //           width: 35,
+                        //         ),
+                        //       ),
+                        //       SizedBox(
+                        //         width: 50,
+                        //       ),
+                        //       Container(
+                        //         child: SvgPicture.asset(
+                        //           "assets/icons/icons-twitter.svg",
+                        //           height: 35,
+                        //           width: 35,
+                        //         ),
+                        //       ),
+                        //       SizedBox(
+                        //         width: 50,
+                        //       ),
+                        //       Container(
+                        //         child: SvgPicture.asset(
+                        //           "assets/icons/icons-google.svg",
+                        //           height: 35,
+                        //           width: 35,
+                        //         ),
+                        //       ),
+                        //       SizedBox(
+                        //         width: 50,
+                        //       ),
+                        //     ],
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   height: 20,
+                        // ),
                       ],
                     ),
                   ]),

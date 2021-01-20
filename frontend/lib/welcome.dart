@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
-import 'package:frontend/sign_in.dart';
-import 'package:frontend/sign_up.dart';
+import 'package:frontend/signIn.dart';
+import 'package:frontend/signUp.dart';
 
 import 'Animation/FadeAnimation.dart';
 
@@ -11,10 +11,11 @@ class WelcomePage extends StatelessWidget {
     return SafeArea(
       child: Scaffold(
         body: Container(
+            alignment: Alignment.center,
             width: double.infinity,
-            height: double.infinity,
+            // height: double.infinity,
             decoration: BoxDecoration(
-              backgroundBlendMode: BlendMode.colorDodge,
+              backgroundBlendMode: BlendMode.colorBurn,
               color: Color(0xFFFFFFFF),
             ),
             child: Row(
@@ -30,14 +31,14 @@ class WelcomePage extends StatelessWidget {
                           clipper: WaveClipperTwo(),
                           child: Container(
                             width: 411.4,
-                            height: 120.0,
+                            height: 129.0,
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                                 colors: [
-                                  Color(0xFFFF46B8),
-                                  Color(0xFFFF5672),
+                                  Color(0xFFFF33B1),
+                                  Color(0xFFFF9676),
                                 ],
                               ),
                             ),
@@ -45,17 +46,17 @@ class WelcomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 50),
+                    SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: FadeAnimation(
                           1.6,
                           Text(
-                            'Join a community \nof creators',
+                            'Join a Taffy\nApplications',
                             style: TextStyle(
-                                color: Color(0xFF000000),
+                                color: Color(0xFFF8007C),
                                 fontWeight: FontWeight.bold,
-                                fontSize: 40),
+                                fontSize: 55),
                           )),
                     ),
                     SizedBox(height: 20),
@@ -85,13 +86,6 @@ class WelcomePage extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(40),
                                   color: Color(0xFF464646)),
                               child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => SignUp()),
-                                  );
-                                },
                                 child: Center(
                                   child: Text(
                                     "Sign Up",
@@ -101,6 +95,15 @@ class WelcomePage extends StatelessWidget {
                                         fontWeight: FontWeight.bold),
                                   ),
                                 ),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(builder: (context) {
+                                      return SignUp();
+                                    }),
+                                  );
+                                  print("go to Sign UP");
+                                },
                               ))),
                     ),
                     SizedBox(

@@ -17,6 +17,13 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.pink,
       ),
       home: SplashScreen(),
+      supportedLocales: [
+        const Locale('en'), // English
+        const Locale('es'), // Spanish
+        const Locale('fr'), // French
+        const Locale('zh'), // Chinese
+        const Locale("th"),
+      ],
       routes: <String, WidgetBuilder>{
         '/welcomepage': (BuildContext context) => new WelcomePage()
       },

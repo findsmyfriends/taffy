@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'animation/FadeAnimation.dart';
 
@@ -13,7 +14,8 @@ class _SignInState extends State<SignIn> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        backgroundColor: Color(0xFFFFFFFF),
+        backgroundColor: Color(0xFFFFACDC),
+        brightness: Brightness.dark,
         // title: Container(
         //   width: 40,
         //   height: 40,
@@ -33,7 +35,7 @@ class _SignInState extends State<SignIn> {
         child: Container(
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Color(0xFF212121),
+            color: Color(0xFFFFFFFF),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -51,7 +53,7 @@ class _SignInState extends State<SignIn> {
                           Text(
                             'Sign In',
                             style: TextStyle(
-                                color: Color(0xFF909093),
+                                color: Color(0xFF000000),
                                 fontSize: 35,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -64,9 +66,9 @@ class _SignInState extends State<SignIn> {
                         FadeAnimation(
                           1.6,
                           Text(
-                            'Welcome Back',
+                            'Welcome To Taffy',
                             style: TextStyle(
-                                color: Color(0xFF909093),
+                                color: Color(0xFF000000),
                                 fontSize: 25,
                                 fontWeight: FontWeight.bold),
                           ),
@@ -89,11 +91,10 @@ class _SignInState extends State<SignIn> {
                                                 color: Colors.grey))),
                                     child: TextField(
                                       style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                          color: Colors.black, fontSize: 20),
                                       decoration: InputDecoration(
                                           fillColor: Colors.white,
-                                          hintText: "Mobile Number or Email",
+                                          hintText: "Username",
                                           hintStyle: TextStyle(
                                               color: Colors.grey, fontSize: 14),
                                           border: new UnderlineInputBorder(
@@ -114,8 +115,7 @@ class _SignInState extends State<SignIn> {
                                     child: TextField(
                                       obscureText: true,
                                       style: TextStyle(
-                                        color: Colors.white,
-                                      ),
+                                          color: Colors.black26, fontSize: 20),
                                       decoration: InputDecoration(
                                           hintText: "Password",
                                           hintStyle: TextStyle(
@@ -160,8 +160,63 @@ class _SignInState extends State<SignIn> {
                                     ),
                                   ),
                                 ))),
+                        SizedBox(height: 20),
+                        FadeAnimation(
+                          1.6,
+                          Text(
+                            'Or sign inn with another\naccount.',
+                            style: TextStyle(
+                                color: Color(0xFF909093),
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        FadeAnimation(
+                          1.6,
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                child: SvgPicture.asset(
+                                  "assets/icons/icons-facebook.svg",
+                                  height: 35,
+                                  width: 35,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 50,
+                              ),
+                              Container(
+                                child: SvgPicture.asset(
+                                  "assets/icons/icons-twitter.svg",
+                                  height: 35,
+                                  width: 35,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 50,
+                              ),
+                              Container(
+                                child: SvgPicture.asset(
+                                  "assets/icons/icons-google.svg",
+                                  height: 35,
+                                  width: 35,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 50,
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
 
-                        SizedBox(height: 30),
+                        // SizedBox(height: 30),
 
                         // FadeAnimation(1.6, Text('Or sign up with another\naccount.',style:
                         // TextStyle(
