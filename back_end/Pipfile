@@ -9,11 +9,13 @@ openpyxl = "*"
 djangorestframework = "*"
 
 [dev-packages]
+pylint = "*"
 
 [scripts]
 server ="python manage.py runserver"
 rmdb = "rm -rf db.sqlite3 api/migrations"
 createdb = "bash -c 'python manage.py makemigrations api; python manage.py migrate'"
+mmg = "python manage.py makemigrations api && python manage.py migrate"
 super = "python manage.py createsuperuser"
 loaddb = "python manage.py loaddb"
 

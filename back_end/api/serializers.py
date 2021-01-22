@@ -7,7 +7,7 @@ from .models import *
 
 
 
-### -----------------
+# ## -----------------
 class BloodTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = BloodType

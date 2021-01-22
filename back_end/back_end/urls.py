@@ -5,10 +5,7 @@ from api import views
 from api.views import router
 from api.models import *
 from api import views
-from django.utils import translation
 
-
-translation.activate('th')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
