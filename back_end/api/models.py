@@ -3,7 +3,6 @@ from django.db import models
 # Create your models here.
 from django.db.models.deletion import CASCADE
 
-
 class BloodType(models.Model):
 
     bloodtype =models.CharField(max_length=10)
@@ -74,26 +73,28 @@ class Testes (models.Model):
     class Meta:
         verbose_name = 'รสนิยมทางเพศ'
 
+
+
 class Member(models.Model):
     username = models.CharField(max_length=100)
-    email = models.EmailField( max_length=564)
+    email = models.EmailField( max_length=564,unique=True)
     password = models.CharField(max_length=200)
     first_name = models.CharField(max_length=300)
     last_name = models.CharField(max_length=300)
     birthday = models.DateField(auto_now=False)
     age = models.IntegerField()
-    dayofbirth = models.ForeignKey(DaysOfWeek, verbose_name="วันประจำวันเกิด",on_delete=models.CASCADE)
-    rasi = models.ForeignKey(RaSi, verbose_name='ราศีประจำวันเกิด',on_delete=models.CASCADE)
-    bloodtype = models.ForeignKey(BloodType, verbose_name="หมู่เลือด",on_delete=models.CASCADE)
-    naksus = models.ForeignKey(NakSus, verbose_name="นักษัตร",on_delete=models.CASCADE)
-    gender = models.ForeignKey(Gender,verbose_name="เพศ",on_delete=models.CASCADE)
-    testes = models.ForeignKey(Testes,verbose_name="รสนิยมทางเพศ",on_delete=models.CASCADE)  # sex of Testes
+    dayofbirth = models.ForeignKey(DaysOfWeek, blank=True,null=True,verbose_name="วันประจำวันเกิด",on_delete=models.CASCADE)
+    rasi = models.ForeignKey(RaSi,  blank=True,null=True,verbose_name='ราศีประจำวันเกิด',on_delete=models.CASCADE)
+    bloodtype = models.ForeignKey(BloodType,  blank=True,null=True,verbose_name="หมู่เลือด",on_delete=models.CASCADE)
+    naksus = models.ForeignKey(NakSus,  blank=True,null=True,verbose_name="นักษัตร",on_delete=models.CASCADE)
+    gender = models.ForeignKey(Gender, blank=True,null=True,verbose_name="เพศ",on_delete=models.CASCADE)
+    testes = models.ForeignKey(Testes, blank=True,null=True,verbose_name="รสนิยมทางเพศ",on_delete=models.CASCADE)  # sex of Testes
     profileurl = models.TextField(blank=True,null=True,default="")
     discription = models.CharField(max_length=1000,default="",blank=True,null=True)
     characterneed = models.IntegerField()# ลักษณนิสัย คะแนน ที่เป็น ขั้วบวก = 1,ขั้วลบ =0 ที่ต้องการ
     values = models.IntegerField(blank=True,null=True) # like = 1 nope =0
     created_at = models.DateTimeField(auto_now_add=False) # When it was create
-    updated_at = models.DateTimeField(auto_now=False)  # When it was update
+    updated_at = models.DateTimeField(auto_now=True)  # When it was update
 
     def __str__(self) -> str:
         return f'{self.first_name} {self.last_name} '
@@ -115,15 +116,37 @@ class Conversation(models.Model):
     class Meta:
         verbose_name = "สนทนา"
 
+class LikeNopeManager(models.Manager):
+    def like_toggle(self, member, pro_obj):
+        if member in pro_obj.liked.all():
+            is_liked = False
+            pro_obj.liked.remove(member)
+        else:
+            is_liked = True
+            pro_obj.liked.add(member)
+        return is_liked
+
+    def nope_toggle(self, member, pro_obj):
+        if member in pro_obj.noped.all():
+            is_nope = False
+            pro_obj.noped.remove(member)
+        else:
+            is_nope = True
+            pro_obj.noped.add(member)
+        return is_nope
 
 class Goldmember(models.Model):
-    goldmember = models.ForeignKey(Member,
+    member = models.ForeignKey(Member,
                                    verbose_name='Goldmember',
                                    on_delete=models.CASCADE)
-    # values = models.ForeignKey(ValuesOfall, verbose_name=id,on_delete=models.CASCADE)
+    liked = models.ManyToManyField(
+        Member, blank=True, related_name='liked')
+    noped = models.ManyToManyField(
+        Member, blank=True, related_name='noped')
+
+
     conversation = models.ForeignKey(Conversation,
                                      verbose_name=' block & rejected :',
                                      on_delete=models.CASCADE)
-
-    def __str__(self):
+    def __str__(self) -> str:
         return f'{self.goldmember} {self.conversation}'
