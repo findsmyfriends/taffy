@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:frontend/animations/fadeAnimation.dart';
+import 'package:frontend/models/member_models.dart';
 import 'package:frontend/signIn.dart';
 import 'package:frontend/signUp.dart';
 
-import 'Animation/FadeAnimation.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
 
 class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        // backgroundColor: Color(0xFF6F0041),
         body: Container(
             alignment: Alignment.center,
             width: double.infinity,
             // height: double.infinity,
             decoration: BoxDecoration(
-              backgroundBlendMode: BlendMode.colorBurn,
-              color: Color(0xFFFFFFFF),
+              // backgroundBlendMode: BlendMode.colorBurn,
+              color: Color(0xFFE6459D),
             ),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -46,33 +52,42 @@ class WelcomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 2),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      padding: const EdgeInsets.symmetric(horizontal: 42),
                       child: FadeAnimation(
                           1.6,
                           Text(
-                            'Join a Taffy\nApplications',
+                            'Join a Taffy\nApplications.',
                             style: TextStyle(
-                                color: Color(0xFFF8007C),
+                                color: Color(0xFFFFFFFF),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 55),
                           )),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 40),
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 35),
+                      padding: const EdgeInsets.symmetric(horizontal: 55),
                       child: FadeAnimation(
-                          1.6,
-                          Text(
-                            'A simple , fun , and creative way to \nshare photos , videos , messages\nwith friends and family ',
-                            style: TextStyle(
-                                color: Color(0xFF292929),
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18),
-                          )),
+                        1.6,
+
+                        // Text(
+                        //   '❝  มาให้ทาพพี่คิวปิดคุณดีไหม ? \nหรือหาเพื่อนสัมพันธ์และคนรู้ใจ💑  \nยอมรับทุกสิ่งที่เราเป็นได้ 💋💋 \n❤ ลองมาคุยกันก่อน  ❞',
+                        //   style: TextStyle(
+                        //       color: Color(0xFF292929),
+                        //       fontWeight: FontWeight.bold,
+                        //       fontSize: 19),
+                        // )
+
+                        SvgPicture.asset(
+                          "assets/svg/taffy.svg",
+                          height: 160,
+                          width: 0,
+                          alignment: Alignment.center,
+                        ),
+                      ),
                     ),
-                    SizedBox(height: 120),
+                    SizedBox(height: 90),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 35),
                       child: FadeAnimation(
@@ -121,8 +136,8 @@ class WelcomePage extends StatelessWidget {
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(40),
                                 gradient: LinearGradient(colors: [
-                                  Color(0xFFFF21AA),
-                                  Color(0xFFFF92D2)
+                                  Color(0xFFFF75B6),
+                                  Color(0xFFEFFADA)
                                 ]),
                               ),
                               child: GestureDetector(

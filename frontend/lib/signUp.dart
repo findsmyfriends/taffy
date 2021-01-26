@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
-import 'Animation/FadeAnimation.dart';
+import 'package:frontend/animations/fadeAnimation.dart';
+
 import 'package:intl/intl.dart';
 
 class SignUp extends StatefulWidget {
@@ -66,10 +67,10 @@ class _SignUpState extends State<SignUp> {
                         FadeAnimation(
                           1.6,
                           Text(
-                            'Sign up to see photos\nand videos from your\nfriends.',
+                            'สมัครสมาชิก\nค้นหาเพื่อนรู้ใจ\nค้นหาเพื่อนสัมพันธ์',
                             style: TextStyle(
                                 color: Color(0xFF242424),
-                                fontSize: 25,
+                                fontSize: 30,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
@@ -93,6 +94,7 @@ class _SignUpState extends State<SignUp> {
                                         color: Colors.black87,
                                       ),
                                       decoration: InputDecoration(
+                                          icon: Icon(Icons.email_outlined),
                                           fillColor: Colors.black,
                                           helperStyle: TextStyle(fontSize: 50),
                                           hintText: "Email",
@@ -113,11 +115,61 @@ class _SignUpState extends State<SignUp> {
                                             bottom: BorderSide(
                                                 color: Colors.grey))),
                                     child: TextField(
+                                      // obscureText: true,
                                       style: TextStyle(
                                           color: Colors.black87, fontSize: 20),
                                       decoration: InputDecoration(
+                                          icon: Icon(Icons.person_add_outlined),
                                           fillColor: Colors.white,
                                           hintText: "UserName",
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey, fontSize: 14),
+                                          border: new UnderlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.blueAccent))),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    // padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Colors.grey))),
+                                    child: TextField(
+                                      // obscureText: true,
+                                      style: TextStyle(
+                                          color: Colors.black87, fontSize: 20),
+                                      decoration: InputDecoration(
+                                          icon: Icon(Icons.first_page),
+                                          fillColor: Colors.white,
+                                          hintText: "FirstName",
+                                          hintStyle: TextStyle(
+                                              color: Colors.grey, fontSize: 14),
+                                          border: new UnderlineInputBorder(
+                                              borderSide: new BorderSide(
+                                                  color: Colors.blueAccent))),
+                                    ),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Container(
+                                    // padding: EdgeInsets.symmetric(horizontal: 20,vertical: 5),
+                                    decoration: BoxDecoration(
+                                        border: Border(
+                                            bottom: BorderSide(
+                                                color: Colors.grey))),
+                                    child: TextField(
+                                      // obscureText: true,
+                                      style: TextStyle(
+                                          color: Colors.black87, fontSize: 20),
+                                      decoration: InputDecoration(
+                                          icon: Icon(Icons.last_page),
+                                          fillColor: Colors.white,
+                                          hintText: "LastName",
                                           hintStyle: TextStyle(
                                               color: Colors.grey, fontSize: 14),
                                           border: new UnderlineInputBorder(
@@ -135,25 +187,12 @@ class _SignUpState extends State<SignUp> {
                                         border: Border(
                                             bottom: BorderSide(
                                                 color: Colors.grey))),
-                                    // child: TextField(
-                                    //   // new Text("data")
-                                    //   style: TextStyle(
 
-                                    //       color: Colors.black87, fontSize: 20),
-
-                                    //   decoration: InputDecoration(
-                                    //       fillColor: Colors.white,
-                                    //       hintText: _value,
-                                    //       hintStyle: TextStyle(
-                                    //           color: Colors.grey, fontSize: 14),
-                                    //       border: new UnderlineInputBorder(
-                                    //           borderSide: new BorderSide(
-                                    //               color: Colors.blueAccent))),
-                                    // ),
                                     child: Column(
                                       children: <Widget>[
                                         // Text("data"),
                                         DateTimeField(
+                                          // obscureText: true,
                                           style: TextStyle(
                                               color: Colors.black,
                                               fontSize: 20),
@@ -168,6 +207,8 @@ class _SignUpState extends State<SignUp> {
                                                 lastDate: DateTime(2100));
                                           },
                                           decoration: InputDecoration(
+                                              icon: Icon(Icons
+                                                  .calendar_today_outlined),
                                               fillColor: Colors.white,
                                               hintText: _value,
                                               hintStyle: TextStyle(
@@ -196,6 +237,8 @@ class _SignUpState extends State<SignUp> {
                                       style: TextStyle(
                                           color: Colors.black26, fontSize: 20),
                                       decoration: InputDecoration(
+                                          icon: Icon(
+                                              Icons.remove_red_eye_outlined),
                                           hintText: "Password",
                                           hintStyle: TextStyle(
                                               color: Colors.grey, fontSize: 14),

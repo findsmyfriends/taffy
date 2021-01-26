@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/myhomepage.dart';
+
 import 'package:frontend/splashscreen.dart';
 import 'package:frontend/welcome.dart';
+
+import 'login_page.dart';
+import 'myhomepage.dart';
 
 void main() {
   runApp(MyApp());
@@ -25,7 +28,8 @@ class MyApp extends StatelessWidget {
         const Locale("th"),
       ],
       routes: <String, WidgetBuilder>{
-        '/welcomepage': (BuildContext context) => new WelcomePage()
+        '/welcomepage': (BuildContext context) => new LoginPage(),
+        '/home': (BuildContext context) => new MyHomePage()
       },
     );
   }

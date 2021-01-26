@@ -1,7 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-import 'animation/FadeAnimation.dart';
+import 'package:frontend/animations/fadeAnimation.dart';
+import 'package:frontend/models/member_models.dart';
+import 'package:http/http.dart' as http;
 
 class SignIn extends StatefulWidget {
   @override
@@ -10,6 +13,25 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   @override
+  String username = '';
+  String password = '';
+
+  void postToServer() async {
+    var url = 'https://taffy.pythonanywhere.com/api/member/';
+    var response =
+        await http.get(url, headers: {'Content-Type': 'application/json'});
+    print('Response status: ${response.statusCode}');
+    // print('Response body: ${response.body.toString()}');
+    List<dynamic> result = json.decode(utf8.decode(response.bodyBytes));
+    print('utf8decode: $result');
+    print('---convert to list of members---');
+
+    List<Members> members =
+        result.map<Members>((data) => Members.fromMap(data)).toList();
+
+    members.forEach((members) => print(members.toString()));
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
@@ -27,7 +49,7 @@ class _SignInState extends State<SignIn> {
         // ),
         // centerTitle: true,
         leading: IconButton(
-          icon: new Icon(Icons.arrow_back, color: Color(0xFF909093)),
+          icon: new Icon(Icons.arrow_back, color: Color(0xFF000000)),
           onPressed: () => Navigator.of(context).pop(),
         ),
       ),
@@ -90,9 +112,15 @@ class _SignInState extends State<SignIn> {
                                             bottom: BorderSide(
                                                 color: Colors.grey))),
                                     child: TextField(
+                                      onChanged: (value) {
+                                        this.username = value;
+                                        print("Username ==> ${value}");
+                                      },
                                       style: TextStyle(
                                           color: Colors.black, fontSize: 20),
                                       decoration: InputDecoration(
+                                          icon: Icon(
+                                              Icons.person_add_alt_1_outlined),
                                           fillColor: Colors.white,
                                           hintText: "Username",
                                           hintStyle: TextStyle(
@@ -113,10 +141,16 @@ class _SignInState extends State<SignIn> {
                                                 color: Colors.grey))),
 
                                     child: TextField(
+                                      onChanged: (value) {
+                                        this.password = value;
+                                        print("Password ==> ${value}");
+                                      },
                                       obscureText: true,
                                       style: TextStyle(
                                           color: Colors.black26, fontSize: 20),
                                       decoration: InputDecoration(
+                                          icon: Icon(
+                                              Icons.remove_red_eye_outlined),
                                           hintText: "Password",
                                           hintStyle: TextStyle(
                                               color: Colors.grey, fontSize: 14),
@@ -148,6 +182,9 @@ class _SignInState extends State<SignIn> {
                                 ),
                                 child: GestureDetector(
                                   onTap: () {
+                                    print(
+                                        "Try Login With: ${this.username} ${this.password}");
+                                    postToServer();
                                     // Navigator.push(context,MaterialPageRoute(builder: (context) => SignIn()),);
                                   },
                                   child: Center(
