@@ -15,10 +15,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    final MyHomePage username = ModalRoute.of(context).settings.arguments;
     return new Scaffold(
       appBar: new AppBar(
-        title: new Text(username.username),
+        title: new Text(widget.username),
       ),
       body: new Center(
         child: new Text('Welcome to Home.!'),
