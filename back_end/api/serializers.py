@@ -1,4 +1,5 @@
 from rest_framework import routers, serializers, viewsets
+from rest_framework.validators import UniqueTogetherValidator
 from .models import *
 # class UserSerializer(serializers.HyperlinkedModelSerializer):
 #     class Meta:
@@ -57,9 +58,13 @@ class TestesSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class MemberSerializer(serializers.HyperlinkedModelSerializer):
+
+  
+    
     class Meta:
         model = Member
         fields = '__all__'
+
 
 
 class ConversationSerializer(serializers.HyperlinkedModelSerializer):
