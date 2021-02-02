@@ -1,0 +1,318 @@
+Table LogEntry {
+  id auto [note:"", pk, unique]
+  action_time date_time [note:""]
+  user foreign_key [note:""]
+  content_type foreign_key [note:"", null]
+  object_id text [note:"", null]
+  object_repr char [note:""]
+  action_flag positive_small_integer [note:""]
+  change_message text [note:""]
+  Note: '''LogEntry(id, action_time, user, content_type, object_id, object_repr, action_flag, change_message)'''
+}
+ref: LogEntry.user > User.id
+ref: LogEntry.content_type > ContentType.id
+
+
+Table Permission {
+  id auto [note:"", pk, unique]
+  name char [note:""]
+  content_type foreign_key [note:""]
+  codename char [note:""]
+  Note: '''
+    The permissions system provides a way to assign permissions to specific
+    users and groups of users.
+
+    The permission system is used by the Django admin site, but may also be
+    useful in your own code. The Django admin site uses permissions as follows:
+
+        - The "add" permission limits the user's ability to view the "add" form
+          and add an object.
+        - The "change" permission limits a user's ability to view the change
+          list, view the "change" form and change an object.
+        - The "delete" permission limits the ability to delete an object.
+        - The "view" permission limits the ability to view an object.
+
+    Permissions are set globally per type of object, not per specific object
+    instance. It is possible to say "Mary may change news stories," but it's
+    not currently possible to say "Mary may change news stories, but only the
+    ones she created herself" or "Mary may only change news stories that have a
+    certain status or publication date."
+
+    The permissions listed above are automatically created for each model.
+    '''
+}
+ref: Permission.content_type > ContentType.id
+
+
+Table Group {
+  id auto [note:"", pk, unique]
+  name char [note:"", unique]
+  Note: '''
+    Groups are a generic way of categorizing users to apply permissions, or
+    some other label, to those users. A user can belong to any number of
+    groups.
+
+    A user in a group automatically has all the permissions granted to that
+    group. For example, if the group 'Site editors' has the permission
+    can_edit_home_page, any user in that group will have that permission.
+
+    Beyond permissions, groups are a convenient way to categorize users to
+    apply some label, or extended functionality, to them. For example, you
+    could create a group 'Special users', and you could write code that would
+    do special things to those users -- such as giving them access to a
+    members-only portion of your site, or sending them members-only email
+    messages.
+    '''
+}
+
+
+Table auth_group_permissions {
+  permission_id auto [pk]
+  group_id auto [pk]
+}
+ref: Group.id > auth_group_permissions.group_id
+ref: Permission.id > auth_group_permissions.permission_id
+
+
+Table User {
+  id auto [note:"", pk, unique]
+  password char [note:""]
+  last_login date_time [note:"", null]
+  is_superuser boolean [note:"Designates that this user has all permissions without explicitly assigning them."]
+  username char [note:"Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.", unique]
+  first_name char [note:""]
+  last_name char [note:""]
+  email email [note:""]
+  is_staff boolean [note:"Designates whether the user can log into this admin site."]
+  is_active boolean [note:"Designates whether this user should be treated as active. Unselect this instead of deleting accounts."]
+  date_joined date_time [note:""]
+  Note: '''
+    Users within the Django authentication system are represented by this
+    model.
+
+    Username and password are required. Other fields are optional.
+    '''
+}
+
+
+Table auth_user_groups {
+  group_id auto [pk]
+  user_id auto [pk]
+}
+ref: User.id > auth_user_groups.user_id
+ref: Group.id > auth_user_groups.group_id
+
+
+Table auth_user_user_permissions {
+  permission_id auto [pk]
+  user_id auto [pk]
+}
+ref: User.id > auth_user_user_permissions.user_id
+ref: Permission.id > auth_user_user_permissions.permission_id
+
+
+Table ContentType {
+  id auto [note:"", pk, unique]
+  app_label char [note:""]
+  model char [note:""]
+  Note: '''ContentType(id, app_label, model)'''
+}
+
+
+Table Session {
+  session_key char [note:"", pk, unique]
+  session_data text [note:""]
+  expire_date date_time [note:""]
+  Note: '''
+    Django provides full support for anonymous sessions. The session
+    framework lets you store and retrieve arbitrary data on a
+    per-site-visitor basis. It stores data on the server side and
+    abstracts the sending and receiving of cookies. Cookies contain a
+    session ID -- not the data itself.
+
+    The Django sessions framework is entirely cookie-based. It does
+    not fall back to putting session IDs in URLs. This is an intentional
+    design decision. Not only does that behavior make URLs ugly, it makes
+    your site vulnerable to session-ID theft via the "Referer" header.
+
+    For complete documentation on using Sessions in your code, consult
+    the sessions documentation that is shipped with Django (also available
+    on the Django Web site).
+    '''
+}
+
+
+Table BloodType {
+  id auto [note:"", pk, unique]
+  bloodtype char [note:""]
+  Note: '''BloodType(id, bloodtype)'''
+}
+
+
+Table DaysOfWeek {
+  id auto [note:"", pk, unique]
+  daysofweek char [note:""]
+  Note: '''DaysOfWeek(id, daysofweek)'''
+}
+
+
+Table NakSus {
+  id auto [note:"", pk, unique]
+  naksus char [note:""]
+  Note: '''NakSus(id, naksus)'''
+}
+
+
+Table RaSi {
+  id auto [note:"", pk, unique]
+  rasi char [note:""]
+  Note: '''RaSi(id, rasi)'''
+}
+
+
+Table Gender {
+  id auto [note:"", pk, unique]
+  gender char [note:""]
+  Note: '''Gender(id, gender)'''
+}
+
+
+Table Testes {
+  id auto [note:"", pk, unique]
+  testes char [note:""]
+  Note: '''Testes(id, testes)'''
+}
+
+
+Table Image {
+  id auto [note:"", pk, unique]
+  name char [note:""]
+  image None [note:""]
+  image_ppoi None [note:""]
+  Note: '''Image(id, name, image, image_ppoi)'''
+}
+
+
+Table Personality {
+  id auto [note:"", pk, unique]
+  value char [note:""]
+  Note: '''Personality(id, value)'''
+}
+
+
+Table MemberProfile {
+  id auto [note:"", pk, unique]
+  user foreign_key [note:""]
+  first_name char [note:"", null]
+  last_name char [note:"", null]
+  birthday date [note:""]
+  age integer [note:"", null]
+  dayofbirth foreign_key [note:"", null]
+  rasi foreign_key [note:"", null]
+  bloodtype foreign_key [note:"", null]
+  naksus foreign_key [note:"", null]
+  gender foreign_key [note:"", null]
+  testes foreign_key [note:"", null]
+  liked boolean [note:"", null]
+  noped boolean [note:"", null]
+  created date_time [note:""]
+  updated date_time [note:""]
+  Note: '''MemberProfile(id, user, first_name, last_name, birthday, age, dayofbirth, rasi, bloodtype, naksus, gender, testes, liked, noped, created, updated)'''
+}
+ref: MemberProfile.user > User.id
+ref: MemberProfile.dayofbirth > DaysOfWeek.id
+ref: MemberProfile.rasi > RaSi.id
+ref: MemberProfile.bloodtype > BloodType.id
+ref: MemberProfile.naksus > NakSus.id
+ref: MemberProfile.gender > Gender.id
+ref: MemberProfile.testes > Testes.id
+
+
+Table api_memberprofile_imageprofile {
+  image_id auto [pk]
+  memberprofile_id auto [pk]
+}
+ref: MemberProfile.id > api_memberprofile_imageprofile.memberprofile_id
+ref: Image.id > api_memberprofile_imageprofile.image_id
+
+
+Table api_memberprofile_personality {
+  personality_id auto [pk]
+  memberprofile_id auto [pk]
+}
+ref: MemberProfile.id > api_memberprofile_personality.memberprofile_id
+ref: Personality.id > api_memberprofile_personality.personality_id
+
+
+Table Handler {
+  id auto [note:"", pk, unique]
+  rejected boolean [note:"", null]
+  reviewe_value integer [note:"", null]
+  created date_time [note:""]
+  updated date_time [note:""]
+  Note: '''Handler(id, rejected, reviewe_value, created, updated)'''
+}
+
+
+Table Conversation {
+  id auto [note:"", pk, unique]
+  memberprofile foreign_key [note:""]
+  user foreign_key [note:""]
+  message text [note:"", null]
+  rejected foreign_key [note:"", null]
+  created date_time [note:""]
+  updated date_time [note:""]
+  Note: '''Conversation(id, memberprofile, user, message, rejected, created, updated)'''
+}
+ref: Conversation.memberprofile > MemberProfile.id
+ref: Conversation.user > User.id
+ref: Conversation.rejected > Handler.id
+
+
+Table Goldmember {
+  id auto [note:"", pk, unique]
+  memberprofile foreign_key [note:""]
+  conversation foreign_key [note:"", null]
+  Note: '''Goldmember(id, memberprofile, conversation)'''
+}
+ref: Goldmember.memberprofile > MemberProfile.id
+ref: Goldmember.conversation > Conversation.id
+
+
+Table api_goldmember_liked {
+  user_id auto [pk]
+  goldmember_id auto [pk]
+}
+ref: Goldmember.id > api_goldmember_liked.goldmember_id
+ref: User.id > api_goldmember_liked.user_id
+
+
+Table api_goldmember_noped {
+  user_id auto [pk]
+  goldmember_id auto [pk]
+}
+ref: Goldmember.id > api_goldmember_noped.goldmember_id
+ref: User.id > api_goldmember_noped.user_id
+
+
+Table OutstandingToken {
+  id auto [note:"", pk, unique]
+  user foreign_key [note:"", null]
+  jti char [note:"", unique]
+  token text [note:""]
+  created_at date_time [note:"", null]
+  expires_at date_time [note:""]
+  Note: '''OutstandingToken(id, user, jti, token, created_at, expires_at)'''
+}
+ref: OutstandingToken.user > User.id
+
+
+Table BlacklistedToken {
+  id auto [note:"", pk, unique]
+  token one_to_one [note:"", unique]
+  blacklisted_at date_time [note:""]
+  Note: '''BlacklistedToken(id, token, blacklisted_at)'''
+}
+ref: BlacklistedToken.token - OutstandingToken.id
+
+

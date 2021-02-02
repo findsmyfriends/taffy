@@ -1,16 +1,24 @@
+from django.conf import settings
+from api.models import BloodType, Conversation, DaysOfWeek, Gender, Goldmember, Handler, Image, MemberProfile, MemberProfile, NakSus, Personality, RaSi, Testes
 from django.contrib import admin
-
+from django.contrib.auth.models import Group
 # Register your models here.
-from .models import *
+admin.site.unregister(Group)
 
-# Register your models here.
+admin.site.site_header = "APIs For FlutterApp Admin."
+# @admin.register(settings.AUTH_USER_MODEL,MemberProfile)
+@admin.register(MemberProfile)
+class MemberProfileAdmin(admin.ModelAdmin):
+        list_display = ('id','user','first_name','last_name','gender','testes','age')
+
 admin.site.register(BloodType)
 admin.site.register(DaysOfWeek)
 admin.site.register(NakSus)
 admin.site.register(RaSi)
-admin.site.register(Member)
+admin.site.register(Handler)
 admin.site.register(Gender)
 admin.site.register(Testes)
 admin.site.register(Goldmember)
 admin.site.register(Conversation)
-# admin.site.register(ValuesOfall)
+admin.site.register(Personality)
+admin.site.register(Image)

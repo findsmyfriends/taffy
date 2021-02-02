@@ -1,88 +1,117 @@
+from api.models import *
+from api.serializers import *
 from django.shortcuts import render
-from django.http import HttpResponse
-from rest_framework import routers, serializers, viewsets
-from .models import *
-from .serializers import *
+from rest_framework.viewsets import ReadOnlyModelViewSet
+from rest_flex_fields.views import FlexFieldsMixin, FlexFieldsModelViewSet
+from rest_flex_fields import is_expanded
+from rest_framework.permissions import IsAuthenticated
+# Create your views here.
 
-# class UserViewSet(viewsets.ModelViewSet):
-#     queryset = User.objects.all()
-#     serializer_class = UserSerializer
+class UserViewSet(FlexFieldsModelViewSet):
 
-class BloodTypeViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    queryset = User.objects.all()
+
+   
+class ImageViewSet(FlexFieldsModelViewSet):
+
+    serializer_class = ImageSerializer
+    queryset = Image.objects.all()
+    # permission_classes = [IsAuth  enticated]
+
+
+class BloodTypeViewSet(FlexFieldsModelViewSet,ReadOnlyModelViewSet):
     queryset = BloodType.objects.all()
     serializer_class = BloodTypeSerializer
+    # permission_classes = [IsAuthenticated,]
+   
 
-
-class DaysOfWeekViewSet(viewsets.ModelViewSet):
+class DaysOfWeekViewSet(ReadOnlyModelViewSet):
 
     queryset = DaysOfWeek.objects.all()
     serializer_class = DaysOfWeekSerializer
-
-
-class NakSusViewSet(viewsets.ModelViewSet):
+   
+class NakSusViewSet(ReadOnlyModelViewSet):
 
     queryset = NakSus.objects.all()
     serializer_class = NakSusSerializer
-
-
-class RaSiViewSet(viewsets.ModelViewSet):
+   
+class RaSiViewSet(ReadOnlyModelViewSet):
 
     queryset = RaSi.objects.all()
     serializer_class = RaSiSerializer
+   
 
-
-# class PictureURL(models.Model):
-#     picpost = models.TextField(blank=True, default="")
-#     discription = models.CharField(max_length=1000, default="")
-#     created_at = models.DateTimeField(auto_now_add=True)  # When it was create
-#     updated_at = models.DateTimeField(auto_now=True)  # When i was update
-
-#     def __str__(self):
-#         return f'{self.discription}'
-
-
-class GenderViewSet(viewsets.ModelViewSet):
+class GenderViewSet(ReadOnlyModelViewSet):
 
     queryset = Gender.objects.all()
     serializer_class = GenderSerializer
-
-
-class TestesViewSet(viewsets.ModelViewSet):
+   
+class TestesViewSet(ReadOnlyModelViewSet):
 
     queryset = Testes.objects.all()
     serializer_class = TestesSerializer
 
+class MemberProfileViewSet(FlexFieldsModelViewSet):
 
-class MemberViewSet(viewsets.ModelViewSet):
+    queryset = MemberProfile.objects.all()
+    serializer_class = MemberProfileSerializer
 
-    queryset = Member.objects.all()
-    serializer_class = MemberSerializer
+        # queryset = Member.objects.all()
+    # permission_classes = [IsAuthenticated]
+    # serializer_class = MemberProfileSerializer
+    # permit_list_expands = ['user',
+    #         'dayofbirth',
+    #         'dayofbirth.daysofweek',
+    #         'rasi',
+    #         'bloodtype',
+    #         'naksus',
+    #         'gender',
+    #         'testes',
+    #         'imageprofile',
+    #         'personality', 
+    #         'personality.value', 
+
+    #         ]
+
+    # filterset_fields = ('testes','personality' )
 
 
-class ConversationViewSet(viewsets.ModelViewSet):
+    # def get_queryset(self):
+    #     queryset = MemberProfile.objects.all()
 
-    queryset = Conversation.objects.all()
-    serializer_class = ConversationSerializer
+    #     if is_expanded(self.request, 'user'):
+    #         queryset = queryset.prefetch_related('user')
+
+    #     if is_expanded(self.request, 'dayofbirth'):
+    #         queryset = queryset.prefetch_related('dayofbirth')
+
+    #     if is_expanded(self.request, 'daysofweek'):
+    #         queryset = queryset.prefetch_related('dayofbirth__daysofweek')
+
+    #     if is_expanded(self.request, 'rasi'):
+    #         queryset = queryset.prefetch_related('rasi')
+
+    #     if is_expanded(self.request, 'bloodtype'):
+    #         queryset = queryset.prefetch_related('bloodtype')
+
+    #     if is_expanded(self.request, 'naksus'):
+    #         queryset = queryset.prefetch_related('naksus')
+
+    #     if is_expanded(self.request, 'gender'):
+    #         queryset = queryset.prefetch_related('gender')
+
+    #     if is_expanded(self.request, 'testes'):
+    #         queryset = queryset.prefetch_related('testes')
+
+    #     if is_expanded(self.request, 'imageprofile'):
+    #         queryset = queryset.prefetch_related('imageprofile')
+
+    #     if is_expanded(self.request, 'personality'):
+    #         queryset = queryset.prefetch_related('personality')
+
+    #     if is_expanded(self.request, 'value'):
+    #         queryset = queryset.prefetch_related('personality__value')
 
 
-class GoldmemberViewSet(viewsets.ModelViewSet):
-
-    queryset = Goldmember.objects.all()
-    serializer_class = GoldmemberSerializer
-### -----------------
-# Routers provide an easy way of automatically determining the URL conf.
-# router.register(r'users', UserViewSet)
-router = routers.DefaultRouter()
-
-router.register(r'bloodtype', BloodTypeViewSet)
-router.register(r'daysofweek', DaysOfWeekViewSet)
-router.register(r'naksus', NakSusViewSet)
-router.register(r'rasi', RaSiViewSet)
-router.register(r'gender', GenderViewSet)
-router.register(r'testes', TestesViewSet)
-router.register(r'member', MemberViewSet)
-router.register(r'conversation', ConversationViewSet)
-router.register(r'goldmember', GoldmemberViewSet)
-# Create your views here.
-def index(req):
-    return render(req, 'api/index.html')
+    #     return queryset
