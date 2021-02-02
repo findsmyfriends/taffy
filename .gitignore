@@ -1,0 +1,13 @@
+.bash_history
+.cache
+.gitconfig
+.local
+.profile
+.pythonstartup.py
+.viminfo
+.virtualenvs
+.bashrc
+.my.cnf
+.python_history
+.vim
+.vimrc
