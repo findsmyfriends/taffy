@@ -1,5 +1,5 @@
 from django.conf import settings
-from api.models import BloodType, Conversation, DaysOfWeek, Gender, Goldmember, Handler, Image, MemberProfile, MemberProfile, NakSus, Personality, RaSi, Testes
+from api.models import BloodType, Conversation, DaysOfWeek, Gender, Goldmember, Handler, Image, LikedManager, MemberProfile, MemberProfile, NakSus, NopedManager, Personality, RaSi, Testes
 from django.contrib import admin
 from django.contrib.auth.models import Group
 # Register your models here.

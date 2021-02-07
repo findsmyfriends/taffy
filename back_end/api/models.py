@@ -5,6 +5,8 @@ from django.db.models.expressions import Value
 from versatileimagefield.fields import VersatileImageField, PPOIField
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 # Create your models here.
 class BloodType(models.Model):
 
@@ -68,7 +70,7 @@ class Testes (models.Model):
 
 
 class Image(models.Model):
-    name = models.CharField(max_length=255,verbose_name="Description")
+    des = models.CharField(max_length=255,verbose_name="Description")
     image = VersatileImageField(
         'Image',
         upload_to='images/',
@@ -77,7 +79,10 @@ class Image(models.Model):
     image_ppoi = PPOIField()
 
     def __str__(self):
-        return self.name
+        return self.des
+
+    class Meta:
+        verbose_name = 'ImageProfile'
 
 
 class Personality(models.Model):
@@ -87,12 +92,30 @@ class Personality(models.Model):
         return self.value
 
 
+class NopedManager(models.Manager):
+    def nope_toggle(self, user, pro_obj):
+        if user in pro_obj.noped.all():
+            is_nope = False
+            pro_obj.noped.remove(user)
+        else:
+            is_nope = True
+            pro_obj.noped.add(user)
+        return is_nope
+
+class LikedManager(models.Manager):
+    def like_toggle(self, user, pro_obj):
+        if user in pro_obj.liked.all():
+            is_liked = False
+            pro_obj.liked.remove(user)
+        else:
+            is_liked = True
+            pro_obj.liked.add(user)
+        return is_liked
 
 class MemberProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
-        # primary_key=True,
         related_name='members', related_query_name='members'
     )
     # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='members', related_query_name='members')
@@ -107,13 +130,23 @@ class MemberProfile(models.Model):
     gender = models.ForeignKey(Gender, blank=True,null=True,verbose_name="เพศ",on_delete=models.CASCADE)
     testes = models.ForeignKey(Testes, blank=True,null=True,verbose_name="รสนิยมทางเพศ",on_delete=models.CASCADE)  # sex of Testes
     imageprofile = models.ManyToManyField('api.Image', related_name='members')
-    personality = models.ManyToManyField('api.Personality', related_name='members')
-    liked = models.BooleanField(blank=True,default=False,null=True)
-    noped = models.BooleanField(blank=True,default=False,null=True)
+    imageprofile2 =  VersatileImageField(
+        'ImageProflie',
+        upload_to='images/',
+        ppoi_field='image_ppoi'
+    )
+    image_ppoi = PPOIField()
+    personality = models.ManyToManyField('api.Personality',related_name='members')
+    liked = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name='liked')
+    noped = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, blank=True, related_name='noped')
     created = models.DateTimeField(auto_now_add=True) # When it was create
     updated = models.DateTimeField(auto_now=True)  # When it was update
+    objects = LikedManager()
+    objects = NopedManager()
 
-
+    
     def save(self, *args, **kwargs):
         if not self.id:
             today = date.today()
@@ -123,11 +156,22 @@ class MemberProfile(models.Model):
         super(MemberProfile, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return f'{self.user.first_name} {self.user.last_name} '
+        return f'{self.id}:  {self.user} {self.first_name} {self.last_name} '
 
-    class Meta:
+    class Meta: 
         verbose_name = 'ProfileMember'
         ordering = ['-created']
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        MemberProfile.objects.create(user=instance)
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.memberprofile.save()
+
+
 
 class Handler(models.Model):
     # block = models.BooleanField(default=False,blank=True,null=True)
@@ -153,9 +197,7 @@ class Conversation(models.Model):
     rejected =models.ForeignKey(Handler, blank=True ,null=True,related_query_name='conversation',
                                    verbose_name='Rejected',
                                    on_delete=models.CASCADE)
-    # reviewed =models.ForeignKey(Handler,blank=True ,null=True, related_query_name='conversation',
-    #                                verbose_name='Reviewed',
-    #                                on_delete=models.CASCADE)                                
+                           
     created = models.DateTimeField(auto_now_add=True)  # When it was create
     updated = models.DateTimeField(auto_now=True)  # When i was update
 
@@ -166,43 +208,23 @@ class Conversation(models.Model):
         return f'{self.member}  {self.block} {self.rejected}'
 
     class Meta:
-        verbose_name = "Conversation"
+        verbose_name = "Conversation"   
 
-class NopeManager(models.Manager):
-    def nope_toggle(self, member, pro_obj):
-        if member in pro_obj.noped.all():
-            is_nope = False
-            pro_obj.noped.remove(member)
-        else:
-            is_nope = True
-            pro_obj.noped.add(member)
-        return is_nope
-
-class LikeManager(models.Manager):
-    def like_toggle(self, member, pro_obj):
-        if member in pro_obj.liked.all():
-            is_liked = False
-            pro_obj.liked.remove(member)
-        else:
-            is_liked = True
-            pro_obj.liked.add(member)
-        return is_liked
 
 class Goldmember(models.Model):
-    memberprofile = models.ForeignKey(MemberProfile, related_query_name='conversation',
-                                   verbose_name='Conversations_ID',
-                                   on_delete=models.CASCADE)
-    liked = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, blank=True, related_name='liked')
-    noped = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, blank=True, related_name='noped')
+    goldmember = models.OneToOneField(
+        MemberProfile,
+        null=True,blank=True,
+        on_delete=models.CASCADE,
+        # primary_key=True,
+        related_name='goldmember', related_query_name='goldmember'
+    )   
 
-    object = LikeManager()
-    object2 = NopeManager()
     conversation = models.ForeignKey(Conversation,null=True,blank=True,
                                      verbose_name='Conversation_ID',
-                                     on_delete=models.CASCADE)
+        on_delete=models.CASCADE)
+                        
     def __str__(self) -> str:
-        return f'{self.goldmember} {self.conversation}'
+        return f'{self.goldmember}'
 
 

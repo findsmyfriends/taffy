@@ -1,59 +1,63 @@
-from api.models import BloodType, Conversation, DaysOfWeek, Gender, Image, MemberProfile, NakSus, Personality, RaSi, Testes,Handler,Goldmember
+from django.db.models import fields
+from api.models import BloodType, Conversation, DaysOfWeek, Gender, Goldmember, Image, MemberProfile, NakSus, Personality, RaSi, Testes,Handler
 from rest_flex_fields import FlexFieldsModelSerializer
 from django.contrib.auth.models import User
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from rest_framework import  serializers
 
 class ImageSerializer(FlexFieldsModelSerializer):
+    # file_uploaded = serializers.FileField()
     image = VersatileImageFieldSerializer(
         sizes='product_headshot'
     )
 
     class Meta:
         model = Image
-        fields = ['pk', 'name', 'image']
+        fields = '__all__'
 
-class BloodTypeSerializer(FlexFieldsModelSerializer):
+        # fields = ['pk', 'name', 'image']
+
+class BloodTypeSerializer(serializers.ModelSerializer):
     class Meta:
         model = BloodType
         fields = '__all__'
 
 
-class DaysOfWeekSerializer(FlexFieldsModelSerializer):
+class DaysOfWeekSerializer(serializers.ModelSerializer):
     class Meta:
         model = DaysOfWeek
         fields = '__all__'
 
 
 
-class NakSusSerializer(FlexFieldsModelSerializer):
+class NakSusSerializer(serializers.ModelSerializer):
     class Meta:
         model = NakSus
         fields = '__all__'
 
 
-class RaSiSerializer(FlexFieldsModelSerializer):
+class RaSiSerializer(serializers.ModelSerializer):
     class Meta:
         model = RaSi
         fields = '__all__'
 
-class GenderSerializer(FlexFieldsModelSerializer):
+class GenderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gender
         fields = '__all__'
 
 
-class TestesSerializer(FlexFieldsModelSerializer):
+class TestesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Testes
         fields = '__all__'
 
-class HandlerSerializer(FlexFieldsModelSerializer):
+class HandlerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Handler
         fields = '__all__'
 
-class PersonalitySerializer(FlexFieldsModelSerializer):
+class PersonalitySerializer(serializers.ModelSerializer):
     class Meta:
         model = Personality
         fields = ['pk', 'value']
@@ -65,25 +69,15 @@ class MemberProfileSerializer(serializers.ModelSerializer):
     # user12 = serializers.StringRelatedField(many=True)
 
     class Meta:
-        model = MemberProfile
+        model = MemberProfile   
         fields = '__all__'
+        # fields = ['user','birthday','age','rasi','bloodtype','naksus','gender','testes','imageprofile','personality','liked','noped']
         
-        depth = 1
-        # fields = ['pk', 'dayofbirth','rasi','age','user12']
-        # expandable_fields = {
-        #     'user': (UserSerializer, {'username': True}),
-            # 'dayofbirth': (DaysOfWeekSerializer, {'many': True}),
-            # 'rasi': (RaSiSerializer, {'many': True}),
-            # 'bloodtype': (BloodTypeSerializer, {'many': True}),
-            # 'naksus': (NakSusSerializer, {'many': True}),
-            # 'gender': (GenderSerializer, {'many': True}),
-            # 'testes': (TestesSerializer, {'many': True}),
-            # 'imageprofile': (ImageSerializer, {'many': True}),
-            # 'personality': (PersonalitySerializer, {'many': True}),       
-        # }
+        # depth = 1
 
 
-class ConversationSerializer(FlexFieldsModelSerializer):
+
+class ConversationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Conversation
         fields = '__all__'
@@ -93,28 +87,23 @@ class ConversationSerializer(FlexFieldsModelSerializer):
           'rejected': (HandlerSerializer, {'many': True})
         }
 
-class GoldmemberSerializer(FlexFieldsModelSerializer):
-    class Meta:
-        model = Goldmember
-        fields = '__all__'
-        expandable_fields = {
-          'memberprofile': (MemberProfileSerializer, {'many': True}),
-          'Conversation': (ConversationSerializer, {'many': True})
-        }
 
-class UserSerializer(FlexFieldsModelSerializer):
+    
+
+class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
-        # fields = ['id', 'username','first_name','last_name']
-        # expandable_fields = {
-        #     'memberprofile': (MemberProfileSerializer, {'many': True}),
-        #     'dayofbirth': (DaysOfWeekSerializer, {'many': True}),
-        #     'rasi': (RaSiSerializer, {'many': True}),
-        #     'bloodtype': (BloodTypeSerializer, {'many': True}),
-        #     'naksus': (NakSusSerializer, {'many': True}),
-        #     'gender': (GenderSerializer, {'many': True}),
-        #     'testes': (TestesSerializer, {'many': True}),
-        #     'imageprofile': (ImageSerializer, {'many': True}),
-        #     'personality': (PersonalitySerializer, {'many': True}),  
-        # }
+
+
+class GoldmemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Goldmember
+        fields = '__all__'
+
+        # fields = ['pk', 'dayofbirth','rasi','age','user12']
+        expandable_fields = {
+            'memberprofile': (MemberProfileSerializer, {'many': True}),
+            'conversation': (ConversationSerializer, {'many': True})
+            
+        }
