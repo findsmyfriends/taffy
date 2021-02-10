@@ -15,7 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   startTime() async {
-    var _duration = new Duration(seconds: 4);
+    var _duration = new Duration(seconds: 6);
     return new Timer(_duration, navigationPage);
   }
 
@@ -43,23 +43,22 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
         child: Column(children: <Widget>[
           Container(
-            margin: EdgeInsets.fromLTRB(0, 300, 0, 0),
+            margin: EdgeInsets.fromLTRB(0, 300, 23, 0),
             alignment: Alignment.center,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.asset(
-                  // assets\images\logo1.png
                   "assets/images/logo1.png",
                   width: 120,
                   height: 160,
-                  fit: BoxFit.fill,
+                  fit: BoxFit.cover,
                 ),
                 SizedBox(
                   width: 3,
                 ),
                 Text(
-                  "Taffy \nDatting\nApp",
+                  "Taffy \nApp",
                   style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
@@ -69,34 +68,6 @@ class _SplashScreenState extends State<SplashScreen> {
               ],
             ),
           ),
-
-          // return Scaffold(
-          //   backgroundColor: const Color(0xFFFF2E7E),
-
-          //   body: new Stack(
-          //     children: <Widget>[
-          //       Container(
-          //           alignment: Alignment.center,
-          //           child: new Image.asset("assets/images/logo.png")),
-          //       Container(
-          //         height: 20,
-          //         alignment: Alignment.bottomCenter,
-          //         child: const Text(
-          //           "Taffy version 0.0.1SE",
-          //           style: TextStyle(
-          //               // fontWeight: FontWeight.bold,
-          //               fontSize: 15.0,
-          //               color: Colors.white),
-          //         ),
-          //       ),
-          //       SizedBox(
-          //         height: 20,
-          //       )
-          //     ],
-          //     alignment: Alignment.bottomLeft,
-          //     clipBehavior: Clip.hardEdge,
-          //   ),
-          // );
         ]),
       ),
     );

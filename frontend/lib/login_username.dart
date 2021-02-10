@@ -1,89 +1,180 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/login_username.dart';
-import 'package:http/http.dart' as http;
+
+import 'package:frontend/models/member_models.dart';
 import 'package:frontend/models/user_models.dart';
+import 'package:frontend/models/userlogin_models.dart';
+import 'package:frontend/myhomepage.dart';
+import 'package:frontend/registerpages.dart';
+
+import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'account_tab.dart';
 
-class RegisterPages extends StatefulWidget {
-  // final String _Username;
-  // final String _Password;
+// import 'package:firebase_auth/firebase_auth.dart';
 
-  // RegisterPages(this._Username, this._Password);
-  // RegisterPages({Key key, this._Username, this._Password}) : super(key: key);
+class LoginUsername extends StatefulWidget {
+  LoginUsername({
+    Key key,
+    this.id,
+    this.username,
+    this.password,
+  }) : super(key: key);
+
+  final String username;
+  final String password;
+  final int id;
+
   @override
-  _RegisterPagesState createState() => _RegisterPagesState();
+  _LoginUsernameState createState() => _LoginUsernameState();
 }
 
-class _RegisterPagesState extends State<RegisterPages> {
-  // String _Email = '';
-  // String _Username = '';
-  // String _Firstname = '';
-  // String _Lastname = '';
-  // String _Password = '';
-  // String _Password2 = '';
-  String key = '';
-  String value = '';
-
+class _LoginUsernameState extends State<LoginUsername> {
   GlobalKey<FormState> _key = new GlobalKey();
   bool _validate = false;
-  String first_name, last_name, username, email, password, password2;
+  String username, password;
+  int id;
 
-  // final format = DateFormat('dd MMM yyyy');
-  // String _value = 'Birthday';
-  void navigationPage() {
-    Navigator.of(context).pushReplacementNamed('/login');
-    // Navigator.of(context).pushReplacement(new MaterialPageRoute(
-    //     settings: const RouteSettings(name: '/LoginPage'),
-    //     builder: (context) =>
-    //         new LoginUsername(username: username, password: password)));
+  void getToServer() async {
+    String token;
+    var url = 'https://taffy.pythonanywhere.com/auth/login/';
+    var response = await http.post(url, headers: {
+      'Content-Type': 'application/json; charset=UTF-8',
+      'Accept': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    List<dynamic> result = json.decode(utf8.decode(response.bodyBytes));
+
+    List<Members> members =
+        result.map<Members>((data) => Members.fromMap(data)).toList();
+
+    members.forEach((members) => print(members.toString()));
+
+    if (response.statusCode == 200) {
+      members.forEach((members) {
+        if (members.username == this.username &&
+            members.password == this.password) {
+          print(
+              "username ${members.username} ${members.age} ${members.first_name}");
+
+          Navigator.of(context).pushReplacement(new MaterialPageRoute(
+              settings: const RouteSettings(name: '/home'),
+              // builder: (context) => new MyHomePage(
+              builder: (context) => new AccountTab(
+                  username: members.username, url: members.url)));
+        } else {
+          print("object Errored ${members.first_name}");
+          print("username: ${members.url} password: ${members.password} ");
+        }
+      });
+    } else {
+      throw Exception('Unable to fetch Memberss from the REST API');
+    }
   }
 
-  Future<User> createMember(User user) async {
+  Future<Token> getToken(UserLogin userLogin) async {
     Map data = {
-      'email': user.email,
-      'username': user.username,
-      'first_name': user.first_name,
-      'last_name': user.last_name,
-      'password': user.password,
-      'password2': user.password2,
+      'username': userLogin.username,
+      'password': userLogin.password,
     };
-    var url = 'https://taffy.pythonanywhere.com/auth/register/';
-    var response = await http.post(
-      url,
+
+    final http.Response response = await http.post(
+      'https://taffy.pythonanywhere.com/auth/login/',
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(data),
     );
-    if (response.statusCode == 201) {
+    if (response.statusCode == 200) {
+      print("____GET TOKEN RESPOSE____");
+      // print(json.decode(response.body).toString());
+      Map<String, dynamic> result = json.decode(response.body);
+      print(result["access"].toString());
+      // var result;
+      // return Token.result["access"].toString();
+      // result.forEach((key, value) {
+      //   // return Token.key;/
+      //   print("${key.toString()}: ${value}");
+      // });
+      // return Token.fromJson(json.decode(response.body));
+    } else {
+      print(json.decode(response.body).toString());
+      throw Exception(json.decode(response.body));
+    }
+  }
+
+  Future<User> createMember(User user) async {
+    Map data = {
+      'username': user.username,
+      'password': user.password,
+    };
+    // var body = jsonEncode(data);
+    String token;
+    var url = 'https://taffy.pythonanywhere.com/auth/login/';
+    var response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode(data),
+    );
+
+    if (response.statusCode == 200) {
       // If the server did return a 201 CREATED response,
       // then parse the JSON.
       Map<String, dynamic> result = json.decode(response.body);
-      result.forEach((key, value) {
-        print("${key = key.toString()}: ${value = value[0]}");
-        // return text(key, value.toString());
-      });
-      navigationPage();
+      // result.forEach((key, value) => print("${key}:${value}")
+
+      // return text(key, value.toString());
+      // );
+
+      UserLogin admin = UserLogin(username: username, password: password);
+      Token token = await getToken(admin);
+      print("____________${token}____________");
+
+      // print(result["access"]);
+
+      print("response.statusCode :${response.statusCode} ");
+
+      // navigationPage();
+
+      // Navigator.of(context).pushReplacement(new MaterialPageRoute(
+      //     settings: const RouteSettings(name: '/home'),
+      //     builder: (context) => new MyHomePage()));
+      // builder: (context) => new AccountTab()));
 
       return User.fromJson(json.decode(response.body));
     } else {
       // If the server did not return a 201 CREATED response,
       // then throw an exception.
+      // final UserLogin admin = UserLogin(username: username, password: password);
+      // final Token token = await getToken(admin);
+      // print("____________${token}____________");
 
       print("response.statusCode :${response.statusCode} ");
-      // print("response.statusCode :${response.body} ");
+      print("response.bodyBytes :${response.body} ");
 
       Map<String, dynamic> result = json.decode(response.body);
       result.forEach((key, value) {
         print("${key = key.toString()}: ${value = value[0]}");
         // return text(key, value.toString());
       });
-      // List<dynamic> resulted = result[];
-      // print(resulted);
+
       // throw Exception('Failed to Add User');
     }
   }
 
+  void navigationPage() {
+    Navigator.of(context).pushReplacementNamed('/home');
+    // Navigator.of(context).pushReplacement(new MaterialPageRoute(
+    //     settings: const RouteSettings(name: '/HomePage'),
+    //     builder: (context) => new MyHomePage(
+    //           username: username,
+    //         )));
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
@@ -118,7 +209,7 @@ class _RegisterPagesState extends State<RegisterPages> {
                 // MediaQuery.of(context).size.height,
                 ),
             child: Text(
-              "Register Pages",
+              "Login Pages",
               textAlign: TextAlign.left,
               style: TextStyle(
                   color: Colors.grey[700],
@@ -148,29 +239,8 @@ class _RegisterPagesState extends State<RegisterPages> {
   }
 
   Widget FormUI() {
-    var _text;
     return new Column(
       children: <Widget>[
-        new TextFormField(
-          decoration: new InputDecoration(
-              icon: Icon(Icons.label_rounded), hintText: 'Firstname'),
-          // maxLength: 32,
-          validator: validateName,
-          onSaved: (String val) {
-            first_name = val;
-          },
-        ),
-        new SizedBox(height: 20.0),
-        new TextFormField(
-          decoration: new InputDecoration(
-              icon: Icon(Icons.label_rounded), hintText: 'Lastname'),
-          // maxLength: 32,
-          validator: validateName,
-          onSaved: (String val) {
-            last_name = val;
-          },
-        ),
-        new SizedBox(height: 20.0),
         new TextFormField(
           decoration: new InputDecoration(
               icon: Icon(Icons.person), hintText: 'Username'),
@@ -180,24 +250,7 @@ class _RegisterPagesState extends State<RegisterPages> {
             username = val;
           },
         ),
-        // new TextFormField(
-        //     decoration: new InputDecoration(hintText: 'Mobile Number'),
-        //     keyboardType: TextInputType.phone,
-        //     maxLength: 10,
-        //     validator: validateMobile,
-        //     onSaved: (String val) {
-        //       mobile = val;
-        //     }),
-        // new SizedBox(height: 20.0),
-        new TextFormField(
-            decoration:
-                new InputDecoration(icon: Icon(Icons.email), hintText: 'Email'),
-            keyboardType: TextInputType.emailAddress,
-            // maxLength: 32,
-            validator: validateEmail,
-            onSaved: (String val) {
-              email = val;
-            }),
+
         new SizedBox(height: 20.0),
         new TextFormField(
           obscureText: true,
@@ -209,30 +262,18 @@ class _RegisterPagesState extends State<RegisterPages> {
             password = val;
           },
         ),
-        new SizedBox(height: 20.0),
-        new TextFormField(
-          obscureText: true,
-          decoration: new InputDecoration(
-              icon: Icon(Icons.vpn_key), hintText: 'Password (Again)'),
-          // maxLength: 32,
 
-          validator: validatePassword,
-          onSaved: (String val) {
-            password2 = val;
-          },
-        ),
         new SizedBox(height: 20.0),
-        new Text(
-          // Map<String, dynamic> result = json.decode(response.body);
-
-          // print(result);
-          "................",
-          style: TextStyle(fontSize: 20),
-        ),
+        // new Text("noty: ${getNoty}"),
+        // new RaisedButton(
+        //   onPressed: _sendToServer,
+        //   // child: new Text('Send'),
+        // ),
 
         GestureDetector(
           onTap: () {
             print("Ontap __");
+
             _sendToServer();
           },
           child: Container(
@@ -247,11 +288,52 @@ class _RegisterPagesState extends State<RegisterPages> {
                     end: Alignment.centerRight),
                 borderRadius: BorderRadius.circular(26)),
             child: Text(
-              "Register To Taffy",
+              "Login",
               style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
                   fontSize: 16),
+            ),
+          ),
+        ),
+        SizedBox(
+          height: 16,
+        ),
+        // Text(
+        //   "Trouble logging in?",
+        //   style: TextStyle(
+        //       color: Colors.black,
+        //       fontWeight: FontWeight.bold,
+        //       decoration: TextDecoration.underline),
+        // ),
+        SizedBox(
+          height: 16,
+        ),
+        SafeArea(
+          child: GestureDetector(
+            onTap: () {
+              print("Register ========> ");
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => RegisterPages()));
+            },
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Colors.black,
+                ),
+                Text(
+                  "หากยังไม่มีบัญชี สามารถสมัครได้ที่นี่",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline),
+                ),
+                SizedBox(
+                  width: 3,
+                ),
+              ],
             ),
           ),
         ),
@@ -263,9 +345,9 @@ class _RegisterPagesState extends State<RegisterPages> {
     String patttern = r'(^[a-zA-Z ]*$)';
     RegExp regExp = new RegExp(patttern);
     if (value.length == 0) {
-      return "Name is Required";
+      return "Username is Required";
     } else if (!regExp.hasMatch(value)) {
-      return "Name must be a-z and A-Z";
+      return "Username must be a-z and A-Z";
     }
     return null;
   }
@@ -296,23 +378,6 @@ class _RegisterPagesState extends State<RegisterPages> {
     return null;
   }
 
-  String validatePassword2(String value) {
-    String patttern = r'(^[0-9 a-zA-Z]*$)';
-    RegExp regExp = new RegExp(patttern);
-    // Sreing patttern2 = r'(^[ ])';
-    // RegExp regExp2 = new password2();
-    if (value.length == 0) {
-      return "Password is Required";
-    } else if (value.length < 8) {
-      return "Password must 8 digits";
-    } else if (!regExp.hasMatch(value)) {
-      return "Password must be digits";
-      // } else if (!regExp2.hasMatch(value)) {
-      // return "Password hasn't  Match";
-    }
-    return null;
-  }
-
   String validateEmail(String value) {
     String pattern =
         r'^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$';
@@ -327,7 +392,7 @@ class _RegisterPagesState extends State<RegisterPages> {
   }
 
   String validateUsername(String value) {
-    String pattern = r'^(^[a-zA-Z @/./+/-/_ 0-9]*$)';
+    String pattern = r'^(^[a-zA-Z @/./+/-/_ ]*$)';
     RegExp regExp = new RegExp(pattern);
     if (value.length == 0) {
       return "Username is Required";
@@ -344,26 +409,18 @@ class _RegisterPagesState extends State<RegisterPages> {
       _key.currentState.save();
 
       createMember(User(
-        email: email,
         username: username,
-        first_name: first_name,
-        last_name: last_name,
-        password2: password2,
         password: password,
       ));
+      // print("Mobile $mobile");
+      print("Username $username");
 
-      // print("Firstname $first_name");
-      // print("Firstname $last_name");
-      // print("Username $username");
-      // // print("Mobile $mobile");
-      // print("Email $email");
-      // print("Password $password");
-      // print("Password $password2");
+      print("password $password");
     } else {
       // validation error
       setState(() {
         _validate = true;
-
+        // print("ID $id");
         print("object validation error");
       });
     }

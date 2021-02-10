@@ -1,4 +1,5 @@
 class Members {
+  final String url;
   final String id;
   final String username;
   final String email;
@@ -20,6 +21,7 @@ class Members {
   final String gender;
   final String testes;
   Members(
+      this.url,
       this.id,
       this.username,
       this.email,
@@ -43,6 +45,7 @@ class Members {
 
   factory Members.fromMap(Map<String, dynamic> json) {
     return Members(
+        json["url"],
         json['id'],
         json['username'],
         json['email'],

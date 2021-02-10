@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend/registerpages.dart';
-import 'login_number.dart';
+import 'login_username.dart';
 // import 'tinderHomePage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,33 +14,17 @@ class _LoginPageState extends State<LoginPage> {
   String errorMessage = '';
   String successMessage = '';
 
-  // Future<FirebaseUser> facebookLogin(BuildContext context) async {
-  //   FirebaseUser currentUser;
-  //   // fbLogin.loginBehavior = FacebookLoginBehavior.webViewOnly;
-  //   // if you remove above comment then facebook login will take username and pasword for login in Webview
-  //   try {
-  //     final FacebookLoginResult facebookLoginResult =
-  //         await fbLogin.logIn(['email']);
-  //     if (facebookLoginResult.status == FacebookLoginStatus.loggedIn) {
-  //       FacebookAccessToken facebookAccessToken =
-  //           facebookLoginResult.accessToken;
-  //       AuthCredential credential = FacebookAuthProvider.getCredential(
-  //           accessToken: facebookAccessToken.token);
-  //       FirebaseUser user = (await auth.signInWithCredential(credential)).user;
-  //       print("signed in" + user.displayName);
-  //       return user;
-  //     }
-  //   } catch (e) {
-  //     print(e);
-  //   }
-  //   return currentUser;
-  // }
+  void navigationRegisterPages() {
+    Navigator.of(context).pushReplacement(new MaterialPageRoute(
+        settings: const RouteSettings(name: '/HomePage'),
+        builder: (context) => new RegisterPages()));
+  }
 
-  // Future<bool> facebookLoginout() async {
-  //   await auth.signOut();
-  //   await fbLogin.logOut();
-  //   return true;
-  // }
+  void navigationLoginPages() {
+    Navigator.of(context).pushReplacement(new MaterialPageRoute(
+        settings: const RouteSettings(name: '/HomePage'),
+        builder: (context) => new LoginUsername()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +48,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           children: <Widget>[
             Container(
-              margin: EdgeInsets.fromLTRB(0, 180, 0, 0),
+              margin: EdgeInsets.fromLTRB(0, 180, 25, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
@@ -79,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                     width: 3,
                   ),
                   Text(
-                    "Taffy \nDatting\nApp",
+                    "Taffy \nApp",
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
@@ -132,11 +116,12 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         onTap: () {
                           print("LoginPages ========> go");
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      LoginNumber(username: "born")));
+                          navigationLoginPages();
+
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //         builder: (context) => LoginUsername()));
                         },
                         child: Container(
                           width: double.infinity,
@@ -161,6 +146,7 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         onTap: () {
                           print("Register ========> ");
+                          navigationRegisterPages();
                           Navigator.push(
                               context,
                               MaterialPageRoute(

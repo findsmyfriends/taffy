@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.username}) : super(key: key);
+  MyHomePage({
+    Key key,
+    this.id,
+    this.username,
+  }) : super(key: key);
+  final int id;
   final String username;
 
   // final String password;
@@ -16,11 +21,11 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text(widget.username),
-      ),
       body: new Center(
-        child: new Text('Welcome to Home.!'),
+        child: new Text(
+          "${widget.id} \n ${widget.username} ",
+          style: TextStyle(fontSize: 30),
+        ),
       ),
     );
   }
