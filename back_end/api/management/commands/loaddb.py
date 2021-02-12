@@ -32,7 +32,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         from openpyxl import load_workbook
-        filename = "xlsx/loaddata.xlsx"
+        filename = "xlsx/loaddata123.xlsx"
         wb = load_workbook(filename, data_only=True)
 
         for b in self.load(wb, 'BloodType', ['id', 'bloodtype']):

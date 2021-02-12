@@ -13,15 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
-
-from api.views import BloodTypeViewSet, ConversationViewSet, DaysOfWeekViewSet, GenderViewSet, GoldmemberViewSet,  HandlerViewSet, ImageViewSet, MemberProfileViewSet, NakSusViewSet, PersonalityViewSet, RaSiViewSet, TestesViewSet,   UserViewSet
 from django.contrib import admin
+from api.views import *
+from rest_framework.routers import DefaultRouter
 from django.conf.urls import url
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.routers import DefaultRouter
+from api import views
+
+
+
 
 router = DefaultRouter()
 # router.register(r'memberproflie', MemberProfileViewSet)
@@ -43,8 +45,10 @@ router.register(r'goldmember', GoldmemberViewSet, basename='Goldmember')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('auth/', include('auth.url')),
-    url(r'^', include(router.urls)),
-    # path('update_memberprofile/<int:pk>/', UpdateMemberProfileView.as_view(), name='update_memberprofile'),
+    path('', views.index),
+    path('api/', include(router.urls)),
+    path('api-auth/', include('rest_framework.urls')),
+    path('hello/', views.HelloView.as_view(), name='hello'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

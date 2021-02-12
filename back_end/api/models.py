@@ -1,13 +1,14 @@
+from typing import Tuple
 from django.db import models
-from datetime import date
-from django.db.models.deletion import CASCADE
-from django.db.models.expressions import Value
-from versatileimagefield.fields import VersatileImageField, PPOIField
-from django.contrib.auth.models import User
 from django.conf import settings
+# Create your models here.
+from django.db.models.deletion import CASCADE
+from versatileimagefield.fields import VersatileImageField, PPOIField
+from django.contrib.auth.models import AbstractUser, User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-# Create your models here.
+from rest_framework.authtoken.models import Token
+
 class BloodType(models.Model):
 
     bloodtype =models.CharField(max_length=10)
@@ -68,7 +69,6 @@ class Testes (models.Model):
     class Meta:
         verbose_name = 'รสนิยมทางเพศ'
 
-
 class Image(models.Model):
     des = models.CharField(max_length=255,verbose_name="Description")
     image = VersatileImageField(
@@ -112,15 +112,13 @@ class LikedManager(models.Manager):
             pro_obj.liked.add(user)
         return is_liked
 
+
 class MemberProfile(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         related_name='members', related_query_name='members'
     )
-    # user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='members', related_query_name='members')
-    first_name = models.CharField(max_length=500,blank=True,null=True)
-    last_name = models.CharField(max_length=500,blank=True,null=True)
     birthday = models.DateField()
     age =  models.IntegerField(blank=True,null=True)
     dayofbirth = models.ForeignKey(DaysOfWeek, blank=True,null=True,verbose_name="วันประจำวันเกิด",on_delete=models.CASCADE)
@@ -141,37 +139,37 @@ class MemberProfile(models.Model):
         settings.AUTH_USER_MODEL, blank=True, related_name='liked')
     noped = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name='noped')
+    like = models.BooleanField(default=False,blank=True,null=True)
+    nope = models.BooleanField(default=False,blank=True,null=True)
     created = models.DateTimeField(auto_now_add=True) # When it was create
     updated = models.DateTimeField(auto_now=True)  # When it was update
     objects = LikedManager()
     objects = NopedManager()
 
     
-    def save(self, *args, **kwargs):
-        if not self.id:
-            today = date.today()
-            self.first_name = self.user.first_name 
-            self.last_name = self.user.last_name
-            self.age = today.year - self.birthday.year
-        super(MemberProfile, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if not self.id:
+    #         today = date.today()
+    #         self.first_name = self.user.first_name 
+    #         self.last_name = self.user.last_name
+    #         self.age = today.year - self.birthday.year
+    #     super(Member, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
-        return f'{self.id}:  {self.user} {self.first_name} {self.last_name} '
+        return f'{self.id}:  {self.user} {self.birthday} {self.gender} '
 
     class Meta: 
-        verbose_name = 'ProfileMember'
+        verbose_name = 'MemberProfile'
         ordering = ['-created']
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        MemberProfile.objects.create(user=instance)
+# @receiver(post_save, sender=User)
+# def create_user_profile(sender, instance, created, **kwargs):
+#     if created:
+#         MemberProfile.objects.create(user=instance)
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.memberprofile.save()
-
-
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, **kwargs):
+#     instance.memberprofile.save()
 
 class Handler(models.Model):
     # block = models.BooleanField(default=False,blank=True,null=True)
@@ -219,7 +217,9 @@ class Goldmember(models.Model):
         # primary_key=True,
         related_name='goldmember', related_query_name='goldmember'
     )   
-
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_query_name='conversation',
+                                   verbose_name='User_ID',
+                                   on_delete=models.CASCADE)
     conversation = models.ForeignKey(Conversation,null=True,blank=True,
                                      verbose_name='Conversation_ID',
         on_delete=models.CASCADE)
@@ -228,3 +228,7 @@ class Goldmember(models.Model):
         return f'{self.goldmember}'
 
 
+@receiver(post_save,sender=settings.AUTH_USER_MODEL)
+def create_auth_token(sender,instance=None,created=False,**kwargs):
+    if created:
+        Token.objects.create(user=instance)

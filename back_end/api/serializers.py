@@ -15,49 +15,49 @@ class ImageSerializer(FlexFieldsModelSerializer):
         model = Image
         fields = '__all__'
 
-        # fields = ['pk', 'name', 'image']
+        # fields = ['id', 'name', 'image']
 
-class BloodTypeSerializer(serializers.ModelSerializer):
+class BloodTypeSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = BloodType
         fields = '__all__'
 
 
-class DaysOfWeekSerializer(serializers.ModelSerializer):
+class DaysOfWeekSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = DaysOfWeek
         fields = '__all__'
 
 
 
-class NakSusSerializer(serializers.ModelSerializer):
+class NakSusSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = NakSus
         fields = '__all__'
 
 
-class RaSiSerializer(serializers.ModelSerializer):
+class RaSiSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = RaSi
         fields = '__all__'
 
-class GenderSerializer(serializers.ModelSerializer):
+class GenderSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Gender
         fields = '__all__'
 
 
-class TestesSerializer(serializers.ModelSerializer):
+class TestesSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Testes
         fields = '__all__'
 
-class HandlerSerializer(serializers.ModelSerializer):
+class HandlerSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Handler
         fields = '__all__'
 
-class PersonalitySerializer(serializers.ModelSerializer):
+class PersonalitySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Personality
         fields = ['pk', 'value']
@@ -65,7 +65,7 @@ class PersonalitySerializer(serializers.ModelSerializer):
         #     'value': (PersonalitySerializer, {'many': True}),       
         # }
 
-class MemberProfileSerializer(serializers.ModelSerializer):
+class MemberProfileSerializer(FlexFieldsModelSerializer):
     # user12 = serializers.StringRelatedField(many=True)
 
     class Meta:
@@ -77,7 +77,7 @@ class MemberProfileSerializer(serializers.ModelSerializer):
 
 
 
-class ConversationSerializer(serializers.ModelSerializer):
+class ConversationSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Conversation
         fields = '__all__'
@@ -90,13 +90,13 @@ class ConversationSerializer(serializers.ModelSerializer):
 
     
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(FlexFieldsModelSerializer):
     class Meta:
         model = User
         fields = '__all__'
 
 
-class GoldmemberSerializer(serializers.ModelSerializer):
+class GoldmemberSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Goldmember
         fields = '__all__'
