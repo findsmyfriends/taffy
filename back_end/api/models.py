@@ -1,6 +1,8 @@
 from typing import Tuple
 from django.db import models
 from django.conf import settings
+
+import datetime 
 # Create your models here.
 from django.db.models.deletion import CASCADE
 from versatileimagefield.fields import VersatileImageField, PPOIField
@@ -74,9 +76,9 @@ class Image(models.Model):
     image = VersatileImageField(
         'Image',
         upload_to='images/',
-        ppoi_field='image_ppoi'
+        ppoi_field='image_ppoi',blank=True,null=True
     )
-    image_ppoi = PPOIField()
+    image_ppoi = PPOIField(blank=True,null=True)
 
     def __str__(self):
         return self.des
@@ -119,6 +121,7 @@ class MemberProfile(models.Model):
         on_delete=models.CASCADE,
         related_name='members', related_query_name='members'
     )
+
     birthday = models.DateField()
     age =  models.IntegerField(blank=True,null=True)
     dayofbirth = models.ForeignKey(DaysOfWeek, blank=True,null=True,verbose_name="วันประจำวันเกิด",on_delete=models.CASCADE)
@@ -127,18 +130,20 @@ class MemberProfile(models.Model):
     naksus = models.ForeignKey(NakSus,  blank=True,null=True,verbose_name="นักษัตร",on_delete=models.CASCADE)
     gender = models.ForeignKey(Gender, blank=True,null=True,verbose_name="เพศ",on_delete=models.CASCADE)
     testes = models.ForeignKey(Testes, blank=True,null=True,verbose_name="รสนิยมทางเพศ",on_delete=models.CASCADE)  # sex of Testes
-    imageprofile = models.ManyToManyField('api.Image', related_name='members')
+    imageprofile = models.ManyToManyField('api.Image', related_name='members',blank=True,null=True,)
+    imagenetwork =models.TextField(blank=True,null=True,)
     imageprofile2 =  VersatileImageField(
         'ImageProflie',
         upload_to='images/',
-        ppoi_field='image_ppoi'
+        ppoi_field='image_ppoi',
+        blank=True,null=True,
     )
-    image_ppoi = PPOIField()
-    personality = models.ManyToManyField('api.Personality',related_name='members')
+    image_ppoi = PPOIField(blank=True,null=True,)
+    personality = models.ManyToManyField('api.Personality',related_name='members',blank=True,null=True,) #ขั้วบวกลบ
     liked = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, blank=True, related_name='liked')
+        settings.AUTH_USER_MODEL,blank=True,null=True, related_name='liked')
     noped = models.ManyToManyField(
-        settings.AUTH_USER_MODEL, blank=True, related_name='noped')
+        settings.AUTH_USER_MODEL,blank=True,null=True, related_name='noped')
     like = models.BooleanField(default=False,blank=True,null=True)
     nope = models.BooleanField(default=False,blank=True,null=True)
     created = models.DateTimeField(auto_now_add=True) # When it was create
@@ -149,11 +154,11 @@ class MemberProfile(models.Model):
     
     # def save(self, *args, **kwargs):
     #     if not self.id:
-    #         today = date.today()
+    #         today = datetime.datetime.today()
     #         self.first_name = self.user.first_name 
     #         self.last_name = self.user.last_name
-    #         self.age = today.year - self.birthday.year
-    #     super(Member, self).save(*args, **kwargs)
+    #         self.age = today.year - self.birthday.datetime.year
+    #     super(MemberProfile, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f'{self.id}:  {self.user} {self.birthday} {self.gender} '
@@ -185,9 +190,9 @@ class Handler(models.Model):
 
 
 class Conversation(models.Model):
-    memberprofile = models.ForeignKey(MemberProfile, related_query_name='conversation',
-                                   verbose_name='Conversations_ID',
-                                   on_delete=models.CASCADE)
+    # memberprofile = models.ForeignKey(MemberProfile, related_query_name='conversation',
+    #                                verbose_name='Conversations_ID',
+    #                                on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, related_query_name='conversation',
                                    verbose_name='User_ID',
                                    on_delete=models.CASCADE)
@@ -217,9 +222,9 @@ class Goldmember(models.Model):
         # primary_key=True,
         related_name='goldmember', related_query_name='goldmember'
     )   
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_query_name='conversation',
-                                   verbose_name='User_ID',
-                                   on_delete=models.CASCADE)
+    # user = models.OneToOneField(settings.AUTH_USER_MODEL, related_query_name='conversation',
+    #                                verbose_name='User_ID',
+    #                                on_delete=models.CASCADE)
     conversation = models.ForeignKey(Conversation,null=True,blank=True,
                                      verbose_name='Conversation_ID',
         on_delete=models.CASCADE)

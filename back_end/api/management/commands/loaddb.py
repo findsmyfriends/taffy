@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand, CommandError
 from api.models import *
 from datetime import date
+from django.contrib.auth.models import  User
 
 from openpyxl import load_workbook
 
@@ -32,19 +33,32 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
 
         from openpyxl import load_workbook
-        filename = "xlsx/loaddata123.xlsx"
+        filename = "xlsx/loaddata.xlsx"
         wb = load_workbook(filename, data_only=True)
+
+        for b in self.load(wb, 'User', ['id', 'first_name', 'last_name', 'username', 'email', 'password',]):
+            print("User  =  ",b)
+            q = User(**b)
+            q.save()
+        print("seve...Blood")
 
         for b in self.load(wb, 'BloodType', ['id', 'bloodtype']):
             print("data  =  ",b)
             q = BloodType(**b)
             q.save()
         print("seve...Blood")
+
+        for d in self.load(wb, 'DaysOfWeek', ['id', 'daysofweek']):
+            print("DaysofWeek =  ", d)
+            # (**w).save()
+            q = DaysOfWeek(**d)
+            q.save()
+
         for n in self.load(wb, 'NakSus', ['id', 'naksus']):
             print("data =  ", n)
             q = NakSus(**n)
             q.save()
-        # print("seve...Blood")
+        # print("seve...NakSus")
 
         for d in self.load(wb, 'RaSi', ['id', 'rasi']):
             print("RaSi =  ", d)
@@ -61,19 +75,22 @@ class Command(BaseCommand):
             # (**w).save()
             q = Testes(**d)
             q.save()
-        for d in self.load(wb, 'DaysOfWeek', ['id', 'daysofweek']):
-            print("DaysofWeek =  ", d)
+
+        for d in self.load(wb, 'Personality', ['id', 'value']):
+            print("Personality =  ", d)
             # (**w).save()
-            q = DaysOfWeek(**d)
+            q = Personality(**d)
             q.save()
 
-        for d in self.load(wb, 'Member', [
-                'id', 'username', 'email', 'password', 'first_name',
-                'last_name', 'birthday', 'age', 'dayofbirth', 'rasi',
-                'bloodtype', 'naksus', 'gender', 'testes', 'profileurl',
-                'discription', 'characterneed', 'values', 'created_at',
-                'updated_at'
+        for d in self.load(wb, 'MemberProfile', [
+                'id','user', 'birthday', 'age', 'dayofbirth', 'rasi',
+                'bloodtype', 'naksus', 'gender', 'testes',  'imagenetwork',
+                 'liked', 'noped', 'like','nope','like','like','personality'
+                
         ]):
+            user = User.objects.get(pk=d["user"])
+            print(f'__________count = {user}_______________')
+            d.pop('user',None)
 
             dayofbirth = DaysOfWeek.objects.get(pk=d['dayofbirth'])
             d.pop('dayofbirth', None)
@@ -93,32 +110,45 @@ class Command(BaseCommand):
             testes = Testes.objects.get(pk=d['testes'])
             d.pop('testes', None)
 
+            personality = Personality.objects.get(pk=d['personality'])
+            print(f'__________count = {personality}_______________')
+            d.pop('personality', None)
 
-            q = Member(**d)
+            q = MemberProfile(**d)
 
-
+            q.user=user
             q.dayofbirth = dayofbirth
             q.rasi = rasi
             q.bloodtype = bloodType
             q.naksus = nakSus
             q.gender = genDer
             q.testes = testes
-            # q.updated_at = updateAt
+            q.personality = personality
+            
 
+            q.save()
+    
+        for d in self.load(wb, 'Handler', ['id', 'rejected', 'reviewe_value', 'rejected']):
+            print("Handler =  ", d)
+            # (**w).save()
+            q = Handler(**d)
             q.save()
 
         for d in self.load(wb, 'Conversation', [
-                'id', 'member', 'message', 'block', 'rejected',
-                'reviewe_value', 'joined_at', 'updated_at'
+                'id', 'user', 'message', 'rejected',
         ]):
             print("Conversation =  ", d)
             # (**w).save()
-            member = Member.objects.get(pk=d['member'])
-            d.pop('member', None)
 
+            user = User.objects.get(pk=d['user'])
+            d.pop('user', None)
+
+            rejected = Handler.objects.get(pk=d['rejected'])
+            d.pop('user', None)
 
             q = Conversation(**d)
-            q.member = member
+            q.user = user
+            q.rejected = rejected
             q.save()
 
         for d in self.load(wb, 'Goldmember', [
@@ -127,7 +157,7 @@ class Command(BaseCommand):
         ]):
             print("Goldmember =  ", d)
             # (**w).save()
-            goldmember = Member.objects.get(pk=d['goldmember'])
+            goldmember = MemberProfile.objects.get(pk=d['goldmember'])
             d.pop('goldmember', None)
             conversation = Conversation.objects.get(pk=d['conversation'])
             d.pop('conversation', None)
