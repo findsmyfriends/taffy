@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from api.serializers import *
 from api.models import *
-from rest_framework import routers, serializers, viewsets  
+from rest_framework import routers, serializers, viewsets
 from django.shortcuts import render
 from rest_framework.viewsets import ReadOnlyModelViewSet
 from rest_flex_fields.views import FlexFieldsMixin, FlexFieldsModelViewSet
@@ -10,15 +10,23 @@ from rest_framework.permissions import IsAuthenticated,AllowAny
 from rest_framework import generics, mixins, permissions
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from django.contrib.auth.models import Permission
 # Create your views here.
+
+# class PermissionViewSet(viewsets.ModelViewSet):
+#     """
+#     API endpoint that allows permissions to be viewed or edited.
+#     """
+#     queryset = Permission.objects.all()
+#     serializer_class = PermissionSerializer
 
 class UserViewSet(viewsets.ModelViewSet):
 
     serializer_class = UserSerializer
     queryset = User.objects.all()
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
-   
+
 class ImageViewSet(FlexFieldsModelViewSet):
 
     serializer_class = ImageSerializer
@@ -30,7 +38,7 @@ class BloodTypeViewSet(viewsets.ModelViewSet):
     queryset = BloodType.objects.all()
     serializer_class = BloodTypeSerializer
     # permission_classes = [IsAuthenticated,]
-   
+
 
 class DaysOfWeekViewSet(viewsets.ModelViewSet):
 
@@ -38,21 +46,21 @@ class DaysOfWeekViewSet(viewsets.ModelViewSet):
     serializer_class = DaysOfWeekSerializer
     # permission_classes = [IsAuthenticated,]
 
-   
+
 class NakSusViewSet(viewsets.ModelViewSet):
 
     queryset = NakSus.objects.all()
     serializer_class = NakSusSerializer
     # permission_classes = [IsAuthenticated,]
 
-   
+
 class RaSiViewSet(viewsets.ModelViewSet):
 
     queryset = RaSi.objects.all()
     serializer_class = RaSiSerializer
     # permission_classes = [IsAuthenticated,]
 
-   
+
 
 class GenderViewSet(viewsets.ModelViewSet):
 
@@ -60,7 +68,7 @@ class GenderViewSet(viewsets.ModelViewSet):
     serializer_class = GenderSerializer
     # permission_classes = [IsAuthenticated,]
 
-   
+
 class TestesViewSet(viewsets.ModelViewSet):
 
     queryset = Testes.objects.all()
@@ -71,12 +79,13 @@ class PersonalityViewSet(viewsets.ModelViewSet):
     queryset = Personality.objects.all()
     serializer_class = PersonalitySerializer
 
-        
+
 class MemberProfileViewSet(viewsets.ModelViewSet):
 
     queryset = MemberProfile.objects.all()
-    serializer_class = MemberProfileSerializer  
+    serializer_class = MemberProfileSerializer
     # permission_classes = [AllowAny,]
+    permission_classes = [IsAuthenticated,]
     filterset_fields = ('testes','personality' )
 
 
@@ -92,7 +101,7 @@ class ConversationViewSet(viewsets.ModelViewSet):
 
     queryset = Conversation.objects.all()
     serializer_class = ConversationSerializer
-    
+
 
 
 class GoldmemberViewSet(viewsets.ModelViewSet):
@@ -104,7 +113,7 @@ class HelloView(APIView):
     def get(self, request):
         content = {'message': 'Hello, World!'}
         return Response(content)
-       
+
 
 def index(req):
     return render(req, 'api/index.html')

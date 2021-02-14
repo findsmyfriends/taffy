@@ -2,7 +2,7 @@ from typing import Tuple
 from django.db import models
 from django.conf import settings
 
-import datetime 
+from datetime import date
 # Create your models here.
 from django.db.models.deletion import CASCADE
 from versatileimagefield.fields import VersatileImageField, PPOIField
@@ -88,8 +88,8 @@ class Image(models.Model):
 
 
 class Personality(models.Model):
-    value = models.CharField(max_length=100) #ค่าการการทำนายจากการหาและคำนวนคะแนน (ขั่วบวกและขั่วลบ) 
-    
+    value = models.CharField(max_length=100) #ค่าการการทำนายจากการหาและคำนวนคะแนน (ขั่วบวกและขั่วลบ)
+
     def __str__(self):
         return self.value
 
@@ -122,7 +122,7 @@ class MemberProfile(models.Model):
         related_name='members', related_query_name='members'
     )
 
-    birthday = models.DateField()
+    birthday = models.DateField(blank=True,null=True)
     age =  models.IntegerField(blank=True,null=True)
     dayofbirth = models.ForeignKey(DaysOfWeek, blank=True,null=True,verbose_name="วันประจำวันเกิด",on_delete=models.CASCADE)
     rasi = models.ForeignKey(RaSi,  blank=True,null=True,verbose_name='ราศีประจำวันเกิด',on_delete=models.CASCADE)
@@ -151,26 +151,45 @@ class MemberProfile(models.Model):
     objects = LikedManager()
     objects = NopedManager()
 
-    
+    @property
+    def calculate_age(self):
+        if self.birthday:
+            today = date.today()
+            self.age = today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
+            return self.age
+        return 0  # when "self.birthday" is "NULL"
+
     # def save(self, *args, **kwargs):
     #     if not self.id:
-    #         today = datetime.datetime.today()
-    #         self.first_name = self.user.first_name 
-    #         self.last_name = self.user.last_name
-    #         self.age = today.year - self.birthday.datetime.year
+    #         today = date.today()
+    #         self.age = today.year -  self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
     #     super(MemberProfile, self).save(*args, **kwargs)
 
     def __str__(self) -> str:
         return f'{self.id}:  {self.user} {self.birthday} {self.gender} '
 
-    class Meta: 
+
+    def create_profile(sender, **kwargs):
+        user = kwargs["instance"]
+        if kwargs["created"]:
+            user_profile = MemberProfile(user=user)
+            user_profile.save()
+    post_save.connect(create_profile, sender=User)
+
+
+
+    class Meta:
         verbose_name = 'MemberProfile'
         ordering = ['-created']
+        # db_table = 'memberprofile'
+
+
 
 # @receiver(post_save, sender=User)
-# def create_user_profile(sender, instance, created, **kwargs):
+# def update_profile_signal(sender, instance, created, **kwargs):
 #     if created:
 #         MemberProfile.objects.create(user=instance)
+#     instance.memberprofile.save()
 
 # @receiver(post_save, sender=User)
 # def save_user_profile(sender, instance, **kwargs):
@@ -200,18 +219,18 @@ class Conversation(models.Model):
     rejected =models.ForeignKey(Handler, blank=True ,null=True,related_query_name='conversation',
                                    verbose_name='Rejected',
                                    on_delete=models.CASCADE)
-                           
+
     created = models.DateTimeField(auto_now_add=True)  # When it was create
     updated = models.DateTimeField(auto_now=True)  # When i was update
 
 
-  
+
 
     def __str__(self) -> str:
         return f'{self.member}  {self.block} {self.rejected}'
 
     class Meta:
-        verbose_name = "Conversation"   
+        verbose_name = "Conversation"
 
 
 class Goldmember(models.Model):
@@ -221,14 +240,14 @@ class Goldmember(models.Model):
         on_delete=models.CASCADE,
         # primary_key=True,
         related_name='goldmember', related_query_name='goldmember'
-    )   
+    )
     # user = models.OneToOneField(settings.AUTH_USER_MODEL, related_query_name='conversation',
     #                                verbose_name='User_ID',
     #                                on_delete=models.CASCADE)
     conversation = models.ForeignKey(Conversation,null=True,blank=True,
                                      verbose_name='Conversation_ID',
         on_delete=models.CASCADE)
-                        
+
     def __str__(self) -> str:
         return f'{self.goldmember}'
 

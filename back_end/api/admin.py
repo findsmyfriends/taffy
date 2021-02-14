@@ -10,7 +10,7 @@ admin.site.site_header = "APIs For FlutterApp Admin."
 # @admin.register(settings.AUTH_USER_MODEL,Member)
 @admin.register(MemberProfile)
 class MemberProfileAdmin(admin.ModelAdmin):
-        list_display = ('id','gender','testes','age')
+        list_display = ('id','user','gender','testes','age')
 # admin.site.register(MemberProfile)
 admin.site.register(BloodType)
 admin.site.register(DaysOfWeek)

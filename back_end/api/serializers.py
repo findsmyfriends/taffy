@@ -4,6 +4,12 @@ from rest_flex_fields import FlexFieldsModelSerializer
 from django.contrib.auth.models import User
 from versatileimagefield.serializers import VersatileImageFieldSerializer
 from rest_framework import  serializers
+from django.contrib.auth.models import Permission
+
+# class PermissionSerializer(serializers.HyperlinkedModelSerializer):
+#     class Meta:
+#         model = Permission
+#         exclude = ('user_permissions',)
 
 class ImageSerializer(FlexFieldsModelSerializer):
     # file_uploaded = serializers.FileField()
@@ -62,18 +68,22 @@ class PersonalitySerializer(serializers.HyperlinkedModelSerializer):
         model = Personality
         fields = ['pk', 'value']
         # expandable_fields = {
-        #     'value': (PersonalitySerializer, {'many': True}),       
+        #     'value': (PersonalitySerializer, {'many': True}),
         # }
 
-class MemberProfileSerializer(FlexFieldsModelSerializer):
-    # user12 = serializers.StringRelatedField(many=True)
+class MemberProfileSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
-        model = MemberProfile   
+        model = MemberProfile
         fields = '__all__'
+        # exclude = ['user']
         # fields = ['user','birthday','age','rasi','bloodtype','naksus','gender','testes','imageprofile','personality','liked','noped']
-        
+
         # depth = 1
+        expandable_fields = {
+          'rasi': (RaSiSerializer, {'many': True}),
+          'personality': (PersonalitySerializer, {'many': True}),
+        }
 
 
 
@@ -88,13 +98,13 @@ class ConversationSerializer(serializers.HyperlinkedModelSerializer):
         }
 
 
-    
 
-class UserSerializer(FlexFieldsModelSerializer):
+
+class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = '__all__'
-
+        fields = ['url', 'username','first_name','last_name']
+        # exclude = ('user_permissions',)
 
 class GoldmemberSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -105,5 +115,5 @@ class GoldmemberSerializer(serializers.HyperlinkedModelSerializer):
         expandable_fields = {
             'memberprofile': (MemberProfileSerializer, {'many': True}),
             'conversation': (ConversationSerializer, {'many': True})
-            
+
         }
