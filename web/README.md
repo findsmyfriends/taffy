@@ -5,18 +5,13 @@
 
 Full-Featured Blog with Django web framework. 
 
-Screenshots
-=
-<img src="screenshots/index.png" width=400><img src="screenshots/login.png" width=400>
-<img src="screenshots/profile.png" width=400><img src="screenshots/new_post.png" width=400>
-<img src="screenshots/post.png" width=400><img src="screenshots/delete.png" width=400>
 
 Features 
 =
 - User Registration
 - User Login & Logout
 - User Profile
-- Create, Update, Edit & Delete Posts
+- Create, Update, Edit & Delete Profiles
 - Comments
 - Search
 - User Change Password
@@ -28,12 +23,12 @@ How To Use
 ## Clone project & Install Requirements
 > Make sure you have already installed python3 and git.
 ```
-$ git clone https://github.com/pubuser7/django-blog.git && cd django-blog
-$ pip install -r requirements.txt
+$ git clone https://github.com/taffy63/taffy.git && cd web
+$ pipenv install 
 ```
 ## Migrate & Collect Static
 ```
-$ cd src && python manage.py migrate
+$ pipenv run m
 $ python manage.py collectstatic
 ```
 ## Create Admin User
