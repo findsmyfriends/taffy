@@ -45,11 +45,13 @@ router.register(r'goldmember', GoldmemberViewSet, basename='Goldmember')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
     path('auth/', include('auth.url')),
-    path('', views.index),
     path('api/', include(router.urls)),
     path('api-auth/', include('rest_framework.urls')),
     path('hello/', views.HelloView.as_view(), name='hello'),
+    path('', views.index),
+    # path('loginpage/',views.login),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

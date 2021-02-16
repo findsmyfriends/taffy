@@ -15,6 +15,7 @@ django-dbml = "*"
 openpyxl = "*"
 djoser = "*"
 django-rest-auth = "*"
+django-crispy-forms = "*"
 
 [dev-packages]
 

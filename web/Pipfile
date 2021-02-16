@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+django = "==2.2.7"
+django-crispy-forms = "*"
+pillow = "*"
+djangorestframework = "*"
+
+[dev-packages]
+[scripts]
+server ="python manage.py runserver"
+rmdb = "rm -rf db.sqlite3 taffy/migrations"
+createdb = "bash -c 'python manage.py makemigrations api; python manage.py migrate'"
+m = "python manage.py migrate"
+mk = "python manage.py makemigrations "
+super = "python manage.py createsuperuser"
+loaddb = "python manage.py loaddb"
+
+[requires]
+python_version = "3.8"

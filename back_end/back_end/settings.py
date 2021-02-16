@@ -45,7 +45,9 @@ INSTALLED_APPS = [
     'django_filters',
     'versatileimagefield',
     'rest_framework.authtoken',
-     'rest_auth',
+    'rest_auth',
+    'crispy_forms',
+    # "crispy_bootstrap5",
 
 ]
 
@@ -129,26 +131,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-# REST_FRAMEWORK = {
-#     'DEFAULT_FILTER_BACKENDS': [
-#         'django_filters.rest_framework.DjangoFilterBackend'
-#     ],
-#     # 'DEFAULT_AUTHENTICATION_CLASSES': [
-#     #     'rest_framework_simplejwt.authentication.JWTAuthentication',
-#     # ],
-# }
+# CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+# # CRISPY_TEMPLATE_PACK = 'bootstrap5'
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# # Authentication Settings
 
-
-# REST_FRAMEWORK = {
-
-#     'DEFAULT_PERMISSION_CLASSES':
-#     ['rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly']
-#     # [
-#     # 'rest_framework.permissions.AllowAny',
-
-#     # ]
-# }
-
+LOGIN_REDIRECT_URL = 'index'
+LOGIN_URL = 'login'
 
 REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': [
@@ -183,3 +172,4 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
         ('small_square_crop', 'crop__50x50')
     ]
 }
+

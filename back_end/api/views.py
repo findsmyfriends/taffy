@@ -116,5 +116,5 @@ class HelloView(APIView):
 
 
 def index(req):
-    return render(req, 'api/index.html')
+    return render(req, 'api/home.html')
 
