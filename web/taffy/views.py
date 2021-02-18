@@ -19,7 +19,7 @@ class ProfileListView(ListView):
     model = Profile
     template_name = 'taffy/index.html'
     context_object_name = 'profiles'
-    paginate_by = 2
+    paginate_by = 10
 
 class PostListView(ListView):
     model = Post

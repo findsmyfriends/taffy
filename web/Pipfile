@@ -8,8 +8,10 @@ django = "==2.2.7"
 django-crispy-forms = "*"
 pillow = "*"
 djangorestframework = "*"
+django-splash = "*"
 
 [dev-packages]
+
 [scripts]
 server ="python manage.py runserver"
 rmdb = "rm -rf db.sqlite3 taffy/migrations"

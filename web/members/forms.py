@@ -28,8 +28,8 @@ class ProfileUpdateForm(forms.ModelForm):
 class ProfileOtherUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        # fields = ['birthday','age']
-        fields = '__all__'
+        fields = ['gender','testes','birthday','age','rasi','bloodtype','naksus']
+        # fields = '__all__'
 
 class RegisterForm(forms.Form):
     username = forms.CharField(max_length=100)
