@@ -23,7 +23,7 @@
 
     {% for profile in profiles %}
     
-    		{% if  user.username != profile.user.username %}
+    		 {% if  user.username != profile.user.username %}
 
 				<div class="card">
 					<div class="user">
@@ -32,10 +32,11 @@
 							
 						/>
 						<div class="profile">
-							<div class="h2 mr-2">"{{profile.user.username }}"<span>,20</span></div>
+							<div class="h2 mr-2">"{{profile.user.username }}"<span>{{profile.age }}</span></div>
 							<div class="local">
 								<i class="fas fa-user"></i>
 								<span>{{profile.user.first_name }} {{profile.user.last_name }}</span>
+                <br><span>Score : </span>
 							</div>
 						</div>
 					</div>
@@ -44,10 +45,9 @@
 			</div>
 
 
-      {% endif %}
-    {% endfor %}
+     {% endif %}
     
-      
+     {% endfor %}
     <hr>
 
 

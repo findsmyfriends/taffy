@@ -5,7 +5,7 @@ from datetime import date
 
 class BloodType(models.Model):
 
-    bloodtype =models.CharField(max_length=10)
+    bloodtype =models.CharField(max_length=10,blank=True,null=True)
 
     def __str__(self) -> str:
         return self.bloodtype
@@ -15,7 +15,7 @@ class BloodType(models.Model):
 
 
 class DaysOfWeek(models.Model):
-    daysofweek = models.CharField(max_length=100)
+    daysofweek = models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):
         return f'{self.daysofweek}'
@@ -25,7 +25,7 @@ class DaysOfWeek(models.Model):
 
 
 class NakSus(models.Model):
-    naksus = models.CharField(max_length=100)
+    naksus = models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):
         return f'{self.naksus}'
@@ -35,7 +35,7 @@ class NakSus(models.Model):
 
 
 class RaSi(models.Model):
-    rasi = models.CharField(max_length=100)
+    rasi = models.CharField(max_length=100,blank=True,null=True)
 
     def __str__(self):
         return f'{self.rasi}'
@@ -45,7 +45,7 @@ class RaSi(models.Model):
 
 
 class Gender (models.Model):
-    gender =models.CharField( max_length=50)
+    gender =models.CharField( max_length=50,blank=True,null=True)
 
     def __str__(self) -> str:
         return f'{self.gender}'
@@ -55,7 +55,7 @@ class Gender (models.Model):
 
 
 class Testes (models.Model):
-    testes = models.CharField( max_length=50)
+    testes = models.CharField( max_length=50,blank=True,null=True)
 
     def __str__(self) -> str:
         return f'{self.testes}'
@@ -64,10 +64,10 @@ class Testes (models.Model):
         verbose_name = 'รสนิยมทางเพศ'
 
 class Personality(models.Model):
-    personality = models.CharField(max_length=100) #ค่าการการทำนายจากการหาและคำนวนคะแนน (ขั่วบวกและขั่วลบ)
+    personality = models.CharField(max_length=100,blank=True,null=True) #ค่าการการทำนายจากการหาและคำนวนคะแนน (ขั่วบวกและขั่วลบ)
 
     def __str__(self):
-        return self.value
+        return self.personality
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -75,6 +75,7 @@ class Profile(models.Model):
     birthday = models.DateField(blank=True,null=True)
     age =  models.IntegerField(blank=True,null=True)
     rasi = models.ForeignKey(RaSi,  blank=True,null=True,verbose_name='ราศีประจำวันเกิด',on_delete=models.CASCADE)
+    daysofweek = models.ForeignKey(DaysOfWeek,  blank=True,null=True,verbose_name='วันประจำวันเกิด',on_delete=models.CASCADE)
     bloodtype = models.ForeignKey(BloodType,  blank=True,null=True,verbose_name="หมู่เลือด",on_delete=models.CASCADE)
     naksus = models.ForeignKey(NakSus,  blank=True,null=True,verbose_name="นักษัตร",on_delete=models.CASCADE)
     gender = models.ForeignKey(Gender, blank=True,null=True,verbose_name="เพศ",on_delete=models.CASCADE)
@@ -95,7 +96,7 @@ class Profile(models.Model):
 
     
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return f'{self.user.username}'
 
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)

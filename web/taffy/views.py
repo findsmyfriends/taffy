@@ -1,3 +1,4 @@
+from members.views import profile
 from members.models import Profile
 from .models import Post, Comment
 from django.shortcuts import render, redirect, get_object_or_404
@@ -20,7 +21,14 @@ class ProfileListView(ListView):
     template_name = 'taffy/index.html'
     context_object_name = 'profiles'
     paginate_by = 10
+    # def test_func(self):
+    #     profile = self.get_object()
+    #     if self.request.user == profile.user:
+    #         return True
+    #     return False 
+    
 
+    
 class PostListView(ListView):
     model = Post
     template_name = 'taffy/index.html'
@@ -34,7 +42,7 @@ class PostListView(ListView):
             keyword = ''
         if (keyword != ''):
             object_list = self.model.objects.filter(
-                Q(content__icontains=keyword) | Q(title__icontains=keyword))
+                Q(user__icontains=keyword) | Q(age__icontains=keyword))
         else:
             object_list = self.model.objects.all()
         return object_list
@@ -76,22 +84,23 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         post = self.get_object()
         if self.request.user == post.author:
             return True
-        return False
+        return False    
 
 
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Post
-    success_url = '/'
+# class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+#     model = Post
+#     success_url = '/'
 
-    def test_func(self):
-        post = self.get_object()
-        if self.request.user == post.author:
-            return True
-        return False
+#     def test_func(self):
+#         post = self.get_object()
+#         if self.request.user == post.author:
+#             return True
+#         return False
 
 
 def about(request):
     return render(request, 'taffy/about.html', {'title': 'About'})
+
 
 
 @login_required
@@ -105,3 +114,72 @@ def add_comment(request, pk):
     else:
         return redirect('post_detail', pk=pk)
     return redirect('post_detail', pk=pk)
+
+# @login_required
+# def profileMember(request):
+#     profiles = Profile.objects.all()
+#     user = User.objects.all()
+#     for profile in profiles:
+#         if profile.user.username != user.username:
+
+#             context = {
+#                 "profiles":profiles,
+                
+#             }
+#         else:
+#             context = {
+#                 "profiles":profiles,
+                
+#             }
+
+#     return render(request,'taffy/index.html',context)
+
+@login_required
+def score(request):
+    rasri = [[3,2,-3,0,3,-3,-1,-2,0,2,3,1],
+[1,3,2,2,-3,3,-1,-3,-2,-3,-3,0],
+[0,0,-3,-3,2,-1,3,-3,3,-3,3,2],
+[0,-2,1,3,-3,3,2,3,-2,-3,-1,3],
+[3,-1,3,1,3,1,3,2,3,-2,-1,-3],
+[0,3,2,-1,-2,3,-3,3,2,3,0,3],
+[-2,-3,-1,-3,3,-2,3,2,3,0,3,0],
+[-3,-2,2,3,1,3,0,3,-1,-2,3,-1],
+[3,3,-2,3,1,3,2,2,-2,-3,-2,-3],
+[2,3,-2,-3,-1,3,-2,-3,-1,2,2,-1],
+[3,1,3,-3,-2,0,0,0,3,2,3,1],
+[-3,-2,-2,3,1,-3,2,3,2,3,1,0]]
+    age = [[-1,1,2,0,-2,1,-2],
+[2,0,2,-1,2,2,2],
+[2,1,0,1,2,2,1],
+[-2,-1,2,0,2,-2,0],
+[-2,-1,0,2,2,-2,-1],
+[1,0,-1,-1,2,0,-2],
+[-1,-2,0,-1,2,-2,-2]]
+    bloodtype = [[2,0,1,-1],
+[1,2,2,-1],
+[1,-1,2,2],
+[-1,0,1,2]] 
+    dayOfbirth=[[-1,0,1,-1,-1,0,-2,1],
+[-3,-1,0,1,-3,-3,-2,3],
+[-3,1,1,1,1,-3,3,3],
+[-1,3,3,3,2,-1,-2,2],
+[3,1,3,-3,-3,1,-1,-2],
+[2,2,-1,-1,-2,3,-1,-2],
+[3,-2,1,-1,-2,-2,2,0],
+[3,-3,3,0,-2,3,0,2]]
+    naksus=[[-4,1,-1,3,4,3,1,-1,-1,0,0,4],
+[-4,1,1,-1,3,3,0,4,-1,1,-4,-1],
+[2,-3,-3,2,-4,4,-1,0,2,3,4,1],
+[-3,-4,1,-4,-4,-2,4,-3,0,-2,-3,2],
+[-3,2,4,1,1,2,0,0,3,-3,-4,1],
+[2,3,-3,1,4,-1,-3,-1,2,1,1,-4],
+[0,2,3,3,0,-1,3,2,4,0,2,-2],
+[-4,-3,-3,1,-4,2,2,2,2,4,3,-2],
+[1,-3,-3,-2,2,1,4,-2,-1,-3,1,-3],
+[4,0,3,2,-1,3,4,-3,-3,-3,4,-3],
+[4,-4,-1,-3,-1,-3,3,-4,-3,3,-4,3],
+[-4,-2,-4,2,-4,4,-1,1,0,0,-3,0]]
+    total =  0
+    if request.method  == 'GET':
+        # get_dayofbirth = 
+        pass

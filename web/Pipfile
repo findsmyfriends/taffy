@@ -9,13 +9,14 @@ django-crispy-forms = "*"
 pillow = "*"
 djangorestframework = "*"
 django-splash = "*"
+openpyxl = "*"
 
 [dev-packages]
 
 [scripts]
 server ="python manage.py runserver"
-rmdb = "rm -rf db.sqlite3 taffy/migrations"
-createdb = "bash -c 'python manage.py makemigrations api; python manage.py migrate'"
+rmdb = "rm -rf db.sqlite3 taffy/migrations/000* members/migrations/000*"
+createdb = "python manage.py makemigrations python manage.py migrate"
 m = "python manage.py migrate"
 mk = "python manage.py makemigrations "
 super = "python manage.py createsuperuser"
