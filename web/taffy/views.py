@@ -136,6 +136,10 @@ def add_comment(request, pk):
 
 @login_required
 def score(request):
+    #คะแนนจาก ตารางที่หามาทำเป็น Matrix ลิงก์ จำลอง Data 
+    # https://colab.research.google.com/drive/1Rnk7lSw1qkbOmp79J9w3yDdXtOe94Op7?usp=sharing 
+
+    
     rasri = [[3,2,-3,0,3,-3,-1,-2,0,2,3,1],
 [1,3,2,2,-3,3,-1,-3,-2,-3,-3,0],
 [0,0,-3,-3,2,-1,3,-3,3,-3,3,2],
