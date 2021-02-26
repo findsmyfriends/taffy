@@ -74,15 +74,16 @@ class Profile(models.Model):
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     birthday = models.DateField(blank=True,null=True)
     age =  models.IntegerField(blank=True,null=True)
+    GENDER = [('F', 'Female'),('M', 'Male')]
+    gender = models.CharField(null=True, choices=GENDER, max_length=1, default='F')
+    testes = models.CharField(null=True, choices=GENDER, max_length=1, default='M') # sex of Testes
     rasi = models.ForeignKey(RaSi,  blank=True,null=True,verbose_name='ราศีประจำวันเกิด',on_delete=models.CASCADE)
     daysofweek = models.ForeignKey(DaysOfWeek,  blank=True,null=True,verbose_name='วันประจำวันเกิด',on_delete=models.CASCADE)
     bloodtype = models.ForeignKey(BloodType,  blank=True,null=True,verbose_name="หมู่เลือด",on_delete=models.CASCADE)
     naksus = models.ForeignKey(NakSus,  blank=True,null=True,verbose_name="นักษัตร",on_delete=models.CASCADE)
-    gender = models.ForeignKey(Gender, blank=True,null=True,verbose_name="เพศ",on_delete=models.CASCADE)
-    testes = models.ForeignKey(Testes, blank=True,null=True,verbose_name="รสนิยมทางเพศ",on_delete=models.CASCADE)  # sex of Testes
-    personality = models.ManyToManyField(Personality,related_name='members',blank=True,null=True,) #ขั้วบวกลบ
-    like = models.BooleanField(default=False,blank=True,null=True)
-    nope = models.BooleanField(default=False,blank=True,null=True)
+    # personality = models.ManyToManyField(Personality,related_name='members',blank=True,null=True,) #ขั้วบวกลบ
+    # like = models.BooleanField(default=False,blank=True,null=True)
+    # nope = models.BooleanField(default=False,blank=True,null=True)
     created = models.DateTimeField(auto_now_add=True) # When it was create
     updated = models.DateTimeField(auto_now=True)  # When it was update
 
@@ -92,11 +93,12 @@ class Profile(models.Model):
             today = date.today()
             self.age = today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
             return self.age
+        print("It's Age Calculed: {{self.age}}")
         return 0  # when "self.birthday" is "NULL"
 
     
     def __str__(self):
-        return f'{self.user.username}'
+        return f'{self.user.username},{self.user.first_name},{self.user.last_name} {self.age} {self.testes}'
 
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
@@ -108,6 +110,29 @@ class Profile(models.Model):
             img.thumbnail(output_size)
             img.save(self.image.path)
 
+class Rating(models.Model):
+    ratingUser = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='ratingUser')
+    ratedUser = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='ratedUser')
+    like = models.BooleanField()
+    ratingPoint = models.IntegerField(null=True,blank=True)
+
+    class Meta:
+        unique_together = ('ratingUser', 'ratedUser')
+    
+    def __str__(self):
+        return str(self.ratingUser) + ' ' + str(self.ratedUser) + ' ' + str(self.like)
+
+
+class Match(models.Model):
+    user1 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='user1')
+    user2 = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='user2')
+
+    class Meta:
+        unique_together = ('user1', 'user2')
+        unique_together = ('user2', 'user1')
+    def __str__(self):
+        return str(self.user1) + ' ' + str(self.user2)
+        
 class Handler(models.Model):
     # block = models.BooleanField(default=False,blank=True,null=True)
     rejected = models.BooleanField(default=False, blank=True, null=True)
@@ -121,29 +146,14 @@ class Handler(models.Model):
         verbose_name = "Handler"
 
 
-class Conversation(models.Model):
-    # profile = models.ForeignKey(Profile, related_query_name='conversation',
-    #                                verbose_name='Conversations_ID',
-    #                                on_delete=models.CASCADE)
-    user = models.ForeignKey(User, related_query_name='conversation',
-                                   verbose_name='User_ID',
-                                   on_delete=models.CASCADE)
-    message  = models.TextField(blank=True ,null=True)
-    rejected =models.ForeignKey(Handler, blank=True ,null=True,related_query_name='conversation',
-                                   verbose_name='Rejected',
-                                   on_delete=models.CASCADE)
+class Message(models.Model):
+    sender = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='sender')
+    recipient = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='recipient')
+    text = models.CharField(max_length=280)
+    sentDate = models.DateTimeField(auto_now=True)
 
-    created = models.DateTimeField(auto_now_add=True)  # When it was create
-    updated = models.DateTimeField(auto_now=True)  # When i was update
-
-
-
-
-    def __str__(self) -> str:
-        return f'{self.member}  {self.block} {self.rejected}'
-
-    class Meta:
-        verbose_name = "Conversation"
+    def __str__(self):
+        return str(self.sender) + ' ' + str(self.recipient) + ' ' + self.text
 
 
 class Goldmember(models.Model):
@@ -157,9 +167,9 @@ class Goldmember(models.Model):
     # user = models.OneToOneField(settings.AUTH_USER_MODEL, related_query_name='conversation',
     #                                verbose_name='User_ID',
     #                                on_delete=models.CASCADE)
-    conversation = models.ForeignKey(Conversation,null=True,blank=True,
-                                     verbose_name='Conversation_ID',
-        on_delete=models.CASCADE)
+    # conversation = models.ForeignKey(Conversation,null=True,blank=True,
+    #                                  verbose_name='Conversation_ID',
+    #     on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f'{self.goldmember}'

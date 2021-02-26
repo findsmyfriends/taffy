@@ -1,3 +1,4 @@
+
 from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
@@ -12,6 +13,7 @@ urlpatterns = [
     path('api-taffy/', include('taffy.api.urls')),
     # Taffy urls
     path('', include('taffy.urls')),
+    # path('message/(?P<username>.+)/$', member_views.message, name='message'),
     
     # Authentication Urls
     path('register/', member_views.register, name='register'),

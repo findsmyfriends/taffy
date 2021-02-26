@@ -1,3 +1,4 @@
+from members.models import Message
 from django.contrib import admin
 from .models import Post, Comment
 
@@ -24,3 +25,6 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Comment, CommentAdmin)
+
+
+

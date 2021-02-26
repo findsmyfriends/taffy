@@ -31,6 +31,8 @@ class ProfileOtherUpdateForm(forms.ModelForm):
         fields = ['gender','testes','birthday','age','rasi','bloodtype','naksus']
         # fields = '__all__'
 
+class MessageForm(forms.Form):
+    text = forms.CharField(widget=forms.Textarea, label='')
 
 
 

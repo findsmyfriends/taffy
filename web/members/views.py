@@ -1,3 +1,4 @@
+from members.models import Message
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -49,3 +50,39 @@ def profile(request):
         'po_form': po_form,
     }
     return render(request, 'members/profile.html', context)
+
+@login_required
+def memberprofile(request, username):
+    return render(request, 'taffy/memberprofile.html', {'user': User.objects.all().get(username=username)})
+
+@login_required
+def message(request, username):
+    currentProfile = request.user.profile
+    otherProfile = User.objects.get(username=username).profile
+
+    qr = Message.objects \
+        .raw('SELECT id, sender_id, text, sentDate \
+             FROM taffy_message \
+             WHERE sender_id = {0} AND recipient_id = {1} \
+             UNION \
+             SELECT id, sender_id, text, sentDate \
+             FROM taffy_message \
+             WHERE sender_id = {1} AND recipient_id = {0} \
+             ORDER BY sentDate'.format(currentProfile.id, otherProfile.id))
+             
+    messages = [ (Profile.objects.get(id=m.sender_id), m.text) for m in qr]
+
+    if request.method == 'POST':
+        form = MessageForm(request.POST)
+        if form.is_valid():
+            message = Message(sender = currentProfile, recipient = otherProfile, text = form.cleaned_data['text'])
+            message.save()
+            return redirect(request.path)
+    else:
+        form = MessageForm()
+
+    return render(request, 'taffy/message.html', {'messages': messages, 'form': form})
+
+@login_required
+def firstfilter(req):
+    pass
