@@ -9,8 +9,10 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    
     # API urls
     path('api-taffy/', include('taffy.api.urls')),
+
     # Taffy urls
     path('', include('taffy.urls')),
     # path('message/(?P<username>.+)/$', member_views.message, name='message'),

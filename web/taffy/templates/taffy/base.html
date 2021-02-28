@@ -32,8 +32,6 @@
   <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 <link rel="stylesheet" type="text/css" href="{% static 'scss/style.scss' %}">
 
-
-
   {% if title %}
   <title>Taffy - {{ title }}</title>
   {% else %}
@@ -43,9 +41,9 @@
 
 <body>
   <header class="site-header">
-    <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: #e3f2fd;">
+    <nav class="navbar navbar-expand-md navbar-light fixed-top" style="background-color: rgba(246,82,158,100);">
       <div class="container">
-        <a class="navbar-brand mr-4" href="{% url 'index' %}">Taffy</a>
+        <a class="navbar-brand mr-2" href="{% url 'index' %}">Taffy</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
           aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
@@ -59,11 +57,11 @@
           <div class="navbar-nav">
             {% if user.is_authenticated %}
             
-            <form class="form-inline my-2 my-lg-0 pb-1">
-    <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" style="width: 400px">
-    <input class="btn btn-outline-success my-2 my-sm-1" type="submit" value="Search">
-</form>
-            {% comment %} <a class="nav-item nav-link" href="{% url 'post_create' %}">New Post</a> {% endcomment %}
+            {% comment %} <form class="form-inline my-2 my-lg-0 pb-1">
+    <input class="form-control mr-sm-0" name="q" type="search" placeholder="Search" aria-label="Search" style="width: 400px">
+    <input class="btn btn-outline-success my-0 my-sm-0" type="submit" value="Search">
+</form> {% endcomment %}
+            <a class="nav-item nav-link" href="{% url 'post_create' %}">New Post</a>
             <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
             <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
             {% else %}

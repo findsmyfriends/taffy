@@ -1,6 +1,6 @@
 {% extends "taffy/base.html" %}
 {% block content %}
-
+ 
 <!-- Search Form -->
 {% comment %} <form class="form-inline my-2 my-lg-0 pb-2">
     <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" style="width: 400px">
@@ -28,29 +28,38 @@
 {% endfor %}
 </ul> {% endcomment %}
 
+<div  class="card" >
+<h1>Personality</h1>
+<a href="/"> <button type="button"  type="submit"  class="btn btn-danger  btn-block" >default</button></a>
+<a href="{% url 'anode' %}"> <button type="button"  type="submit"  class="btn btn-primary  btn-block" > +ขั่วบวก</button></a>
+<a href="{% url 'cathode' %}"><button type="button"  type="submit" id="cathode" class="btn  btn-secondary  btn-block">-ขั่วลบ</button></a>
+</div>
 
 {% for key, value in sorted_dict.items %} 
-				<div class="card">
+				<div id="anode" lass="card">
 					<div class="user">
 						<img
 							src="{{ key.image.url }}"	/>
 						<div class="profile">
-							<div class="h2 mr-2">{{key.user.username}}<span>,{{key.age}}</span></div>
+							<div class="h1 mr-6">{{key.user.username}}<span>,{{key.age}}</span></div>
 							<div class="local">
 								<i class="fas fa-user"></i>
-								<span>{{key.user.first_name}} {{key.user.last_name}}</span>
-                <br><span>Rating Score :{{value}} </span>
+								<span class="h2">{{key.user.first_name}} {{key.user.last_name}}</span>
+                <br><span class="h2">Rating Score :{{value}} </span>
 							</div>
 						</div>
 					</div>
-				
-
 			</div>
+      			
 
 
-    
+<button type="button" class="btn btn-warning circle "><i class="fas fa-times fa-3x "></i></button>
+<button type="button" class="btn btn-danger"><i class="fas fa-heart fa-3x"></i></button>
+
+
     
      {% endfor%}
+     
     <hr>
 
 
