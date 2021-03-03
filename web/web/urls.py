@@ -8,13 +8,21 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
+    # Members urls
+    path('', member_views.rating, name='index'),
     path('admin/', admin.site.urls),
+    path('match/',member_views.match,name='Match Page'),
+    path('testtem/',member_views.testtem,name='Template'),
+    path('anode/', member_views.anode,name='anode'),
+    path('cathode/', member_views.cathode,name='cathode'),
+    path('rating/', member_views.rating, name='rating'),
+    
     
     # API urls
     path('api-taffy/', include('taffy.api.urls')),
 
     # Taffy urls
-    path('', include('taffy.urls')),
+    path('public/', include('taffy.urls')),
     # path('message/(?P<username>.+)/$', member_views.message, name='message'),
     
     # Authentication Urls

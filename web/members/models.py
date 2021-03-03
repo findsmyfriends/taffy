@@ -5,7 +5,7 @@ from datetime import date
 
 class BloodType(models.Model):
 
-    bloodtype =models.CharField(max_length=10,blank=True,null=True)
+    bloodtype =models.CharField(max_length=10)
 
     def __str__(self) -> str:
         return self.bloodtype
@@ -15,7 +15,7 @@ class BloodType(models.Model):
 
 
 class DaysOfWeek(models.Model):
-    daysofweek = models.CharField(max_length=100,blank=True,null=True)
+    daysofweek = models.CharField(max_length=100)
 
     def __str__(self):
         return f'{self.daysofweek}'
@@ -25,7 +25,7 @@ class DaysOfWeek(models.Model):
 
 
 class NakSus(models.Model):
-    naksus = models.CharField(max_length=100,blank=True,null=True)
+    naksus = models.CharField(max_length=100)
 
     def __str__(self):
         return f'{self.naksus}'
@@ -35,7 +35,7 @@ class NakSus(models.Model):
 
 
 class RaSi(models.Model):
-    rasi = models.CharField(max_length=100,blank=True,null=True)
+    rasi = models.CharField(max_length=100)
 
     def __str__(self):
         return f'{self.rasi}'
@@ -45,7 +45,7 @@ class RaSi(models.Model):
 
 
 class Gender (models.Model):
-    gender =models.CharField( max_length=50,blank=True,null=True)
+    gender =models.CharField( max_length=50)
 
     def __str__(self) -> str:
         return f'{self.gender}'
@@ -55,7 +55,7 @@ class Gender (models.Model):
 
 
 class Testes (models.Model):
-    testes = models.CharField( max_length=50,blank=True,null=True)
+    testes = models.CharField( max_length=50)
 
     def __str__(self) -> str:
         return f'{self.testes}'
@@ -64,7 +64,7 @@ class Testes (models.Model):
         verbose_name = 'รสนิยมทางเพศ'
 
 class Personality(models.Model):
-    personality = models.CharField(max_length=100,blank=True,null=True) #ค่าการการทำนายจากการหาและคำนวนคะแนน (ขั่วบวกและขั่วลบ)
+    personality = models.CharField(max_length=100) #ค่าการการทำนายจากการหาและคำนวนคะแนน (ขั่วบวกและขั่วลบ)
 
     def __str__(self):
         return self.personality
@@ -75,15 +75,15 @@ class Profile(models.Model):
     birthday = models.DateField(blank=True,null=True)
     age =  models.IntegerField(blank=True,null=True)
     GENDER = [('F', 'Female'),('M', 'Male')]
-    gender = models.CharField(null=True, choices=GENDER, max_length=1, default='F')
-    testes = models.CharField(null=True, choices=GENDER, max_length=1, default='M') # sex of Testes
-    rasi = models.ForeignKey(RaSi,  blank=True,null=True,verbose_name='ราศีประจำวันเกิด',on_delete=models.CASCADE)
-    daysofweek = models.ForeignKey(DaysOfWeek,  blank=True,null=True,verbose_name='วันประจำวันเกิด',on_delete=models.CASCADE)
-    bloodtype = models.ForeignKey(BloodType,  blank=True,null=True,verbose_name="หมู่เลือด",on_delete=models.CASCADE)
-    naksus = models.ForeignKey(NakSus,  blank=True,null=True,verbose_name="นักษัตร",on_delete=models.CASCADE)
+    gender = models.CharField( blank=True,null=True,choices=GENDER, max_length=1, default='F')
+    testes = models.CharField( blank=True,null=True,choices=GENDER, max_length=1, default='M') # sex of Testes
+    rasi = models.ForeignKey(RaSi, blank=True,null=True, verbose_name='ราศีประจำวันเกิด',on_delete=models.CASCADE)
+    daysofweek = models.ForeignKey(DaysOfWeek, blank=True,null=True, verbose_name='วันประจำวันเกิด',on_delete=models.CASCADE)
+    bloodtype = models.ForeignKey(BloodType, blank=True,null=True ,verbose_name="หมู่เลือด",on_delete=models.CASCADE)
+    naksus = models.ForeignKey(NakSus, blank=True,null=True ,verbose_name="นักษัตร",on_delete=models.CASCADE)
     # personality = models.ManyToManyField(Personality,related_name='members',blank=True,null=True,) #ขั้วบวกลบ
-    # like = models.BooleanField(default=False,blank=True,null=True)
-    # nope = models.BooleanField(default=False,blank=True,null=True)
+    like = models.BooleanField(default=False,blank=True,null=True)
+    nope = models.BooleanField(default=False,blank=True,null=True)
     created = models.DateTimeField(auto_now_add=True) # When it was create
     updated = models.DateTimeField(auto_now=True)  # When it was update
 
@@ -91,12 +91,17 @@ class Profile(models.Model):
     def calculate_age(self):
         if self.birthday:
             today = date.today()
-            self.age = today.year - self.birthday.year - ((today.month, today.day) < (self.birthday.month, self.birthday.day))
+            self.age = today.year - self.birthday.year
             return self.age
         print("It's Age Calculed: {{self.age}}")
-        return 0  # when "self.birthday" is "NULL"
+        return self.age # when "self.birthday" is "NULL"
 
-    
+    def save(self, *args, **kwargs):
+        if not self.id:
+            today = date.today()
+            self.age = today.year - self.birthday.year
+        super(Profile, self).save(*args, **kwargs)
+
     def __str__(self):
         return f'{self.user.username},{self.user.first_name},{self.user.last_name} {self.age} {self.testes}'
 
@@ -147,8 +152,8 @@ class Handler(models.Model):
 
 
 class Message(models.Model):
-    sender = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='sender')
-    recipient = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='recipient')
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipient')
     text = models.CharField(max_length=280)
     sentDate = models.DateTimeField(auto_now=True)
 

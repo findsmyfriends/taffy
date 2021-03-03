@@ -16,7 +16,7 @@
 
     <!-- Post information -->
     <div>
-        <h1 class="mt-4">{{object.title}}</h1>
+        {% comment %} <h1 class="mt-4">{{object.title}}</h1> {% endcomment %}
         <p>
             Posted on {{ object.date_posted|date:"F d, Y" }}
             {% if object.author == user %}
@@ -29,16 +29,16 @@
     <hr>
 
     <!-- Preview Image -->
-    <img class="img-fluid rounded" src="http://placehold.it/900x300" alt="">
+    <img class="img-fluid rounded" src="{{ object.image.url }}" alt="">
     <hr>
 
     <!-- Post Content -->
-    <p class="lead">{{ object.content|safe|linebreaks }}</p>
+    {% comment %} <p class="lead">{{ object.content|safe|linebreaks }}</p> {% endcomment %}
     <hr>
 
     <!-- Like -->
     {% if user.is_authenticated %}
-    <div class="text-center">
+    <div class="text">
         <a id="like" style="cursor: pointer;" class="text-center" data-url="{% url 'like_api' object.pk %}"><i
                 style="color: red" class="
                 like-icon
@@ -100,7 +100,6 @@
             Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio,
             vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec
             lacinia congue felis in faucibus.
-
             <div class="media mt-4">
                 <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                 <div class="media-body">
@@ -110,7 +109,6 @@
                     vulputate fringilla. Donec lacinia congue felis in faucibus.
                 </div>
             </div>
-
             <div class="media mt-4">
                 <img class="d-flex mr-3 rounded-circle" src="http://placehold.it/50x50" alt="">
                 <div class="media-body">
@@ -120,7 +118,6 @@
                     vulputate fringilla. Donec lacinia congue felis in faucibus.
                 </div>
             </div>
-
         </div>
     </div> -->
 </div>

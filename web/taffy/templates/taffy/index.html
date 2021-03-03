@@ -1,33 +1,6 @@
 {% extends "taffy/base.html" %}
 {% block content %}
  
-<!-- Search Form -->
-{% comment %} <form class="form-inline my-2 my-lg-0 pb-2">
-    <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" style="width: 400px">
-    <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search">
-</form>  {% endcomment %}
-     {% comment %} {% for post in posts %}
-        <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
-            </div>
-          <h2><a class="article-title" href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content|safe }}</p>
-          </div>
-        </article>
-    {% endfor %}  {% endcomment %}
-
-
-
-{% comment %} <ul>
-
-  <h1><li>{{key}} คะแนนดิบ {{value}}</li><h1>
-{% endfor %}
-</ul> {% endcomment %}
-
 <div  class="card" >
 <h1>Personality</h1>
 <a href="/"> <button type="button"  type="submit"  class="btn btn-danger  btn-block" >default</button></a>
@@ -41,7 +14,7 @@
 						<img
 							src="{{ key.image.url }}"	/>
 						<div class="profile">
-							<div class="h1 mr-6">{{key.user.username}}<span>,{{key.age}}</span></div>
+							<div class="h1 mr-6">{{key.user.username}}<span>,{{key.age}} {{key.gender}}</span></div>
 							<div class="local">
 								<i class="fas fa-user"></i>
 								<span class="h2">{{key.user.first_name}} {{key.user.last_name}}</span>
@@ -49,12 +22,12 @@
 							</div>
 						</div>
 					</div>
-			</div>
-      			
+			</div> 
 
+  
 
 <button type="button" class="btn btn-warning circle "><i class="fas fa-times fa-3x "></i></button>
-<button type="button" class="btn btn-danger"><i class="fas fa-heart fa-3x"></i></button>
+<a href="match/"><button type="submit" class="btn btn-danger"><i class="fas fa-heart fa-3x"></i></button></a>
 
 
     

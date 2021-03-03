@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from django.conf import settings
-
+from PIL import Image
 
 class PostManager(models.Manager):
     def like_toggle(self, user, post_obj):
@@ -18,13 +18,24 @@ class PostManager(models.Manager):
 class Post(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=100)
+    image = models.ImageField(default='post_image/default.jpg', upload_to='post_image')
+    # title = models.CharField(max_length=100)
     content = models.TextField()
     liked = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name='liked')
     date_posted = models.DateTimeField(default=timezone.now)
 
     objects = PostManager()
+
+    def save(self, *args, **kwargs):
+        super(Post, self).save(*args, **kwargs)
+
+        img = Image.open(self.image.path)
+
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 
     class Meta:
         ordering = ('-date_posted', )

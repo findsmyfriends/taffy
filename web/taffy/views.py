@@ -1,4 +1,4 @@
-from members.views import profile
+from members.forms import ProfileUpdateForm, UserUpdateForm
 from members.models import Profile
 from .models import Post, Comment
 from django.shortcuts import render, redirect, get_object_or_404
@@ -21,15 +21,15 @@ class ProfileListView(ListView):
     template_name = 'taffy/index.html'
     context_object_name = 'profiles'
     paginate_by = 1
-
-    
+  
+        
 
     
 class PostListView(ListView):
     model = Post
-    template_name = 'taffy/index.html'
+    template_name = 'taffy/public_area.html'
     context_object_name = 'posts'
-    paginate_by = 2
+    paginate_by = 9
 
     def get_queryset(self):
         try:
@@ -70,7 +70,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['title', 'content']
+    fields = ['content','image']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -93,15 +93,26 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+@login_required
+def postpostviews(request):
+    """Process images uploaded by users"""
+    if request.method == 'POST':
+        form =  PostForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            # Get the current instance object to display in the template
+            img_obj = form.instance
+            return render(request, 'taffy/post_detail.html', {'form': form, 'img_obj': img_obj})
+    else:
+        form =  PostForm()
+    return render(request, 'taffy/post_detail.html', {'form': form})
+
 
 def about(request):
     return render(request, 'taffy/about.html', {'title': 'About'})
 
 
-def testtem(request):
-    return render(request, 'taffy/login.html')
-# def cathode(request):
-#     return render(request, 'taffy/cathode.html')
+
 
 @login_required
 def add_comment(request, pk):
@@ -115,279 +126,3 @@ def add_comment(request, pk):
         return redirect('post_detail', pk=pk)
     return redirect('post_detail', pk=pk)
 
-@login_required
-def rating(req):
-    #  pass
-        #คะแนนจาก ตารางที่หามาทำเป็น Matrix ลิงก์ จำลอง Data 
-    # https://colab.research.google.com/drive/1Rnk7lSw1qkbOmp79J9w3yDdXtOe94Op7?usp=sharing 
-
-    
-    rasi = [[3,2,-3,0,3,-3,-1,-2,0,2,3,1],
-            [1,3,2,2,-3,3,-1,-3,-2,-3,-3,0],
-            [0,0,-3,-3,2,-1,3,-3,3,-3,3,2],
-            [0,-2,1,3,-3,3,2,3,-2,-3,-1,3],
-            [3,-1,3,1,3,1,3,2,3,-2,-1,-3],
-            [0,3,2,-1,-2,3,-3,3,2,3,0,3],
-            [-2,-3,-1,-3,3,-2,3,2,3,0,3,0],
-            [-3,-2,2,3,1,3,0,3,-1,-2,3,-1],
-            [3,3,-2,3,1,3,2,2,-2,-3,-2,-3],
-            [2,3,-2,-3,-1,3,-2,-3,-1,2,2,-1],
-            [3,1,3,-3,-2,0,0,0,3,2,3,1],
-            [-3,-2,-2,3,1,-3,2,3,2,3,1,0]]
-    range_age = [[-1,1,2,0,-2,1,-2],
-            [2,0,2,-1,2,2,2],
-            [2,1,0,1,2,2,1],
-            [-2,-1,2,0,2,-2,0],
-            [-2,-1,0,2,2,-2,-1],
-            [1,0,-1,-1,2,0,-2],
-            [-1,-2,0,-1,2,-2,-2]]
-    bloodtype = [[2,0,1,-1],
-            [1,2,2,-1],
-            [1,-1,2,2],
-            [-1,0,1,2]] 
-    daysofweek=[[-1,0,1,-1,-1,0,-2,1],
-            [-3,-1,0,1,-3,-3,-2,3],
-            [-3,1,1,1,1,-3,3,3],
-            [-1,3,3,3,2,-1,-2,2],
-            [3,1,3,-3,-3,1,-1,-2],
-            [2,2,-1,-1,-2,3,-1,-2],
-            [3,-2,1,-1,-2,-2,2,0],
-            [3,-3,3,0,-2,3,0,2]]
-    naksus=[[-4,1,-1,3,4,3,1,-1,-1,0,0,4],
-            [-4,1,1,-1,3,3,0,4,-1,1,-4,-1],
-            [2,-3,-3,2,-4,4,-1,0,2,3,4,1],
-            [-3,-4,1,-4,-4,-2,4,-3,0,-2,-3,2],
-            [-3,2,4,1,1,2,0,0,3,-3,-4,1],
-            [2,3,-3,1,4,-1,-3,-1,2,1,1,-4],
-            [0,2,3,3,0,-1,3,2,4,0,2,-2],
-            [-4,-3,-3,1,-4,2,2,2,2,4,3,-2],
-            [1,-3,-3,-2,2,1,4,-2,-1,-3,1,-3],
-            [4,0,3,2,-1,3,4,-3,-3,-3,4,-3],
-            [4,-4,-1,-3,-1,-3,3,-4,-3,3,-4,3],
-            [-4,-2,-4,2,-4,4,-1,1,0,0,-3,0]]
-
-    allMember = []
-    allrating = []
-    data = []
-    data2 = []
-    # userA = Profile.objects.filter(user__id=1).first()
-    userA = Profile.objects.filter(user__id=req.user.id).first()
-    allprofile = Profile.objects.all()
-    for i in range(len(Profile.objects.all())): #0,1,2,3,
-        if userA.user.id is not allprofile[i].id and userA.testes is allprofile[i].gender:
-            userB =  Profile.objects.filter(user__id=i+1).first()
-            rating = rasi[userA.rasi.id-1][userB.rasi.id-1] + bloodtype[userA.bloodtype.id-1][userB.bloodtype.id-1]+daysofweek[userA.daysofweek.id-1][userB.daysofweek.id-1]+naksus[userA.naksus.id-1][userB.naksus.id-1]
-            profiles = allprofile[i]
-            allMember.append(profiles)
-            allrating.append(rating)
-        
-    result = zip(allMember,allrating)
-    result_dict = dict(result)
-    sorted_dict = {}
-    sorted_keys = sorted(result_dict, key=result_dict.get,reverse=True )  # [1, 2, 3] reverse=True => 3,2,1
-    filter = []
-    for w in sorted_keys:
-        # if result_dict[w] > 0:
-        sorted_dict[w] = result_dict[w]
-        print("for w in sorted_keys:",w ,"result_dict[w]:",result_dict[w] )
-        filter.append(sorted_dict[w])
-    print(sorted_keys)
-    print(filter)
-
-    return render(req,'taffy/index.html',{
-        'data':data,
-        'data2':data2,
-        'result_dict' :result_dict,
-        'userA': userA,
-        'userB': userB,
-        'sorted_dict' : sorted_dict,
-       
-        
-
-})
-
-@login_required
-def anode(req):
-    #  pass
-        #คะแนนจาก ตารางที่หามาทำเป็น Matrix ลิงก์ จำลอง Data 
-    # https://colab.research.google.com/drive/1Rnk7lSw1qkbOmp79J9w3yDdXtOe94Op7?usp=sharing 
-
-    
-    rasi = [[3,2,-3,0,3,-3,-1,-2,0,2,3,1],
-            [1,3,2,2,-3,3,-1,-3,-2,-3,-3,0],
-            [0,0,-3,-3,2,-1,3,-3,3,-3,3,2],
-            [0,-2,1,3,-3,3,2,3,-2,-3,-1,3],
-            [3,-1,3,1,3,1,3,2,3,-2,-1,-3],
-            [0,3,2,-1,-2,3,-3,3,2,3,0,3],
-            [-2,-3,-1,-3,3,-2,3,2,3,0,3,0],
-            [-3,-2,2,3,1,3,0,3,-1,-2,3,-1],
-            [3,3,-2,3,1,3,2,2,-2,-3,-2,-3],
-            [2,3,-2,-3,-1,3,-2,-3,-1,2,2,-1],
-            [3,1,3,-3,-2,0,0,0,3,2,3,1],
-            [-3,-2,-2,3,1,-3,2,3,2,3,1,0]]
-    range_age = [[-1,1,2,0,-2,1,-2],
-            [2,0,2,-1,2,2,2],
-            [2,1,0,1,2,2,1],
-            [-2,-1,2,0,2,-2,0],
-            [-2,-1,0,2,2,-2,-1],
-            [1,0,-1,-1,2,0,-2],
-            [-1,-2,0,-1,2,-2,-2]]
-    bloodtype = [[2,0,1,-1],
-            [1,2,2,-1],
-            [1,-1,2,2],
-            [-1,0,1,2]] 
-    daysofweek=[[-1,0,1,-1,-1,0,-2,1],
-            [-3,-1,0,1,-3,-3,-2,3],
-            [-3,1,1,1,1,-3,3,3],
-            [-1,3,3,3,2,-1,-2,2],
-            [3,1,3,-3,-3,1,-1,-2],
-            [2,2,-1,-1,-2,3,-1,-2],
-            [3,-2,1,-1,-2,-2,2,0],
-            [3,-3,3,0,-2,3,0,2]]
-    naksus=[[-4,1,-1,3,4,3,1,-1,-1,0,0,4],
-            [-4,1,1,-1,3,3,0,4,-1,1,-4,-1],
-            [2,-3,-3,2,-4,4,-1,0,2,3,4,1],
-            [-3,-4,1,-4,-4,-2,4,-3,0,-2,-3,2],
-            [-3,2,4,1,1,2,0,0,3,-3,-4,1],
-            [2,3,-3,1,4,-1,-3,-1,2,1,1,-4],
-            [0,2,3,3,0,-1,3,2,4,0,2,-2],
-            [-4,-3,-3,1,-4,2,2,2,2,4,3,-2],
-            [1,-3,-3,-2,2,1,4,-2,-1,-3,1,-3],
-            [4,0,3,2,-1,3,4,-3,-3,-3,4,-3],
-            [4,-4,-1,-3,-1,-3,3,-4,-3,3,-4,3],
-            [-4,-2,-4,2,-4,4,-1,1,0,0,-3,0]]
-
-    allMember = []
-    allrating = []
-    data = []
-    data2 = []
-    # userA = Profile.objects.filter(user__id=1).first()
-    userA = Profile.objects.filter(user__id=req.user.id).first()
-    allprofile = Profile.objects.all()
-    for i in range(len(Profile.objects.all())): #0,1,2,3,
-        if userA.user.id is not allprofile[i].id and userA.testes is allprofile[i].gender:
-            userB =  Profile.objects.filter(user__id=i+1).first()
-            rating = rasi[userA.rasi.id-1][userB.rasi.id-1] + bloodtype[userA.bloodtype.id-1][userB.bloodtype.id-1]+daysofweek[userA.daysofweek.id-1][userB.daysofweek.id-1]+naksus[userA.naksus.id-1][userB.naksus.id-1]
-            profiles = allprofile[i]
-            allMember.append(profiles)
-            allrating.append(rating)
-        
-    result = zip(allMember,allrating)
-    result_dict = dict(result)
-    sorted_dict = {}
-    sorted_keys = sorted(result_dict, key=result_dict.get,reverse=True )  # [1, 2, 3] reverse=True => 3,2,1
-    filter = []
-    for w in sorted_keys:
-        if result_dict[w] >= 0:
-            sorted_dict[w] = result_dict[w]
-
-        print("for w in sorted_keys:",w ,"result_dict[w]:",result_dict[w] )
-        # filter.append(sorted_dict[w])
-    print(sorted_keys)
-    print(filter)
-
-    return render(req,'taffy/anode.html',{
-        'data':data,
-        'data2':data2,
-        'result_dict' :result_dict,
-        'userA': userA,
-        'userB': userB,
-        'sorted_dict' : sorted_dict,
-       
-        
-
-})
-    
-
-@login_required
-def cathode(req):
-    #  pass
-        #คะแนนจาก ตารางที่หามาทำเป็น Matrix ลิงก์ จำลอง Data 
-    # https://colab.research.google.com/drive/1Rnk7lSw1qkbOmp79J9w3yDdXtOe94Op7?usp=sharing 
-
-    
-    rasi = [[3,2,-3,0,3,-3,-1,-2,0,2,3,1],
-            [1,3,2,2,-3,3,-1,-3,-2,-3,-3,0],
-            [0,0,-3,-3,2,-1,3,-3,3,-3,3,2],
-            [0,-2,1,3,-3,3,2,3,-2,-3,-1,3],
-            [3,-1,3,1,3,1,3,2,3,-2,-1,-3],
-            [0,3,2,-1,-2,3,-3,3,2,3,0,3],
-            [-2,-3,-1,-3,3,-2,3,2,3,0,3,0],
-            [-3,-2,2,3,1,3,0,3,-1,-2,3,-1],
-            [3,3,-2,3,1,3,2,2,-2,-3,-2,-3],
-            [2,3,-2,-3,-1,3,-2,-3,-1,2,2,-1],
-            [3,1,3,-3,-2,0,0,0,3,2,3,1],
-            [-3,-2,-2,3,1,-3,2,3,2,3,1,0]]
-    range_age = [[-1,1,2,0,-2,1,-2],
-            [2,0,2,-1,2,2,2],
-            [2,1,0,1,2,2,1],
-            [-2,-1,2,0,2,-2,0],
-            [-2,-1,0,2,2,-2,-1],
-            [1,0,-1,-1,2,0,-2],
-            [-1,-2,0,-1,2,-2,-2]]
-    bloodtype = [[2,0,1,-1],
-            [1,2,2,-1],
-            [1,-1,2,2],
-            [-1,0,1,2]] 
-    daysofweek=[[-1,0,1,-1,-1,0,-2,1],
-            [-3,-1,0,1,-3,-3,-2,3],
-            [-3,1,1,1,1,-3,3,3],
-            [-1,3,3,3,2,-1,-2,2],
-            [3,1,3,-3,-3,1,-1,-2],
-            [2,2,-1,-1,-2,3,-1,-2],
-            [3,-2,1,-1,-2,-2,2,0],
-            [3,-3,3,0,-2,3,0,2]]
-    naksus=[[-4,1,-1,3,4,3,1,-1,-1,0,0,4],
-            [-4,1,1,-1,3,3,0,4,-1,1,-4,-1],
-            [2,-3,-3,2,-4,4,-1,0,2,3,4,1],
-            [-3,-4,1,-4,-4,-2,4,-3,0,-2,-3,2],
-            [-3,2,4,1,1,2,0,0,3,-3,-4,1],
-            [2,3,-3,1,4,-1,-3,-1,2,1,1,-4],
-            [0,2,3,3,0,-1,3,2,4,0,2,-2],
-            [-4,-3,-3,1,-4,2,2,2,2,4,3,-2],
-            [1,-3,-3,-2,2,1,4,-2,-1,-3,1,-3],
-            [4,0,3,2,-1,3,4,-3,-3,-3,4,-3],
-            [4,-4,-1,-3,-1,-3,3,-4,-3,3,-4,3],
-            [-4,-2,-4,2,-4,4,-1,1,0,0,-3,0]]
-
-    allMember = []
-    allrating = []
-    data = []
-    data2 = []
-    # userA = Profile.objects.filter(user__id=1).first()
-    userA = Profile.objects.filter(user__id=req.user.id).first()
-    allprofile = Profile.objects.all()
-    for i in range(len(Profile.objects.all())): #0,1,2,3,
-        if userA.user.id is not allprofile[i].id and userA.testes is allprofile[i].gender:
-            userB =  Profile.objects.filter(user__id=i+1).first()
-            rating = rasi[userA.rasi.id-1][userB.rasi.id-1] + bloodtype[userA.bloodtype.id-1][userB.bloodtype.id-1]+daysofweek[userA.daysofweek.id-1][userB.daysofweek.id-1]+naksus[userA.naksus.id-1][userB.naksus.id-1]
-            profiles = allprofile[i]
-            allMember.append(profiles)
-            allrating.append(rating)
-        
-    result = zip(allMember,allrating)
-    result_dict = dict(result)
-    sorted_dict = {}
-    sorted_keys = sorted(result_dict, key=result_dict.get)  # [1, 2, 3] reverse=True => 3,2,1
-    filter = []
-    for w in sorted_keys:
-        if result_dict[w] < 0:
-            sorted_dict[w] = result_dict[w]
-
-        print("for w in sorted_keys:",w ,"result_dict[w]:",result_dict[w] )
-        # filter.append(sorted_dict[w])
-    print(sorted_keys)
-    print(filter)
-
-    return render(req,'taffy/cathode.html',{
-        'data':data,
-        'data2':data2,
-        'result_dict' :result_dict,
-        'userA': userA,
-        'userB': userB,
-        'sorted_dict' : sorted_dict,
-       
-        
-
-})
-    

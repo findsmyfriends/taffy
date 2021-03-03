@@ -1,0 +1,256 @@
+{% comment %} {% extends "taffy/base.html" %}
+{% block content %}
+<!-- Search Form -->
+<form class="form-inline my-2 my-lg-0 pb-2">
+    <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" style="width: 400px">
+    <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search">
+</form> 
+    {% for post in posts %}
+        <article class="media content-section">
+          <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a>
+              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
+            </div>
+          <h2><a class="article-title" href="{% url 'post_detail' post.pk %}">{{ post.content|safe }}</a></h2>
+            <p class="article-content">{{ post.content|safe }}</p>
+            <img class="img-fluid rounded" src="{{ post.image.url }}" alt="">
+    <hr>
+          </div>
+          
+        </article>
+    {% endfor %}
+    {% if is_paginated %}
+      {% if page_obj.has_previous %}
+        <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+      {% endif %}
+
+      {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+          <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %}
+          <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+      {% endfor %}
+
+      {% if page_obj.has_next %}
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+        <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+      {% endif %}
+    {% endif %}
+{% endblock content %} {% endcomment %}
+
+{% comment %} {% extends "taffy/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Log In</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Login</button>
+                <small class="text-muted ml-2">
+                    <a href="{% url 'password_reset' %}">Forgot Password?</a>
+                </small>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Nedd An Account? <a class="ml-2" href="{% url 'register' %}">Sign Up Now</a>
+            </small>
+        </div>
+    </div>
+{% endblock content %} {% endcomment %}
+
+
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Taffy - Public Area</title>
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="{% static 'vendor/nucleo/css/nucleo.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" type="text/css">
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="{% static 'css/argon.css' %}" type="text/css">
+</head>
+
+<body class="bg-danger">
+  <!-- Navbar -->
+  <nav id="navbar-main" class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <img src="{% static 'img/brand/whitetaffy.png' %}">
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse navbar-custom-collapse collapse" id="navbar-collapse">
+        <div class="navbar-collapse-header">
+          <div class="row">
+            <div class="col-6 collapse-brand">
+              <a href="dashboard.html">
+                <img src="{% static 'img/brand/redtaffy.png' %}">
+              </a>
+            </div>
+            <div class="col-6 collapse-close">
+              <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-nav mr-auto">
+           <li class="nav-item">
+            <a href="/public/" class="nav-link">
+              <span class="nav-link-inner--text">Public Area</span>
+            </a>
+          </li>
+           <li class="nav-item">
+            <a href="/public/post/new/" class="nav-link">
+              <span class="nav-link-inner--text">Create New Post</span>
+            </a>
+          </li>
+         
+        </ul>
+       <hr class="d-lg-none" />
+        <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="https://www.facebook.com/" target="_blank" data-toggle="tooltip" data-original-title="Like us on Facebook">
+              <i class="fab fa-facebook-square"></i>
+              <span class="nav-link-inner--text d-lg-none">Facebook</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="https://www.instagram.com/" target="_blank" data-toggle="tooltip" data-original-title="Follow us on Instagram">
+              <i class="fab fa-instagram"></i>
+              <span class="nav-link-inner--text d-lg-none">Instagram</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="https://twitter.com/" target="_blank" data-toggle="tooltip" data-original-title="Follow us on Twitter">
+              <i class="fab fa-twitter-square"></i>
+              <span class="nav-link-inner--text d-lg-none">Twitter</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="https://github.com/taffy63/taffy" target="_blank" data-toggle="tooltip" data-original-title="Star us on Github">
+              <i class="fab fa-github"></i>
+              <span class="nav-link-inner--text d-lg-none">Github</span>
+            </a>
+          </li>
+          {% comment %} <li class="nav-item d-none d-lg-block ml-lg-4">
+            <a href="" target="_blank" class="btn btn-neutral btn-icon"> </a>
+               <span class="btn-inner--icon">
+                <i class="fas fa-shopping-cart mr-2"></i>
+              </span> 
+              <span class="nav-link-inner--text">Upgrade to Goldmembers</span>
+          </li> {% endcomment %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Main content -->
+  <div class="main-content">
+    <!-- Header -->
+    <div class="header bg-gradient-pink py-7 py-lg-8 pt-lg-9">
+       <div class="container">
+        <div class="header-body text-center mb-4">
+          <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-4 col-md-0 px-5">
+              <h1 class="text-white">Post Public Area.</h1>
+              <p class="text-lead text-white">พื้นที่โพสต์ เรื่องราวเรื่องต่างๆ มาร่วมกันแชร์ประสบการณ์ความรักได้ที่นี้ โพสต์เลย!!</p>
+                
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-danger" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </div>
+    
+    <!-- Page content -->
+        <!-- Page content -->
+    <div class="container-fluid mt--6">
+   
+      <div class="row">
+        {% for post in posts%}
+        <div class="col-xl-3">
+        
+          <div class="card">
+            <div class="card-header bg-transparent">
+              <div class="row align-items-center">
+               <ul class="navbar-nav align-items-center  ml-auto ml-md-4 ">
+                  <li class="nav-item dropdown">
+              <a class="nav-link pr-0" href="{% url 'user_posts' post.author.username %}" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <div class="media align-items-center">
+                  <span class="avatar avatar-sm rounded-circle">
+                    <img alt="Image placeholder" src="{{ post.author.profile.image.url }}">
+                  </span>
+            
+              </a>
+           
+            </li>
+               </ul>
+                <div class="col">
+                  
+                <a  href="{% url 'user_posts' post.author.username %}"<h5 class="h3 mb-0">{{ post.author.first_name }} {{ post.author.last_name }}</h5></a>
+               <h6 class="text-uppercase text-muted ls-4 mb-1">Posted on {{ post.date_posted|date:"d F Y" }}</h6>
+            
+                </div>
+              </div>
+            </div>
+            <div class="card-body align-items-center  ml-auto ml-md-2 ">
+              <!-- Chart -->
+              {% comment %} <div class="chart">
+                <canvas id="chart-bars" class="chart-canvas"></canvas>
+              </div> {% endcomment %}
+              <h1><a class="article-title" href="{% url 'post_detail' post.pk %}">{{ post.content|safe }}</a></h1>
+           
+          <a href="{% url 'post_detail' post.pk %}">  <img class="img-fluid rounded" src="{{ post.image.url }}" alt=""></a>
+            </div>
+          </div> 
+          
+        </div>
+       {% endfor %}
+       
+        
+      </div>
+
+      
+    </div>
+
+  </div>
+  
+  <!-- Argon Scripts -->
+  <!-- Core -->
+  <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/js-cookie/js.cookie.js' %}"></script>
+  <script src="{% static 'vendor/jquery.scrollbar/jquery.scrollbar.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js' %}"></script>
+  <!-- Argon JS -->
+  <script src="{% static 'js/argon.js' %}"></script>
+</body>
+
+</html>

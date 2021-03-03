@@ -14,13 +14,8 @@ from .views import (
 
 
 urlpatterns = [
-    # path('', PostListView.as_view(), name='index'),
-    # path('', profileMember, name='index'),
-    path('testtem/',views.testtem,name='Template'),
-    path('anode/', views.anode,name='anode'),
-    path('cathode/', views.cathode,name='cathode'),
-    path('rating/', views.rating, name='rating'),
-    path('', views.rating, name='index'),
+    # path('testprofile/', ProfileListView.as_view(), name='index'),
+    path('', PostListView.as_view(), name='Public_Area'),
     path('user/<str:username>/', UserPostListView.as_view(), name='user_posts'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
     path('post/new/', PostCreateView.as_view(), name='post_create'),
