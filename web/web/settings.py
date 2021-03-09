@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     'taffy.apps.TaffyConfig',
     'crispy_forms',
     'rest_framework',
+    # 'django_dbml',
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

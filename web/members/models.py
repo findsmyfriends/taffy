@@ -44,30 +44,30 @@ class RaSi(models.Model):
         verbose_name = 'ราศี'
 
 
-class Gender (models.Model):
-    gender =models.CharField( max_length=50)
+# class Gender (models.Model):
+#     gender =models.CharField( max_length=50)
 
-    def __str__(self) -> str:
-        return f'{self.gender}'
+#     def __str__(self) -> str:
+#         return f'{self.gender}'
 
-    class Meta:
-        verbose_name = 'เพศสภาพ'
+#     class Meta:
+#         verbose_name = 'เพศสภาพ'
 
 
-class Testes (models.Model):
-    testes = models.CharField( max_length=50)
+# class Testes (models.Model):
+#     testes = models.CharField( max_length=50)
 
-    def __str__(self) -> str:
-        return f'{self.testes}'
+#     def __str__(self) -> str:
+#         return f'{self.testes}'
 
-    class Meta:
-        verbose_name = 'รสนิยมทางเพศ'
+#     class Meta:
+#         verbose_name = 'รสนิยมทางเพศ'
 
-class Personality(models.Model):
-    personality = models.CharField(max_length=100) #ค่าการการทำนายจากการหาและคำนวนคะแนน (ขั่วบวกและขั่วลบ)
+# class Personality(models.Model):
+#     personality = models.CharField(max_length=100) #ค่าการการทำนายจากการหาและคำนวนคะแนน (ขั่วบวกและขั่วลบ)
 
-    def __str__(self):
-        return self.personality
+#     def __str__(self):
+#         return self.personality
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -82,8 +82,8 @@ class Profile(models.Model):
     bloodtype = models.ForeignKey(BloodType, blank=True,null=True ,verbose_name="หมู่เลือด",on_delete=models.CASCADE)
     naksus = models.ForeignKey(NakSus, blank=True,null=True ,verbose_name="นักษัตร",on_delete=models.CASCADE)
     # personality = models.ManyToManyField(Personality,related_name='members',blank=True,null=True,) #ขั้วบวกลบ
-    like = models.BooleanField(default=False,blank=True,null=True)
-    nope = models.BooleanField(default=False,blank=True,null=True)
+    like = models.BooleanField(default=False)
+    nope = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True) # When it was create
     updated = models.DateTimeField(auto_now=True)  # When it was update
 
@@ -140,7 +140,8 @@ class Match(models.Model):
         
 class Handler(models.Model):
     # block = models.BooleanField(default=False,blank=True,null=True)
-    rejected = models.BooleanField(default=False, blank=True, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rejected = models.BooleanField(default=False)
     reviewe_value = models.IntegerField(blank=True,null=True) # แสดงให้คนคุยมากกว่า 1 weeks or คนที่คุยกันมากกว่า 50 times
     created = models.DateTimeField(auto_now_add=True)  # When it was create
     updated = models.DateTimeField(auto_now=True)  # When i was update
@@ -161,14 +162,14 @@ class Message(models.Model):
         return str(self.sender) + ' ' + str(self.recipient) + ' ' + self.text
 
 
-class Goldmember(models.Model):
-    goldmember = models.OneToOneField(
-        Profile,
-        null=True,blank=True,
-        on_delete=models.CASCADE,
-        # prsimary_key=True,
-        related_name='goldmember', related_query_name='goldmember'
-    )
+# class Goldmember(models.Model):
+#     goldmember = models.OneToOneField(
+#         Profile,
+#         null=True,blank=True,
+#         on_delete=models.CASCADE,
+#         # prsimary_key=True,
+#         related_name='goldmember', related_query_name='goldmember'
+    # )
     # user = models.OneToOneField(settings.AUTH_USER_MODEL, related_query_name='conversation',
     #                                verbose_name='User_ID',
     #                                on_delete=models.CASCADE)
@@ -176,5 +177,5 @@ class Goldmember(models.Model):
     #                                  verbose_name='Conversation_ID',
     #     on_delete=models.CASCADE)
 
-    def __str__(self) -> str:
-        return f'{self.goldmember}'
+    # def __str__(self) -> str:
+    #     return f'{self.goldmember}'

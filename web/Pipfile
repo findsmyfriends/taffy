@@ -12,6 +12,9 @@ django-splash = "*"
 openpyxl = "*"
 markdown = "*"
 django-filter = "*"
+django-dbml = "*"
+django-extensions = "*"
+pydotplus = "*"
 
 [dev-packages]
 

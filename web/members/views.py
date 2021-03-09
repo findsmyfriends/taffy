@@ -86,7 +86,7 @@ def message(request, username):
     return render(request, 'taffy/message.html', {'messages': messages, 'form': form})
 
 def testtem(request):
-    return render(request, 'taffy/profile.html')
+    return render(request, 'members/testswipe.html')
 
 # def cathode(request):
 #     return render(request, 'taffy/cathode.html')
@@ -175,7 +175,7 @@ def rating(req):
             sorted_dict[w] = result_dict[w]
             
         for e in sorted_keys:
-            if result_dict[w] >= 0:
+            if result_dict[w] > 0:
             
                 sorted_dictAnode[e] = result_dict[e]
             
