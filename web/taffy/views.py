@@ -1,5 +1,3 @@
-from members.forms import ProfileUpdateForm, UserUpdateForm
-from members.models import Profile
 from .models import Post, Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
@@ -15,14 +13,6 @@ from django.views.generic import (
     UpdateView,
     DeleteView
 )
-
-class ProfileListView(ListView):
-    model = Profile
-    template_name = 'taffy/index.html'
-    context_object_name = 'profiles'
-    paginate_by = 1
-  
-        
 
     
 class PostListView(ListView):

@@ -1,13 +1,15 @@
+from django.views.generic.detail import DetailView
 from members.models import Message
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.models import User, AnonymousUser
 from .forms import *
+from django.views.generic import DetailView
 
 
 def register(request):
@@ -96,6 +98,7 @@ def match(req):
     print(f'bornborn to match')
     return render(req,'taffy/matchedtest.html')
 
+
 @login_required
 def rating(req):
     #  pass
@@ -175,23 +178,24 @@ def rating(req):
             sorted_dict[w] = result_dict[w]
             
         for e in sorted_keys:
-            if result_dict[w] > 0:
+            if result_dict[e] > 0:
             
                 sorted_dictAnode[e] = result_dict[e]
             
         for r in sorted_keys:
-            if result_dict[w] < 0:
+            
+            if result_dict[r] < 0:
             
                 sorted_dictCathode[r] = result_dict[r]
 
-        print(sorted_keys)
+        print("_____Class rating Main_____",sorted_dictAnode,"________--")
 
         return render(req,'taffy/index.html',{
+            # 'userA': userA,
+            # 'userB': userB,
             'data':data,
             'data2':data2,
             'result_dict' :result_dict,
-            'userA': userA,
-            'userB': userB,
             'sorted_dict' : sorted_dict,
             'sorted_dictAnode':sorted_dictAnode,
             'sorted_dictCathode':sorted_dictCathode,
@@ -310,8 +314,8 @@ def anode(req):
         'data':data,
         'data2':data2,
         'result_dict' :result_dict,
-        'userA': userA,
-        'userB': userB,
+        # 'userA': userA,
+        # 'userB': userB,
         'sorted_dict' : sorted_dict,
        
         
@@ -403,12 +407,18 @@ def cathode(req):
         'data':data,
         'data2':data2,
         'result_dict' :result_dict,
-        'userA': userA,
-        'userB': userB,
+        # 'userA': userA,
+        # 'userB': userB,
         'sorted_dict' : sorted_dict,
        
         
 
 })
-    
+
+
+class ProfileDetailView(DetailView):
+    # pass
+ 
+    model = Profile
+
 

@@ -16,6 +16,7 @@ urlpatterns = [
     path('anode/', member_views.anode,name='anode'),
     path('cathode/', member_views.cathode,name='cathode'),
     path('rating/', member_views.rating, name='rating'),
+    path('profile/<int:pk>/',member_views.ProfileDetailView.as_view(),name='profile_detail'),
     
     
     # API urls

@@ -1,3 +1,4 @@
+from members.signals import save_profile
 from django.core.management.base import BaseCommand, CommandError
 from members.models import *
 
@@ -64,24 +65,24 @@ class Command(BaseCommand):
             q = RaSi(**d)
             q.save()
             print("____________________________")
-        for d in self.load(wb, 'Gender', ['id', 'gender']):
-            print("Gender =  ", d)
-            # (**w).save()
-            q = Gender(**d)
-            q.save()
-            print("____________________________")
-        for d in self.load(wb, 'Testes', ['id', 'testes']):
-            print("Testes =  ", d)
-            # (**w).save()
-            q = Testes(**d)
-            q.save()
-            print("____________________________")
+        # for d in self.load(wb, 'Gender', ['id', 'gender']):
+        #     print("Gender =  ", d)
+        #     # (**w).save()
+        #     q = Gender(**d)
+        #     q.save()
+            # print("____________________________")
+        # for d in self.load(wb, 'Testes', ['id', 'testes']):
+        #     print("Testes =  ", d)
+        #     # (**w).save()
+        #     q = Testes(**d)
+        #     q.save()
+        #     print("____________________________")
 
-        for d in self.load(wb, 'Personality', ['id', 'personality']):
-            print("Personality =  ", d)
-            # (**w).save()
-            q = Personality(**d)
-            q.save()
+        # for d in self.load(wb, 'Personality', ['id', 'personality']):
+        #     print("Personality =  ", d)
+        #     # (**w).save()
+        #     q = Personality(**d)
+        #     q.save()
 
         for b in self.load(wb, 'User', ['id', 'first_name', 'last_name', 'username', 'email','password',]):
             print("User  =  ",b)
@@ -90,6 +91,25 @@ class Command(BaseCommand):
         print("seve...User")
         print("____________________________")
 
+        # for p in self.load(wb ,'Profile',['id','user','daysofweek']):
+        #     # print('Profile= ',p['user'])
+        #     profile = Profile.objects.get(user=p['user'])
+        #     user = User.objects.get(pk=p['user'])
+        #     if profile.user.id == user.id:
+            
+        #         daysofweek = DaysOfWeek.objects.get(pk=p['daysofweek'])
+        #         print (daysofweek.id)
+        #         print(type(Profile()))
+        #         q = Profile(**p)
+        #         p.pop('daysofweek', None)
+                
+            
+                
+                # q.daysofweek=daysofweek
+                
+                # q.save()  
+ 
+        print("____________________________")
 
             
 

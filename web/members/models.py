@@ -2,46 +2,54 @@ from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
 from datetime import date
+from django.db.models.deletion import ProtectedError
+from django.contrib.postgres.fields import ArrayField
+from django.db.models.fields import NullBooleanField
+from django.db.models.fields.related import ForeignKey
+
 
 class BloodType(models.Model):
 
     bloodtype =models.CharField(max_length=10)
+   
+    
 
     def __str__(self) -> str:
         return self.bloodtype
 
-    class Meta:
-        verbose_name = 'หมู่เลือด'
+    # class Meta:
+    #     verbose_name = 'หมู่เลือด'
 
 
 class DaysOfWeek(models.Model):
     daysofweek = models.CharField(max_length=100)
+    
 
     def __str__(self):
         return f'{self.daysofweek}'
 
-    class Meta:
-        verbose_name = 'วันประจำวันเกิด'
+    # class Meta:
+    #     verbose_name = 'วันประจำวันเกิด'
 
 
 class NakSus(models.Model):
     naksus = models.CharField(max_length=100)
-
+    
     def __str__(self):
         return f'{self.naksus}'
 
-    class Meta:
-        verbose_name = 'นักษัตร'
+    # class Meta:
+    #     verbose_name = 'นักษัตร'
 
 
 class RaSi(models.Model):
     rasi = models.CharField(max_length=100)
-
+    
     def __str__(self):
         return f'{self.rasi}'
 
-    class Meta:
-        verbose_name = 'ราศี'
+    # class Meta:
+    #     verbose_name = 'ราศี'
 
 
 # class Gender (models.Model):
@@ -70,40 +78,26 @@ class RaSi(models.Model):
 #         return self.personality
 
 class Profile(models.Model):
+    GENDER = [('F', 'Female'),('M', 'Male')]
+    DAYSOfWEEK = [('SUN','Sunday'),('MON','Monday'),('TUE','Tuesday'),('WED','Wednesday'),('THU','Thursday'),('FRI','Friday'),('SAT','Saturday')]
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
     birthday = models.DateField(blank=True,null=True)
     age =  models.IntegerField(blank=True,null=True)
-    GENDER = [('F', 'Female'),('M', 'Male')]
     gender = models.CharField( blank=True,null=True,choices=GENDER, max_length=1, default='F')
     testes = models.CharField( blank=True,null=True,choices=GENDER, max_length=1, default='M') # sex of Testes
     rasi = models.ForeignKey(RaSi, blank=True,null=True, verbose_name='ราศีประจำวันเกิด',on_delete=models.CASCADE)
-    daysofweek = models.ForeignKey(DaysOfWeek, blank=True,null=True, verbose_name='วันประจำวันเกิด',on_delete=models.CASCADE)
     bloodtype = models.ForeignKey(BloodType, blank=True,null=True ,verbose_name="หมู่เลือด",on_delete=models.CASCADE)
     naksus = models.ForeignKey(NakSus, blank=True,null=True ,verbose_name="นักษัตร",on_delete=models.CASCADE)
-    # personality = models.ManyToManyField(Personality,related_name='members',blank=True,null=True,) #ขั้วบวกลบ
+    daysofweek = models.ForeignKey(DaysOfWeek, blank=True,null=True, verbose_name='วันประจำวันเกิด',on_delete=models.CASCADE)
     like = models.BooleanField(default=False)
     nope = models.BooleanField(default=False)
     created = models.DateTimeField(auto_now_add=True) # When it was create
     updated = models.DateTimeField(auto_now=True)  # When it was update
-
-    @property
-    def calculate_age(self):
-        if self.birthday:
-            today = date.today()
-            self.age = today.year - self.birthday.year
-            return self.age
-        print("It's Age Calculed: {{self.age}}")
-        return self.age # when "self.birthday" is "NULL"
-
-    def save(self, *args, **kwargs):
-        if not self.id:
-            today = date.today()
-            self.age = today.year - self.birthday.year
-        super(Profile, self).save(*args, **kwargs)
+    # personality = models.ManyToManyField(Personality,related_name='members',blank=True,null=True,) #ขั้วบวกลบ
 
     def __str__(self):
-        return f'{self.user.username},{self.user.first_name},{self.user.last_name} {self.age} {self.testes}'
+        return f'{self.user.username} {self.age} {self.testes} {self.daysofweek} {self.naksus} {self.rasi} {self.bloodtype}'
 
     def save(self, *args, **kwargs):
         super(Profile, self).save(*args, **kwargs)
@@ -114,6 +108,58 @@ class Profile(models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.image.path)
+        # DAYSOfWEEK = [('SUN','Sunday'),('MON','Monday'),('TUE','Tuesday'),('WED','Wednesday'),('THU','Thursday'),('FRI','Friday'),('SAT','Saturday')]
+        if self.birthday:
+            today = date.today()
+            self.age = today.year - self.birthday.year
+            print("models save auto", self.age )
+            super(Profile, self).save(*args, **kwargs)
+        # if self.daysofweek:
+        #     daysoftheweek = self.birthday.strftime( '%A' )
+            
+        #     if daysoftheweek == 'Sunday':
+                
+        #         self.daysofweek.pk = 1 
+        #         super(Profile, self).save(*args, **kwargs)
+        #     if daysoftheweek == 'Monday':
+        #         print("MON")
+        #         self.daysofweek.pk = 2
+        #         super(Profile, self).save(*args, **kwargs)
+        # # self.daysofweek.pk = 1
+        
+        # print('_______day of date________',self.birthday.strftime( '%A' ))
+
+
+class ScoreOfBloodType(models.Model):
+    memberA = models.ForeignKey(BloodType,on_delete=models.CASCADE,related_name='column_item')
+    memberB = models.ForeignKey(BloodType,on_delete=models.CASCADE,related_name='row_item')
+    score = models.IntegerField()
+    
+    def __str__(self):
+        return str(self.memberA) + ' ' + str(self.memberB) + ' ' + str(self.score)
+        
+
+class ScoreOfDaysOfWeek(models.Model):
+    memberA = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name='daysofweek_pk_req')
+    memberB = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name='daysofweek_pk_all')
+    score = models.IntegerField()
+    
+    def __str__(self):
+        return str(self.memberA) + ' ' + str(self.memberB) + ' ' + str(self.score)
+
+class ScoreOfNakSus(models.Model):
+    memberA = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name='naksus_pk_req')
+    memberB = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name='naksus_pk_all')
+    score = models.IntegerField()
+
+    def __str__(self):
+        return str(self.memberA) + ' ' + str(self.memberB) + ' ' + str(self.score)
+class ScoreOfRaSi(models.Model):
+    memberA = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name='rasi_pk_req')
+    memberB = models.ForeignKey(Profile,on_delete=models.CASCADE,related_name='rasi_pk_all')
+    score = models.IntegerField()
+    def __str__(self):
+        return str(self.memberA) + ' ' + str(self.memberB) + ' ' + str(self.score)
 
 class Rating(models.Model):
     ratingUser = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='ratingUser')
@@ -161,21 +207,3 @@ class Message(models.Model):
     def __str__(self):
         return str(self.sender) + ' ' + str(self.recipient) + ' ' + self.text
 
-
-# class Goldmember(models.Model):
-#     goldmember = models.OneToOneField(
-#         Profile,
-#         null=True,blank=True,
-#         on_delete=models.CASCADE,
-#         # prsimary_key=True,
-#         related_name='goldmember', related_query_name='goldmember'
-    # )
-    # user = models.OneToOneField(settings.AUTH_USER_MODEL, related_query_name='conversation',
-    #                                verbose_name='User_ID',
-    #                                on_delete=models.CASCADE)
-    # conversation = models.ForeignKey(Conversation,null=True,blank=True,
-    #                                  verbose_name='Conversation_ID',
-    #     on_delete=models.CASCADE)
-
-    # def __str__(self) -> str:
-    #     return f'{self.goldmember}'

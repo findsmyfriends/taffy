@@ -4,6 +4,7 @@ from django.urls import reverse
 from django.conf import settings
 from PIL import Image
 
+
 class PostManager(models.Manager):
     def like_toggle(self, user, post_obj):
         if user in post_obj.liked.all():

@@ -413,7 +413,7 @@
               <a class="nav-link pr-0" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <div class="media align-items-center">
                   <span class="avatar avatar-sm rounded-circle">
-                    <img alt="Image placeholder" src="{{ user.profile.image.url }}">
+                    <img alt="Image placeholder" src="{{ user.profile.image.url }}" width="40" height="40" object-fit="cover">
                   </span>
                   <div class="media-body  ml-2  d-none d-lg-block">
                     <span class="mb-0 text-sm  font-weight-bold">{{user.username}} {{user.first_name}} {{user.last_name}},{{user.profile.age}}</span>
@@ -465,8 +465,13 @@
         {% endfor %}
         
         {% endif %}
+<div class="container">
+<div class="stack">
 
  {% block content %} {% endblock %}
+</div>
+</div>
+
   </div>
   <!-- Argon Scripts -->
   <!-- Core -->

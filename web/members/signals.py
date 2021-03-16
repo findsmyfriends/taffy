@@ -8,6 +8,7 @@ from .models import Profile
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
+        print("___________Profile Create Auth Auto________",Profile.objects.all())
         Profile.objects.create(user=instance)
 
 

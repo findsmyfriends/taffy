@@ -8,7 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
   <meta name="author" content="Creative Tim">
-  <title>Taffy - Filter1 Page</title>
+  <title>Taffy - Test Page</title>
   <!-- Favicon -->
   <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
 
@@ -19,69 +19,41 @@
 <body>
 
 <div class="container">
+
   <div class="stack">
-    <div class="final-message">No more kitten :'(</div>
-    <ul>
-      <li>
-        <div id="card10" class="card js-swiping-card">
-          <div class="card-illustration js-lazyload" data-original="https://placekitten.com/g/300/200"></div>
-        </div>
-      </li>
-      <li>
-        <div id="card9" class="card js-swiping-card">
-          <div class="card-illustration js-lazyload" data-original="https://placekitten.com/g/400/200"></div>
-        </div>
-      </li>
-      <li>
-        <div id="car8" class="card js-swiping-card">
-          <div class="card-illustration js-lazyload" data-original="https://placekitten.com/g/450/200"></div>
-        </div>
-      </li>
-      <li>
-        <div id="card7" class="card js-swiping-card">
-          <div class="card-illustration js-lazyload" data-original="https://placekitten.com/g/800/200"></div>
-        </div>
-      </li>
-      <li>
-        <div id="card6" class="card js-swiping-card">
-          <div class="card-illustration js-lazyload" data-original="https://placekitten.com/g/100/200"></div>
-        </div>
-      </li>
-      <li>
-        <div id="card5" class="card js-swiping-card">
-          <div class="card-illustration js-lazyload" data-original="https://placekitten.com/g/400/200"></div>
-        </div>
-      </li>
-      <li>
-        <div id="card4" class="card js-swiping-card">
-          <div class="card-illustration js-lazyload" data-original="https://placekitten.com/g/150/200"></div>
-        </div>
-      </li>
-      <li>
-        <div id="card3" class="card js-swiping-card">
-          <div class="card-illustration js-lazyload" data-original="http://www.escaledigitale.com/im/team/anita@2x.png"></div>
-        </div>
-      </li>
-      <li>
-        <div id="card2" class="card js-swiping-card">
-          <div class="card-illustration js-lazyload" data-original="https://placekitten.com/g/600/200"></div>
-        </div>
-      </li>
-      <li>
-        <div id="card1" class="card js-swiping-card">
-          <div class="card-illustration js-lazyload" data-original="https://placekitten.com/g/400/200"></div>
-        </div>
-      </li>
-    </ul>
-  </div>
-  <div class="btn-controls text-center">
-    <button type="button" class="btn btn-danger js-left-trigger">
-      Ugly kitten
-    </button>
-    <button type="button" class="btn btn-primary js-right-trigger">
-      Atomic kitten
-    </button>
-  </div>
+
+  <div  class="card center" >
+<h1 class="center">Personality Own: {{user.username}}</h1>
+<a href=""> </a>
+<a href="#"> <button type="button"  type="submit"  class="btn btn-primary  " > +ขั่วบวก</button></a>
+<a href="#"><button type="button"  type="submit" id="cathode" class="btn  btn-secondary">-ขั่วลบ</button></a>
+</div>
+{% if sorted_dict%}
+<button type="button"  type="submit"  class="btn btn-danger" >default</button>
+{% for key, value in sorted_dict.items %} 
+				<div id="anode" lass="card center">
+					<div class="user">
+						<img
+							src="{{ key.image.url }}"	/>
+						<div class="profile">
+							<div class="h1 mr-6">{{key.user.username}}<span>,{{key.age}}  {{key.gender}}</span></div>
+							<div class="local">
+								<i class="fas fa-user"></i>
+								<span class="h2">{{key.user.first_name}} {{key.user.last_name}}</span>
+                <br><span class="h2">Rating Score :{{value}} </span>
+							</div>
+						</div>
+					</div>
+			</div>
+<button type="button" class="btn btn-warning  "><i class="fas fa-times"></i></button>
+<button type="button" class="btn btn-danger"><i class="fas fa-heart"></i></button>    
+     {% endfor%} 
+{% endif %}
+    <hr>
+
+
+
+</div>
 </div>
   <!-- Argon Scripts -->
 

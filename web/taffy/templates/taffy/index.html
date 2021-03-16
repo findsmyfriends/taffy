@@ -1,20 +1,19 @@
 {% extends "taffy/base.html" %}
 {% block content %}
  
-<div  class="card" >
+<div  class="stack">
 <h1>Personality</h1>
-<a href="/"> <button type="button"  type="submit"  class="btn btn-danger  btn-block" >default</button></a>
-<a href="{% url 'anode' %}"> <button type="button"  type="submit"  class="btn btn-primary  btn-block" > +ขั่วบวก</button></a>
-<a href="{% url 'cathode' %}"><button type="button"  type="submit" id="cathode" class="btn  btn-secondary  btn-block">-ขั่วลบ</button></a>
+<a href="/"> <button type="button"  type="submit"  class="btn btn-danger " >default</button></a>
+<a href="{% url 'anode' %}"> <button type="button"  type="submit"  class="btn btn-primary" > +ขั่วบวก</button></a>
+<a href="{% url 'cathode' %}"><button type="button"  type="submit" id="cathode" class="btn  btn-secondary ">-ขั่วลบ</button></a>
 </div>
 
 {% for key, value in sorted_dict.items %} 
 				<div id="anode" lass="card">
 					<div class="user">
-						<img
-							src="{{ key.image.url }}"	/>
+          <a href="{% url 'profile_detail' key.id %}">  <img class="img-fluid rounded" src="{{ key.image.url }}" width="300" height="400" object-fit="cover" alt=""></a>
 						<div class="profile">
-							<div class="h1 mr-6">{{key.user.username}}<span>,{{key.age}} {{key.gender}}</span></div>
+							<div class="h1 mr-6">ID:{{key.id}},{{key.user.username}}<span>,{{key.age}} {{key.gender}}</span></div>
 							<div class="local">
 								<i class="fas fa-user"></i>
 								<span class="h2">{{key.user.first_name}} {{key.user.last_name}}</span>
@@ -26,8 +25,8 @@
 
   
 
-<button type="button" class="btn btn-warning circle "><i class="fas fa-times fa-3x "></i></button>
-<a href="match/"><button type="submit" class="btn btn-danger"><i class="fas fa-heart fa-3x"></i></button></a>
+<button type="button" class="btn btn-warning circle "><i class="fas fa-times fa "></i></button>
+<a href="match/"><button type="submit" class="btn btn-danger"><i class="fas fa-heart fa"></i></button></a>
 
 
     
