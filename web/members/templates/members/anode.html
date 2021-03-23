@@ -1,14 +1,15 @@
 {% extends "taffy/base.html" %}
 {% block content %}
- 
-<div  class="stack">
+ <div class="container">
+<div class="stack">
+
 <h1>Personality</h1>
 <a href="/"> <button type="button"  type="submit"  class="btn btn-danger " >default</button></a>
 <a href="{% url 'anode' %}"> <button type="button"  type="submit"  class="btn btn-primary" > +ขั่วบวก</button></a>
 <a href="{% url 'cathode' %}"><button type="button"  type="submit" id="cathode" class="btn  btn-secondary ">-ขั่วลบ</button></a>
 </div>
 
-{% for key, value in sorted_dictAnode.items %} 
+{% for key, value in sorted_dict.items %} 
 				<div id="anode" lass="card">
 					<div class="user">
           <a href="{% url 'profile_detail' key.id %}">  <img class="img-fluid rounded" src="{{ key.image.url }}" width="300" height="400" object-fit="cover" alt=""></a>
@@ -67,5 +68,5 @@
      
       {% endif %}
     {% endif %}
-    
+    </div>
 {% endblock content %}

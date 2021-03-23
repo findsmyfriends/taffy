@@ -10,15 +10,19 @@ from django.conf.urls.static import static
 urlpatterns = [
     # Members urls
     path('', member_views.rating, name='index'),
+    path('<int:pk>/', member_views.matched, name='matched'),
     path('admin/', admin.site.urls),
-    path('match/',member_views.match,name='Match Page'),
+    path('admin/', admin.site.urls),
+    path('match/',member_views.match,name='match_page'),
     path('testtem/',member_views.testtem,name='Template'),
+    path('testtem/<int:pk>/',member_views.testmatch,name='testmatch'),
     path('anode/', member_views.anode,name='anode'),
     path('cathode/', member_views.cathode,name='cathode'),
     path('rating/', member_views.rating, name='rating'),
     path('profile/<int:pk>/',member_views.ProfileDetailView.as_view(),name='profile_detail'),
-    
-    
+    path('match/like/', member_views.MatchCreateView.as_view(), name='match_create'),
+    path('match/<int:pk>/', member_views.MatchDetailView.as_view(), name='match_detail'),
+   
     # API urls
     path('api-taffy/', include('taffy.api.urls')),
 

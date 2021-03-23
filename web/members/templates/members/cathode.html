@@ -1,47 +1,20 @@
 {% extends "taffy/base.html" %}
 {% block content %}
- 
-<!-- Search Form -->
-{% comment %} <form class="form-inline my-2 my-lg-0 pb-2">
-    <input class="form-control mr-sm-2" name="q" type="search" placeholder="Search" aria-label="Search" style="width: 400px">
-    <input class="btn btn-outline-success my-2 my-sm-0" type="submit" value="Search">
-</form>  {% endcomment %}
-     {% comment %} {% for post in posts %}
-        <article class="media content-section">
-          <img class="rounded-circle article-img" src="{{ post.author.profile.image.url }}">
-          <div class="media-body">
-            <div class="article-metadata">
-              <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a>
-              <small class="text-muted">{{ post.date_posted|date:"F d, Y" }}</small>
-            </div>
-          <h2><a class="article-title" href="{% url 'post_detail' post.pk %}">{{ post.title }}</a></h2>
-            <p class="article-content">{{ post.content|safe }}</p>
-          </div>
-        </article>
-    {% endfor %}  {% endcomment %}
+ <div class="container">
+<div class="stack">
 
-
-
-{% comment %} <ul>
-
-  <h1><li>{{key}} คะแนนดิบ {{value}}</li><h1>
-{% endfor %}
-</ul> {% endcomment %}
-
-<div  class="card center" >
-<h1 class="center">Personality</h1>
-<a href="/"> <button type="button"  type="submit"  class="btn btn-danger  btn-block" >default</button></a>
-<a href="{% url 'anode' %}"> <button type="button"  type="submit"  class="btn btn-primary  btn-block" > +ขั่วบวก</button></a>
-<a href="{% url 'cathode' %}"><button type="button"  type="submit" id="cathode" class="btn  btn-secondary  btn-block">-ขั่วลบ</button></a>
+<h1>Personality</h1>
+<a href="/"> <button type="button"  type="submit"  class="btn btn-danger " >default</button></a>
+<a href="{% url 'anode' %}"> <button type="button"  type="submit"  class="btn btn-primary" > +ขั่วบวก</button></a>
+<a href="{% url 'cathode' %}"><button type="button"  type="submit" id="cathode" class="btn  btn-secondary ">-ขั่วลบ</button></a>
 </div>
 
 {% for key, value in sorted_dict.items %} 
-				<div id="anode" lass="card center">
+				<div id="anode" lass="card">
 					<div class="user">
-						<img
-							src="{{ key.image.url }}"	/>
+          <a href="{% url 'profile_detail' key.id %}">  <img class="img-fluid rounded" src="{{ key.image.url }}" width="300" height="400" object-fit="cover" alt=""></a>
 						<div class="profile">
-							<div class="h1 mr-6">{{key.user.username}}<span>,{{key.age}}  {{key.gender}}</span></div>
+							<div class="h1 mr-6">ID:{{key.id}},{{key.user.username}}<span>,{{key.age}} {{key.gender}}</span></div>
 							<div class="local">
 								<i class="fas fa-user"></i>
 								<span class="h2">{{key.user.first_name}} {{key.user.last_name}}</span>
@@ -49,13 +22,14 @@
 							</div>
 						</div>
 					</div>
-			</div>
-      			
+			</div> 
+
+  
+
+<button type="button" class="btn btn-warning circle "><i class="fas fa-times fa "></i></button>
+<a href="match/"><button type="submit" class="btn btn-danger"><i class="fas fa-heart fa"></i></button></a>
 
 
-<button type="button" class="btn btn-warning  btn-xl"><i class="fas fa-times"></i></button>
-<button type="button" class="btn btn-danger  btn-xl"><i class="fas fa-heart"></i></button>
-    
     
      {% endfor%}
      
@@ -94,5 +68,5 @@
      
       {% endif %}
     {% endif %}
-    
+    </div>
 {% endblock content %}

@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cafb1e824c523c4cbea52c4bc52008a851c9561ef88b2cf4a3ad838105b28fd5"
+            "sha256": "4bc58790de1baafbea2224c66e87c4868bd356a1fa8af686be17dd354181c868"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -24,13 +24,21 @@
             "index": "pypi",
             "version": "==2.2.7"
         },
-        "django-crispy-forms": {
+        "django-bootstrap-datepicker-plus": {
             "hashes": [
-                "sha256:2ea206f35a9554597b89315ea52737d32d2fd9f5304e79a469a08887aa0824b0",
-                "sha256:5c600dea66e2f435f774fe2c4cacfb5b5eb9914dd6da0728edd174b95f6956fd"
+                "sha256:490058eba99d47f48a7d24fa78581c0e36375bdc7aa9605783eeb170d51fd0df",
+                "sha256:a8bc19cc6846f97ff1e6c447f4e0387881d16e8afa1e8bd7a652c19e545c566b"
             ],
             "index": "pypi",
-            "version": "==1.11.1"
+            "version": "==3.0.5"
+        },
+        "django-crispy-forms": {
+            "hashes": [
+                "sha256:3db71ab06d17ec9d0195c086d3ad454da300ac268752ac3a4f63d72f7a490254",
+                "sha256:88efa857ce6111bd696cc4f74057539a3456102fe9c3a3ece8868e1e4579e70a"
+            ],
+            "index": "pypi",
+            "version": "==1.11.2"
         },
         "django-dbml": {
             "hashes": [

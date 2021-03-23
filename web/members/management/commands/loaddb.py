@@ -84,12 +84,12 @@ class Command(BaseCommand):
         #     q = Personality(**d)
         #     q.save()
 
-        for b in self.load(wb, 'User', ['id', 'first_name', 'last_name', 'username', 'email','password',]):
-            print("User  =  ",b)
-            q = User(**b)
-            q.save()
-        print("seve...User")
-        print("____________________________")
+        # for b in self.load(wb, 'User', ['id', 'first_name', 'last_name', 'username', 'email',]):
+        #     print("User  =  ",b)
+        #     q = User(**b)
+        #     q.save()
+        # print("seve...User")
+        # print("____________________________")
 
         # for p in self.load(wb ,'Profile',['id','user','daysofweek']):
         #     # print('Profile= ',p['user'])

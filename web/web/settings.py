@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'taffy.apps.TaffyConfig',
     'crispy_forms',
     'rest_framework',
+    'bootstrap_datepicker_plus',
     # 'django_dbml',
     'django_extensions',
     'django.contrib.admin',
@@ -44,7 +45,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'web.urls'
-
+# AUTH_USER_MODEL = "members.CustomUser"
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -106,8 +107,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -134,3 +133,6 @@ LOGIN_URL = 'login'
 # Email Settings
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+BOOTSTRAP4 = {
+    'include_jquery': True,
+}

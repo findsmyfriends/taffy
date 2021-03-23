@@ -1,5 +1,7 @@
+
 from django.contrib import admin
 from .models import *
+
 
 admin.site.site_header = "Taffy Admin."
 class ProfileAdmin(admin.ModelAdmin):
@@ -7,23 +9,25 @@ class ProfileAdmin(admin.ModelAdmin):
     list_display_links = ('id', 'user')
     list_filter = ('user','testes','gender',)
     list_per_page = 20
-# class PersonalityAdmin(admin.ModelAdmin):
-#     list_display = ('id','personality')
-#     list_display_links = ('id', 'personality')
-#     list_per_page = 20
 admin.site.register(Profile, ProfileAdmin)
+class RatingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'reqUser','ratedUser','ratingPoint')
+    list_display_links = ('id', 'ratedUser')
+    list_filter = ('reqUser',)
+    list_per_page = 20
+admin.site.register(Rating,RatingAdmin)
 admin.site.register(BloodType)
 admin.site.register(DaysOfWeek)
 admin.site.register(NakSus)
 admin.site.register(RaSi)
-admin.site.register(ScoreOfRaSi) 
-admin.site.register(ScoreOfNakSus)
-admin.site.register(ScoreOfDaysOfWeek)
-admin.site.register(ScoreOfBloodType)
 admin.site.register(Handler)
 admin.site.register(Match)
 admin.site.register(Message)
-admin.site.register(Rating)
+
+# admin.site.register(ScoreOfRaSi) 
+# admin.site.register(ScoreOfNakSus)
+# admin.site.register(ScoreOfDaysOfWeek)
+# admin.site.register(ScoreOfBloodType)
 # admin.site.register(Personality,PersonalityAdmin)
 # admin.site.register(Gender)
 # admin.site.register(Testes)

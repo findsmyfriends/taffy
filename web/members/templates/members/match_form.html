@@ -1,0 +1,18 @@
+{% extends "taffy/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+
+    <form method="post" enctype="multipart/form-data">
+    <br><br><br><br>
+  {% csrf_token %}
+  {{form|crispy}}
+   {% comment %} {{ form.user2|as_crispy_field }} {% endcomment %}
+  <button class="btn btn-outline-info btn-lg btn-block" type="submit">Match</button>
+  
+</form>
+
+</div>
+<!-- Medium Editor -->
+<script>var editor = new MediumEditor('.editable');</script>
+{% endblock content %}

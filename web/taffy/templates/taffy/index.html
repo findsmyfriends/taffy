@@ -1,7 +1,8 @@
 {% extends "taffy/base.html" %}
 {% block content %}
- 
-<div  class="stack">
+ <div class="container">
+<div class="stack">
+
 <h1>Personality</h1>
 <a href="/"> <button type="button"  type="submit"  class="btn btn-danger " >default</button></a>
 <a href="{% url 'anode' %}"> <button type="button"  type="submit"  class="btn btn-primary" > +ขั่วบวก</button></a>
@@ -25,8 +26,8 @@
 
   
 
-<button type="button" class="btn btn-warning circle "><i class="fas fa-times fa "></i></button>
-<a href="match/"><button type="submit" class="btn btn-danger"><i class="fas fa-heart fa"></i></button></a>
+<a href="/{{key.id}}/"><button type="button" class="btn btn-warning circle "><i class="fas fa-times fa "></i></button></a>
+<a href="/{{key.id}}/"><button type="submit" class="btn btn-danger"><i class="fas fa-heart fa"></i></button>
 
 
     
@@ -67,5 +68,5 @@
      
       {% endif %}
     {% endif %}
-    
+    </div>
 {% endblock content %}

@@ -92,7 +92,7 @@ def postpostviews(request):
             form.save()
             # Get the current instance object to display in the template
             img_obj = form.instance
-            return render(request, 'taffy/post_detail.html', {'form': form, 'img_obj': img_obj})
+            return render(request, 'taffy/public_detail.html', {'form': form, 'img_obj': img_obj})
     else:
         form =  PostForm()
     return render(request, 'taffy/post_detail.html', {'form': form})
@@ -115,4 +115,3 @@ def add_comment(request, pk):
     else:
         return redirect('post_detail', pk=pk)
     return redirect('post_detail', pk=pk)
-

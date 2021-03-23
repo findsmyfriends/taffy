@@ -17,6 +17,7 @@ django-extensions = "*"
 pydotplus = "*"
 django-matrix-field = "*"
 psycopg2 = "*"
+django-bootstrap-datepicker-plus = "*"
 
 [dev-packages]
 
@@ -28,6 +29,7 @@ m = "python manage.py migrate"
 mk = "python manage.py makemigrations "
 super = "python manage.py createsuperuser"
 loaddb = "python manage.py loaddb"
+testmember = "python manage.py testmember"
 
 [requires]
 python_version = "3.8"

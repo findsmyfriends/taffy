@@ -19,43 +19,70 @@
 <body>
 
 <div class="container">
-
+      
   <div class="stack">
-
+      {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+       
+        {% endfor %}
+        
+        {% endif %} 
+        
   <div  class="card center" >
 <h1 class="center">Personality Own: {{user.username}}</h1>
 <a href=""> </a>
 <a href="#"> <button type="button"  type="submit"  class="btn btn-primary  " > +ขั่วบวก</button></a>
 <a href="#"><button type="button"  type="submit" id="cathode" class="btn  btn-secondary">-ขั่วลบ</button></a>
 </div>
-{% if sorted_dict%}
-<button type="button"  type="submit"  class="btn btn-danger" >default</button>
-{% for key, value in sorted_dict.items %} 
-				<div id="anode" lass="card center">
-					<div class="user">
-						<img
-							src="{{ key.image.url }}"	/>
-						<div class="profile">
-							<div class="h1 mr-6">{{key.user.username}}<span>,{{key.age}}  {{key.gender}}</span></div>
-							<div class="local">
-								<i class="fas fa-user"></i>
-								<span class="h2">{{key.user.first_name}} {{key.user.last_name}}</span>
-                <br><span class="h2">Rating Score :{{value}} </span>
-							</div>
-						</div>
-					</div>
-			</div>
-<button type="button" class="btn btn-warning  "><i class="fas fa-times"></i></button>
-<button type="button" class="btn btn-danger"><i class="fas fa-heart"></i></button>    
-     {% endfor%} 
-{% endif %}
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">id=pk</th>
+      <th scope="col">Username</th>
+      <th scope="col">Age</th>
+      <th scope="col">Gerder</th>
+      <th scope="col">Testes</th>
+      <th scope="col">Like</th>
+      <th scope="col">nope</th>
+    </tr>
+  </thead>
+  {% for i in profile%} 
+  <tbody>
+    <tr>
+      <th scope="row">{{i.id}}</th>
+      <td>{{i.user.username}}</td>
+      <td>{{i.age}}</td>
+      <td>{{i.gender}}</td>
+      <td>{{i.testes}}</td>
+
+      <td><a href="/testtem/{{i.id}}"><button type="button"  type="submit" class="btn  btn-danger">Like</button></a></td>
+      <td><a href=""><button type="button"  type="submit" id="cathode" class="btn  btn-primary">Nope</button></a></td>
+  
+    </tr>
+  </tbody>
+  
+  {% endfor %}
+</table>
+
+
+
+  
+
     <hr>
-
-
+    <form action="/testtem/" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
 
 </div>
 </div>
   <!-- Argon Scripts -->
+
 
   <script src="{% static 'js/script.js' %}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
