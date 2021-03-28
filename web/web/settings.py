@@ -1,5 +1,7 @@
 import os
 
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -11,9 +13,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '3$!e5*ggej1g%8n!d77u^5jk$qy&_p_6r_gc2+mdu(2v1-&c%@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+# DEBUG = True
+DEBUG = False
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
@@ -24,7 +26,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'rest_framework',
     'bootstrap_datepicker_plus',
-    # 'django_dbml',
+    'django_dbml',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -45,7 +47,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'web.urls'
-# AUTH_USER_MODEL = "members.CustomUser"
+
+AUTH_USER_MODEL = "members.Member"
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

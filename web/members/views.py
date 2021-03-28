@@ -204,10 +204,10 @@ def rating(req):
                 # else: 
                 #     print(f'________else____{ratingDBCount}')
                     # Rating.objects.create(reqUser_id=userA.id,ratedUser_id=i+1,ratingPoint=rating)
-                try:
-                    Rating.objects.create(reqUser_id=userA.id,ratedUser_id=i+1,ratingPoint=rating)
-                except:
-                    Rating.objects.get(reqUser_id=userA.id,ratedUser_id=i+1,ratingPoint=rating)
+                # try:
+                #     Rating.objects.create(reqUser_id=userA.id,ratedUser_id=i+1,ratingPoint=rating)
+                # except:
+                #     Rating.objects.get(reqUser_id=userA.id,ratedUser_id=i+1,ratingPoint=rating)
                 allMember.append(profiles)
                 allrating.append(rating)
         

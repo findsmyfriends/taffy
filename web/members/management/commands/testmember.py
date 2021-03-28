@@ -1,7 +1,7 @@
 from members.signals import save_profile
 from django.core.management.base import BaseCommand, CommandError
 from members.models import *
-
+# from django.contrib.auth.hashers import make_password, HASHERS
 from django.contrib.auth.models import  User
 
 from openpyxl import load_workbook
@@ -36,11 +36,13 @@ class Command(BaseCommand):
         
         filename = "xlsx/loaddata.xlsx"
         wb = load_workbook(filename, data_only=True)
+        # for user in Member.objects.all():
+        #     user.set_password(user.password)
+        #     user.save()
 
-
-        for b in self.load(wb, 'User', ['id', 'first_name', 'last_name', 'username', 'email',]):
+        for b in self.load(wb, 'Member', ['id', 'first_name', 'last_name', 'username', 'email',]):
             print("User  =  ",b)
-            q = User(**b)
+            q = Member(**b)
             q.save()
         print("seve...User")
         print("____________________________")

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import Permission, User
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.forms import fields
-from .models import  Match, Profile, Rating
+from .models import  Match, Member, Profile, Rating
 from django.forms import DateInput
 from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput, DateTimePickerInput, MonthPickerInput, YearPickerInput
 
@@ -14,19 +14,19 @@ class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
     
     class Meta:
-        model = User
-        fields = ['username', 'first_name','last_name','email', 'password1', 'password2']
+        model = Member
+        fields = ['username', 'first_name','last_name','email', 'birthday','password1', 'password2']
         
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
 
     class Meta:
-        model = User
+        model = Member
         fields = ['username', 'email','first_name','last_name']
 
 class UserFilterUpdateForm(forms.ModelForm):
     class Meta:
-        model = User
+        model = Member
         fields = ['first_name','last_name']
 
 class ProfileFilterUpdateForm(forms.ModelForm):

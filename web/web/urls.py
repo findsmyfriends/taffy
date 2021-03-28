@@ -12,7 +12,7 @@ urlpatterns = [
     path('', member_views.rating, name='index'),
     path('<int:pk>/', member_views.matched, name='matched'),
     path('admin/', admin.site.urls),
-    path('admin/', admin.site.urls),
+    # path('admin/', admin.site.urls),
     path('match/',member_views.match,name='match_page'),
     path('testtem/',member_views.testtem,name='Template'),
     path('testtem/<int:pk>/',member_views.testmatch,name='testmatch'),

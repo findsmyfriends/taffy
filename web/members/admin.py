@@ -1,9 +1,16 @@
 
 from django.contrib import admin
+from django.db.models.base import ModelBase
 from .models import *
 
 
 admin.site.site_header = "Taffy Admin."
+class MemberAdmin(admin.ModelAdmin):
+    list_display = ('id', 'username','first_name','last_name','email')
+    list_display_links = ('id', 'username')
+    list_per_page = 20
+admin.site.register(Member, MemberAdmin)
+
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'user','age','daysofweek','rasi','bloodtype','naksus','gender','testes')
     list_display_links = ('id', 'user')

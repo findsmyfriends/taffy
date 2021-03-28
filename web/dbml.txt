@@ -32,34 +32,31 @@ Table Profile {
   image image [note:""]
   birthday date [note:"", null]
   age integer [note:"", null]
-  gender char [note:"", null]
-  testes char [note:"", null]
-  rasi foreign_key [note:"", null]
-  daysofweek foreign_key [note:"", null]
-  bloodtype foreign_key [note:"", null]
-  naksus foreign_key [note:"", null]
-  like boolean [note:"", null]
-  nope boolean [note:"", null]
+  gender char [note:""]
+  testes char [note:""]
+  daysofweek foreign_key [note:""]
+  naksus foreign_key [note:""]
+  rasi foreign_key [note:""]
+  bloodtype foreign_key [note:""]
   created date_time [note:""]
   updated date_time [note:""]
-  Note: '''Profile(id, user, image, birthday, age, gender, testes, rasi, daysofweek, bloodtype, naksus, like, nope, created, updated)'''
+  Note: '''Profile(id, user, image, birthday, age, gender, testes, daysofweek, naksus, rasi, bloodtype, created, updated)'''
 }
 ref: Profile.user - User.id
-ref: Profile.rasi > RaSi.id
 ref: Profile.daysofweek > DaysOfWeek.id
-ref: Profile.bloodtype > BloodType.id
 ref: Profile.naksus > NakSus.id
+ref: Profile.rasi > RaSi.id
+ref: Profile.bloodtype > BloodType.id
 
 
 Table Rating {
   id auto [note:"", pk, unique]
-  ratingUser foreign_key [note:""]
+  reqUser foreign_key [note:""]
   ratedUser foreign_key [note:""]
-  like boolean [note:""]
   ratingPoint integer [note:"", null]
-  Note: '''Rating(id, ratingUser, ratedUser, like, ratingPoint)'''
+  Note: '''Rating(id, reqUser, ratedUser, ratingPoint)'''
 }
-ref: Rating.ratingUser > Profile.id
+ref: Rating.reqUser > Profile.id
 ref: Rating.ratedUser > Profile.id
 
 
@@ -69,18 +66,20 @@ Table Match {
   user2 foreign_key [note:""]
   Note: '''Match(id, user1, user2)'''
 }
-ref: Match.user1 > Profile.id
+ref: Match.user1 > User.id
 ref: Match.user2 > Profile.id
 
 
 Table Handler {
   id auto [note:"", pk, unique]
-  rejected boolean [note:"", null]
+  user foreign_key [note:""]
+  rejected boolean [note:""]
   reviewe_value integer [note:"", null]
   created date_time [note:""]
   updated date_time [note:""]
-  Note: '''Handler(id, rejected, reviewe_value, created, updated)'''
+  Note: '''Handler(id, user, rejected, reviewe_value, created, updated)'''
 }
+ref: Handler.user > User.id
 
 
 Table Message {
