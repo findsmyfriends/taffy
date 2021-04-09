@@ -1,0 +1,87 @@
+{% load static %}
+<!DOCTYPE html>
+{% load crispy_forms_tags %}
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Taffy - Filter1 Page</title>
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
+
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+<div class="container">
+  <div class="stack">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+       
+        {% endfor %}
+        
+        {% endif %}
+      {% for owns in own %}
+        <h1>Page Test <br> <br>He or She is own. ID:{{owns.member.id}} Username:{{owns.member.username}}</h1>
+      {% endfor %}
+       <br>
+        <form role="form" method="POST">
+               {% csrf_token %}
+                <div class="form-group ">
+                {{form}}
+                    
+                  </div>
+            
+             
+                <div class="text-center">
+                  <button type="submit" class="btn btn-primary my-4">TEst</button>
+                </div>
+              </form>
+
+              <br>
+
+              
+                <table class="table">
+  <thead>
+    <tr>
+      <th scope="col">MemberID</th>
+      <th scope="col">Username</th>
+      <th scope="col">Age</th>
+      <th scope="col">Rating</th>
+      <th scope="col">Like</th>
+      <th scope="col">Nope</th>
+    </tr>
+  </thead>
+  {% for i in member_excluded%}
+  <tbody>
+    <tr>
+      <th scope="row">{{i.member.id}}</th>
+      <td>{{i.member.username}}</td>
+      <td>{{i.age}}</td>
+      <td>{{i.profile_score}}+ratingScore</td>
+      <td><a><bottom type='submit'  class="btn btn-primary my-4">Like</button></a></td>
+      <td><a><bottom type='submit'  class="btn btn-danger my-4">Nope</button></a></td>
+    </tr>
+  </tbody>
+  {% endfor %}
+</table>
+              
+  </div>
+</div>
+  <!-- Argon Scripts -->
+
+  <script src="{% static 'js/script.js' %}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyload/1.9.1/jquery.lazyload.js"></script>
+</body>
+
+</html>

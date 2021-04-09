@@ -1,0 +1,524 @@
+{% comment %} <h1>Member all Page</h1>
+<h1> Member on Logined : {{memberreq}}
+{% for i in member %}
+<h1>
+username:{{i.username}}
+</h1>
+{%endfor%}
+
+<a href='/logout/' type="bottom" class="btn btn-primary my-4">/logout/</a> {% endcomment %}
+
+
+{% load static %}
+<!DOCTYPE html>
+
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Taffy - Public Area</title>
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="{% static 'vendor/nucleo/css/nucleo.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" type="text/css">
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="{% static 'css/argon.css' %}" type="text/css">
+  <style>
+  .container {
+  position: relative;
+  
+}
+
+/* Bottom right text */
+.text-block {
+  position: absolute;
+  bottom: 0px;
+  right: 50px;
+  color: white;
+  background:black;
+  padding-left: 5px;
+  padding-right: 5px;
+  right: 42%;
+  
+}
+  .viewprofile {
+ 
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  border: 5;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin: -2px 0 0 -9px;
+  left: 74%;
+  object-fit: cover;
+ 
+}
+  .multi-action0 {
+  display: block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 89px 0 0 -19px;
+  right: 79%;
+}
+  .multi-action {
+  display: inline-block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 359px 0 0 -19px;
+  left: 79%;
+}
+.multi-action2 {
+  display: inline-block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 289px 0 0 -19px;
+  left: 79%;
+}
+.multi-action3 {
+  display: inline-block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 219px 0 0 -19px;
+  left: 79%;
+}
+.multi-action4 {
+  display: inline-block;
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  margin: 139px 0 0 -19px;
+  left: 78%;
+}
+.action-button0 {
+  position: fixed;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 24px;
+  color: black;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+  
+}
+
+.action-button {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 24px;
+  color: red;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+  
+}
+
+.action-button2 {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FCFCFC;
+  font-size: 24px;
+  color: green;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+}
+.action-button3 {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+}
+.action-button4 {
+  position: absolute;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  border: 5;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+}
+
+  
+
+.label-container{
+	position:fixed;
+	bottom:48px;
+	right:105px;
+	display:table;
+	visibility: hidden;
+}
+
+.label-text{
+	color:#FFF;
+	background:rgba(51,51,51,0.5);
+	display:table-cell;
+	vertical-align:middle;
+	padding:10px;
+	border-radius:3px;
+}
+
+.label-arrow{
+	display:table-cell;
+	vertical-align:middle;
+	color:#333;
+	opacity:0.5;
+}
+
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	right:40px;
+	background-color:#f3adaa;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+  margin: 523px 0 0 -19px;
+  right: 79%;
+
+}
+
+.my-float{
+	font-size:24px;
+	margin-top:18px;
+  right: 79%;
+  
+}
+
+
+
+}
+  </style>
+</head>
+
+<body class="bg-white">
+
+  <!-- Navbar -->
+  <nav id="navbar-main" class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light " style=" position: fixed; background-color: #f54b49">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        {% comment %} <img src="{% static 'img/brand/whitetaffy.png' %}"> {% endcomment %}
+         <span style="font-size:30px"  ><i class="fas fa-search"></i>&nbsp;ค้นหาคู่ของคุณ</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse navbar-custom-collapse collapse" id="navbar-collapse">
+        <div class="navbar-collapse-header">
+          <div class="row">
+            <div class="col-6 collapse-brand">
+              <a href="/">
+                <img src="{% static 'img/brand/redtaffy.png' %}">
+               
+              </a>
+            </div>
+            <div class="col-6 collapse-close">
+              <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <ul class="navbar-nav mr-auto">
+           <li class="nav-item">
+            <a href="/public/" class="nav-link">
+            <i class="fas fa-pen-square"></i>
+              <span class="nav-link-inner--text">Public Area</span>
+            </a>
+          </li>
+            <li class="nav-item">
+            <a href="/chat/" class="nav-link">
+            <i class="fas fa-comment-alt"></i>
+              <span class="nav-link-inner--text">Chat</span>
+            </a>
+          </li>
+           <li class="nav-item">
+            <a href="/profile/" class="nav-link">
+             <i class="fas fa-user"></i>
+              <span class="nav-link-inner--text">Proflie</span>
+            </a>
+          </li>
+          {% if messages %}
+          {% for message in messages %}
+              <li class="nav-item">
+            <a href="#" class="nav-link">
+             
+              <span class="alert alert-{{ message.tags }} nav-link-inner--text "><i class="fas fa-bell"></i>{{ message }}</span>
+            </a>
+          </li>
+          {% endfor %}
+       {% endif%}
+        
+    
+ 
+         
+        </ul>
+       <hr class="d-lg-none" />
+
+        <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+             <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="https://github.com/taffy63/taffy" target="_blank" data-toggle="tooltip" data-original-title="Source Code on Github">
+              <i class="fab fa-github"></i>
+              <span class="nav-link-inner--text d-lg-none">Github Source Code </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="/setting/"  data-toggle="tooltip" data-original-title="การตั้งค่าการกรองเนื้อคู่">
+             <i class="fas fa-user-cog"></i>
+              <span class="nav-link-inner--text d-lg-none">การตั้งค่า</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="/profile/" data-toggle="tooltip" data-original-title="การเปลี่ยนแปลงข้อมูลส่วนตัว">
+              <i class="fas fa-user-edit"></i>
+              <span class="nav-link-inner--text d-lg-none">แก้ไขโปรไพล์</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="/logout/"  data-toggle="tooltip" data-original-title="ออกจากระบบ">
+              <i class="fas fa-sign-out-alt"></i>
+              <span class="nav-link-inner--text d-lg-none">ออกจากระบบ</span>
+            </a>
+          </li>
+
+ 
+        </ul>
+      </div>
+    </div>
+  </nav>
+    
+  <!-- Main content -->
+  <div class="main-content">
+
+    <div class="header bg-gradient-danger py-8 py-lg-9  pt-lg-6">
+      
+      
+      
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-white" points="2560 0 2560 100 0 100"></polygon>
+        </svg>
+      </div>
+    </div>
+    
+    <!-- Page content -->
+        <!-- Page content -->
+         
+    <div class="container-fluid mt--8">
+   
+      {% for key, value in sorted_dict.items %} 
+      <!-- Table -->
+      <div class="row justify-content-center">
+        <div class="col-lg-4 col-md-8">
+           <a href="{{key.member.username}}"data-toggle="modal" data-target="#{{key.member.username}}" data-backdrop="static" data-keyboard="false"><div class='multi-action4' >
+           <button class='action-button4'><span alt="Avatar">
+           <img class="viewprofile" src="{{ key.member.profile_image.url }}" width=50>
+           </span></button>
+             </div></a>
+           <a href="#"><div class='multi-action3'>
+           <button class='action-button3'><span>{{value}}</span></button>
+             </div></a>
+            <a href="/nope/"><div class='multi-action2'>
+           <button class='action-button2'><span class='fa fa-times'></span></button>
+             </div></a>
+          <a href="/like/"><div class='multi-action'>
+           <button class='action-button'><span class='fa fa-heart'></span></button>
+             </div></a>
+
+            <div class="card-body  px-lg-5 py-lg-2">  
+      
+          
+           <div class="container">
+  <img src="{{ key.member.profile_image.url }}" width=313 height=500 style='object-fit: cover; width:100%; height:500;' alt="Avatar" class="image" >
+  <div class="text-block">
+    <h1 style='color:white'>{{key.member.username}} {{key.age}}</h1>
+    <p>description Profile</p>
+  </div>
+</div> 
+ 
+        
+            </div>
+          
+        </div>
+      </div>
+    
+      {%endfor%}
+    </div>
+
+  </div>
+
+
+{% comment %} <h1>{%for i in viewsprofile%}
+
+<a>i.age</a>
+{%endfor%} {% endcomment %}
+</h1>
+<!-- Modal -->
+
+  {% for key, value in sorted_dict.items %}
+<div class="modal fade" id="{{key.member.username}}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">{{key.member.first_name}} {{key.member.last_name}} {{key.age}}</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+      ...................
+    
+        username: {{key.member.username}}
+     
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  {%endfor%}
+<a href="#"  class="float" data-toggle="modal"  data-target="#exampleModalCenter"  data-backdrop="static" data-keyboard="false">
+<i class="fas fa-filter my-float" data-toggle="tooltip" data-original-title="การหาคู่และการแสดงคู่ในระบบ"></i>
+
+</a>
+<div class="label-container">
+<div class="label-text">การกรองเนื้อคู่ของคุณ</div>
+<i class="fa fa-play label-arrow"></i>
+
+</div>
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       <div class="modal-title col-6 collapse-brand" id="exampleModalLongTitle">
+              
+                <img src="{% static 'img/brand/redtaffy.png' %}" width=100>
+             
+            </div>
+      
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form role="form"  method="POST">
+{% csrf_token %}
+<span><strong>Personality &nbsp;<a data-toggle="modal"  data-target="#QuestionCenter"><i class="fa fa-question-circle" aria-hidden="true"></i></a></strong></span><br><br>
+<center>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" id="inlineCheckChecked1" value="option1" checked>
+  <label class="form-check-label" for="inlineCheckChecked1">กรองจากขั้วบวก</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" checked>
+  <label class="form-check-label" for="inlineCheckbox2">กรองจากขั้วลบ</label>
+</div>
+
+<br><br>
+ </center>
+ <span><strong>Testes &nbsp;<i class="fas fa-venus-mars"></i></a></strong></span><br><br>
+
+ <center>
+ <div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+  <label class="form-check-label" for="inlineRadio1">Male</label>
+</div>
+<div class="form-check form-check-inline">
+  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+  <label class="form-check-label" for="inlineRadio2">Femele</label>
+</div>
+ 
+ </center>
+              <div class="modal-footer">
+        
+        <button  type="submit"  class="btn btn-danger btn-lg btn-block rounded-pill" >กรองเนื้อคู่ของคุณ</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<!-- Modal -->
+<div class="modal fade" id="QuestionCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+       <div class="modal-title col-8 collapse-brand" id="exampleModalLongTitle">
+             <i class="fa fa-question-circle" aria-hidden="true">Personality คือ </i>
+            </div>
+        </button>
+      </div>
+      <div class="modal-body">
+
+
+              <div class="modal-footer">
+              </div>
+       
+    </div>
+  </div>
+</div>
+
+
+  <!-- Argon Scripts -->
+  <!-- Core -->
+ 
+  <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/js-cookie/js.cookie.js' %}"></script>
+  <script src="{% static 'vendor/jquery.scrollbar/jquery.scrollbar.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js' %}"></script>
+  <!-- Argon JS -->
+  <script src="{% static 'js/argon.js' %}"></script>
+
+
+</body>
+
+</html>

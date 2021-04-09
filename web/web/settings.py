@@ -44,6 +44,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'web.urls'
+AUTH_USER_MODEL = "members.Member"
 
 TEMPLATES = [
     {
@@ -56,6 +57,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.media',
             ],
         },
     },
@@ -128,8 +130,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Authentication Settings
 
-LOGIN_REDIRECT_URL = 'index'
-LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = '/login/'
 
 # Email Settings
 
