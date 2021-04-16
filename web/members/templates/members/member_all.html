@@ -1,13 +1,3 @@
-{% comment %} <h1>Member all Page</h1>
-<h1> Member on Logined : {{memberreq}}
-{% for i in member %}
-<h1>
-username:{{i.username}}
-</h1>
-{%endfor%}
-
-<a href='/logout/' type="bottom" class="btn btn-primary my-4">/logout/</a> {% endcomment %}
-
 
 {% load static %}
 <!DOCTYPE html>
@@ -29,24 +19,40 @@ username:{{i.username}}
   <link rel="stylesheet" href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" type="text/css">
   <!-- Argon CSS -->
   <link rel="stylesheet" href="{% static 'css/argon.css' %}" type="text/css">
-  <style>
-  .container {
-  position: relative;
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.css" rel="stylesheet" />
   
+  <style>
+
+.containerr {
+  position: relative;
+  max-width: 800px; /* Maximum width */
+  margin: 0 auto; /* Center it */
 }
 
-/* Bottom right text */
-.text-block {
-  position: absolute;
-  bottom: 0px;
-  right: 50px;
-  color: white;
-  background:black;
-  padding-left: 5px;
-  padding-right: 5px;
-  right: 42%;
-  
+.containerr .contentt{
+  position: absolute; /* Position the background text */
+  bottom: 0; /* At the bottom. Use top:0 to append it to the top */
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.4); /* Black background with 0.5 opacity */
+  color: #f1f1f1; /* Grey text */
+  width: 100%; /* Full width */
+ 
+  padding: 38px; /* Some padding */
+}  
 }
+  .profileview{
+  width: 100%;
+  height: 500px;
+  border: 5;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  object-fit: cover;
+
+  }
   .viewprofile {
  
   width: 66px;
@@ -58,7 +64,7 @@ username:{{i.username}}
   font-size: 18px;
   font-weight: bold;
   color: white;
-  margin: -2px 0 0 -9px;
+  margin: -2px 0 0 -5px;
   left: 74%;
   object-fit: cover;
  
@@ -76,7 +82,7 @@ username:{{i.username}}
   position: absolute;
   width: 40px;
   height: 40px;
-  margin: 359px 0 0 -19px;
+  margin: 378px 0 0 -19px;
   left: 79%;
 }
 .multi-action2 {
@@ -84,7 +90,7 @@ username:{{i.username}}
   position: absolute;
   width: 40px;
   height: 40px;
-  margin: 289px 0 0 -19px;
+  margin: 300px 0 0 -19px;
   left: 79%;
 }
 .multi-action3 {
@@ -92,7 +98,7 @@ username:{{i.username}}
   position: absolute;
   width: 40px;
   height: 40px;
-  margin: 219px 0 0 -19px;
+  margin: 229px 0 0 -19px;
   left: 79%;
 }
 .multi-action4 {
@@ -100,7 +106,7 @@ username:{{i.username}}
   position: absolute;
   width: 65px;
   height: 65px;
-  margin: 139px 0 0 -19px;
+  margin: 139px 0 0 -9px;
   left: 78%;
 }
 .action-button0 {
@@ -169,15 +175,14 @@ username:{{i.username}}
   width: 66px;
   height: 66px;
   border-radius: 50%;
-  border: 5;
-  outline: 0;
-  background: #FFFFFF;
+  border: 20;
+  outline: 10;
   font-size: 18px;
   font-weight: bold;
   color: white;
   z-index: 2;
-  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
   transition: all .3s;
+  
 }
 
   
@@ -229,20 +234,70 @@ username:{{i.username}}
   
 }
 
+.imageshake:hover {
+  animation: shake 1.05s;
+  animation-iteration-count: 5.0s;
+}
 
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+.rounded-circle{
+  width:145px;
+	height:145px;
+	border-radius:50px;
+  object-fit: cover;
 
 }
+
+.toast {
+    transition: 0.32s all ease-in-out
+}
+
+.toast-container--fade {
+    right: 0;
+    bottom: 0
+}
+
+.toast-container--fade .toast-wrapper {
+    display: inline-block
+}
+
+.toast.fade-init {
+    opacity: 0
+}
+
+.toast.fade-show {
+    opacity: 1
+}
+
+.toast.fade-hide {
+    opacity: 0
+}
+
   </style>
 </head>
 
 <body class="bg-white">
 
+
+
   <!-- Navbar -->
-  <nav id="navbar-main" class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light " style=" position: fixed; background-color: #f54b49">
+  <nav id="navbar-main" class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light "style="position: -webkit-sticky;  position: sticky; position: fixed; background: linear-gradient(87deg, #f5365c 0, #f56036 100%)">
     <div class="container">
       <a class="navbar-brand" href="/">
         {% comment %} <img src="{% static 'img/brand/whitetaffy.png' %}"> {% endcomment %}
-         <span style="font-size:30px"  ><i class="fas fa-search"></i>&nbsp;ค้นหาคู่ของคุณ</span>
+         <span style="font-size:24px"  ><i class="fas fa-search"></i>&nbsp;ค้นหาคู่ของคุณ</span>
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -294,8 +349,7 @@ username:{{i.username}}
           {% endfor %}
        {% endif%}
         
-    
- 
+
          
         </ul>
        <hr class="d-lg-none" />
@@ -336,9 +390,7 @@ username:{{i.username}}
   <div class="main-content">
 
     <div class="header bg-gradient-danger py-8 py-lg-9  pt-lg-6">
-      
-      
-      
+ 
       <div class="separator separator-bottom separator-skew zindex-100">
         <svg x="0" y="0" viewBox="0 0 2560 100" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
           <polygon class="fill-white" points="2560 0 2560 100 0 100"></polygon>
@@ -356,13 +408,13 @@ username:{{i.username}}
       <div class="row justify-content-center">
         <div class="col-lg-4 col-md-8">
            <a href="{{key.member.username}}"data-toggle="modal" data-target="#{{key.member.username}}" data-backdrop="static" data-keyboard="false"><div class='multi-action4' >
-           <button class='action-button4'><span alt="Avatar">
-           <img class="viewprofile" src="{{ key.member.profile_image.url }}" width=50>
-           </span></button>
+           <span class="action-button4" alt="Avatar"  >
+           <img class="viewprofile imageshake" src="{{ key.member.profile_image.url }}" width=50>
+           </span>
              </div></a>
-           <a href="#"><div class='multi-action3'>
+           <div class='multi-action3'>
            <button class='action-button3'><span>{{value}}</span></button>
-             </div></a>
+             </div>
             <a href="/nope/"><div class='multi-action2'>
            <button class='action-button2'><span class='fa fa-times'></span></button>
              </div></a>
@@ -372,14 +424,15 @@ username:{{i.username}}
 
             <div class="card-body  px-lg-5 py-lg-2">  
       
-          
-           <div class="container">
-  <img src="{{ key.member.profile_image.url }}" width=313 height=500 style='object-fit: cover; width:100%; height:500;' alt="Avatar" class="image" >
-  <div class="text-block">
-    <h1 style='color:white'>{{key.member.username}} {{key.age}}</h1>
-    <p>description Profile</p>
+
+<div class="containerr">
+  <img class="imageshake profileview" src="{{ key.member.profile_image.url }}" width=300px height=450px style='object-fit: cover; width:100%; height:550px;' alt="Avatar"">
+  <div class="contentt">
+    <h1 style='color:white'>{{key.member.username}}</h1>
+     {%if key.member.description == None%}<p>......</p>{%endif%}
+    {%if key.member.description != None%}<p>{{key.member.description}}</p>{%endif%}
   </div>
-</div> 
+</div>
  
         
             </div>
@@ -393,11 +446,6 @@ username:{{i.username}}
   </div>
 
 
-{% comment %} <h1>{%for i in viewsprofile%}
-
-<a>i.age</a>
-{%endfor%} {% endcomment %}
-</h1>
 <!-- Modal -->
 
   {% for key, value in sorted_dict.items %}
@@ -405,21 +453,91 @@ username:{{i.username}}
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle">{{key.member.first_name}} {{key.member.last_name}} {{key.age}}</h5>
+        <h5 class="modal-title" id="exampleModalLongTitle"><strong>{{key.member.first_name}} {{key.member.last_name}}, {{key.age}}</strong></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+      
       <div class="modal-body">
-      ...................
-    
-        username: {{key.member.username}}
-     
+
+            <img src="{% static 'img/theme/img-1-1000x600.jpg' %}" alt="Image placeholder" class="card-img-top imageshake">
+            <div class="row justify-content-center">
+              <div class="col-lg-4 order-lg-8">
+                <div class="card-profile-image" >
+                  <a href="#">
+                    <img src="{{key.member.profile_image.url}}" alt="Avatar"   class="rounded-circle" >
+                  </a>
+                </div>
+              </div>
+            </div>
+            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+           
+            </div>
+            <div class="card-body pt-0">
+              <div class="row">
+                <div class="col">
+                  <div class="card-profile-stats d-flex justify-content-center">
+                    <div>
+                      <span class="heading">  <a href="#" class="btn btn btn-default">Nope</a></span>
+                    
+                    </div>
+                    <div>
+                      <span class="heading">{{value}}</span>
+                      <span class="description">Rating Score</span>
+                    </div>
+                    <div>
+                      <span class="heading"><a href="#" class="btn btn btn-info  ">Like</a></span>
+                     
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <h5 class="h3">
+                  วัน/เดือน/ปีเกิด <span class="font-weight-light">,(อายุ)</span>
+                </h5>
+                <div class="h5 font-weight-300">
+                  <i class="ni location_pin mr-2"></i>{{key.member.birthday.day}}/{{key.member.birthday.month}}/{{key.member.birthday.year}} ,{{key.age}} ปี
+                </div>
+                <hr>
+                <h5 class="h3">
+                  วันประจำวันเกิด,ราศี,นักษัดร,กรู๊ปเลือด
+                </h5>
+                <div class="h5 font-weight-300">
+                  <i class="ni location_pin mr-2"></i>{{key.daysofweek}}, {{key.rasi}}, {{key.naksus}}, {{key.bloodtype}} 
+                </div>
+ <hr>
+ <h5 class="h3">
+                  รสนิยม,เพศสภาพ 
+                </h5>
+                 {%if key.member.gender == "M" and key.member.testes == "F"  %}
+                <div class="h5 font-weight-300">
+                  <i class="ni location_pin mr-2"></i>หญิง,ชาย
+                </div>
+                   {% endif %}
+                {%if key.member.gender == "F" and key.member.testes == "M"  %}
+                <div class="h5 font-weight-300">
+                <i class="ni location_pin mr-2"></i> ชาย, หญิง
+                </div>
+                {% endif %}
+                  {%if key.member.gender == "M" and key.member.testes == "M"  %}
+                <div class="h5 font-weight-300">
+                <i class="ni location_pin mr-2"></i> ชาย,ชาย
+                </div>
+                {% endif %}
+                    {%if key.member.gender == "F" and key.member.testes == "F"  %}
+                <div class="h5 font-weight-300">
+                <i class="ni location_pin mr-2"></i> หญิง,หญิง
+                </div>
+                {% endif %}
+
+              </div>
+            </div>
+         
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
+      
+
     </div>
   </div>
 </div>
@@ -509,7 +627,8 @@ username:{{i.username}}
 
   <!-- Argon Scripts -->
   <!-- Core -->
- 
+
+  <script src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.js"></script>
   <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor/js-cookie/js.cookie.js' %}"></script>

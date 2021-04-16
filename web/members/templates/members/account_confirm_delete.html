@@ -1,0 +1,18 @@
+{% extends "taffy/base.html" %}
+{% block content %}
+<div class="content-section">
+    <form method="POST">
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Delete account</legend>
+            <h2>Are you sure you want to delete the account "{{ object.username }}"</h2>
+           
+            <div class="header pb-0 d-flex align-items-center" style="min-height: 1000px; background-image: url({{object.profile_image.url}}); background-size: cover; background-position: center top;">
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-danger" type="submit">Yes, Delete</button>
+            <a class="btn btn-outline-secondary" href="{% url 'setting' %}">Cancel</a>
+        </div> 
+    </form>
+</div>
+{% endblock content %}

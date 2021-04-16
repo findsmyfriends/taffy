@@ -5,11 +5,13 @@ admin.site.site_header = "Taffy Admin."
 
 
 class MemberAdmin(admin.ModelAdmin):
-    # list_display = ('id', 'username','age','rasi','bloodtype','naksus','gender','testes')
     list_display = ('id', 'username', 'first_name',
-                    'last_name', 'birthday', 'gender', 'testes',)
+                    'last_name', 'birthday', 'gender', 'testes', 'description', 'is_staff', 'is_active')
     list_display_links = ('id', 'username')
-    list_filter = ('username', 'birthday', 'testes', 'gender',)
+    list_filter = ('username', 'birthday', 'testes',
+                   'gender', 'is_staff', 'is_active')
+    list_editable = ('is_staff',  'is_active')
+    search_fields = ('testes',)
     list_per_page = 20
 
 
@@ -59,9 +61,11 @@ admin.site.register(ScoreRaSi, ScoreRaSiAdmin)
 
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('id', 'member', 'age', 'daysofweek',
-                    'rasi', 'bloodtype', 'naksus')
+                    'rasi', 'bloodtype', 'naksus', 'profile_score',)
     list_display_links = ('id', 'member')
     list_filter = ('member', 'age', 'bloodtype', 'naksus', 'daysofweek')
+    list_editable = ('profile_score',)
+    search_fields = ('age',)
     list_per_page = 50
 
 

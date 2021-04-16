@@ -31,18 +31,45 @@ class MemberRegisterForm(UserCreationForm):
 
 
             # 'profile_image':forms.TextInput(attrs={'class':'form-controls-file','type':'file',}),
-            'gender': forms.TextInput(attrs={'class': 'form-controls', 'type': 'radio', 'name': 'gender'}),
-            'testes': forms.TextInput(attrs={'class': 'form-controls', 'type': 'radio', 'neme': 'testes'}),
+            'gender': forms.TextInput(attrs={'class': 'form-check-input', 'type': 'radio', 'name': 'gender'}),
+            'testes': forms.TextInput(attrs={'class': 'form-check-input', 'type': 'radio', 'neme': 'testes'}),
             'birthday': DateInput(attrs={'class': 'form-control', 'type': 'date', 'value': '11-03-1998', 'id': 'birthday', 'name': 'birthday'}),
 
         }
+
+
+class MemberSettingUpdateForm(forms.ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = Member
+        fields = ['username', 'email', 'testes', 'phone_number']
+
+
+class MemberProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Member
+        fields = ['first_name', 'last_name',
+                  'birthday', 'bloodtype', 'profile_image', 'testes', 'gender', 'description', ]
+        #
+        widgets = {
+            'gender': forms.TextInput(attrs={'class': 'form-check-input', 'type': 'radio', 'name': 'gender', 'id': 'id_gender'}),
+            'testes': forms.TextInput(attrs={'class': 'form-check-input', 'type': 'radio', 'neme': 'testes', 'id': 'id_testes'}),
+            'birthday': DateInput(attrs={'class': 'form-control', 'type': 'date', 'value': '11-03-1998', 'id': 'birthday', 'name': 'birthday'}),
+        }
+
+
+class AccountDeleteForm(forms.ModelForm):
+    class Meta:
+        model = Member
+        fields = []
 
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
 
     class Meta:
-        model = User
+        model = Member
         fields = ['username', 'email']
 
 

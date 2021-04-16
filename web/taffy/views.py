@@ -1,5 +1,5 @@
 from members.forms import ProfileUpdateForm, UserUpdateForm
-from members.models import Profile
+from members.models import Member, Profile
 from .models import Post, Comment
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
@@ -16,15 +16,7 @@ from django.views.generic import (
     DeleteView
 )
 
-class ProfileListView(ListView):
-    model = Profile
-    template_name = 'taffy/index.html'
-    context_object_name = 'profiles'
-    paginate_by = 1
-  
-        
 
-    
 class PostListView(ListView):
     model = Post
     template_name = 'taffy/public_area.html'
@@ -51,7 +43,7 @@ class UserPostListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        user = get_object_or_404(Member, username=self.kwargs.get('username'))
         return Post.objects.filter(author=user).order_by('-date_posted')
 
 
@@ -70,7 +62,7 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
-    fields = ['content','image']
+    fields = ['content', 'image']
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -80,7 +72,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         post = self.get_object()
         if self.request.user == post.author:
             return True
-        return False    
+        return False
 
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -93,18 +85,19 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
             return True
         return False
 
+
 @login_required
 def postpostviews(request):
     """Process images uploaded by users"""
     if request.method == 'POST':
-        form =  PostForm(request.POST, request.FILES)
+        form = PostForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             # Get the current instance object to display in the template
             img_obj = form.instance
             return render(request, 'taffy/post_detail.html', {'form': form, 'img_obj': img_obj})
     else:
-        form =  PostForm()
+        form = PostForm()
     return render(request, 'taffy/post_detail.html', {'form': form})
 
 
@@ -112,17 +105,14 @@ def about(request):
     return render(request, 'taffy/about.html', {'title': 'About'})
 
 
-
-
 @login_required
 def add_comment(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
-        user = User.objects.get(id=request.POST.get('user_id'))
+        member = Member.objects.get(id=request.POST.get('user_id'))
         text = request.POST.get('text')
-        Comment(author=user, post=post, text=text).save()
+        Comment(author=member, post=post, text=text).save()
         messages.success(request, "Your comment has been added successfully.")
     else:
         return redirect('post_detail', pk=pk)
     return redirect('post_detail', pk=pk)
-

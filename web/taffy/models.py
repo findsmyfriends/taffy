@@ -2,23 +2,24 @@ from django.db import models
 from django.utils import timezone
 from django.urls import reverse
 from django.conf import settings
-from PIL import Image
+
 
 class PostManager(models.Manager):
-    def like_toggle(self, user, post_obj):
-        if user in post_obj.liked.all():
+    def like_toggle(self, member, post_obj):
+        if member in post_obj.liked.all():
             is_liked = False
-            post_obj.liked.remove(user)
+            post_obj.liked.remove(member)
         else:
             is_liked = True
-            post_obj.liked.add(user)
+            post_obj.liked.add(member)
         return is_liked
 
 
 class Post(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    image = models.ImageField(default='post_image/default.jpg', upload_to='post_image')
+    image = models.ImageField(
+        default='post_image/default.jpg', upload_to='post_image')
     # title = models.CharField(max_length=100)
     content = models.TextField()
     liked = models.ManyToManyField(
@@ -27,23 +28,14 @@ class Post(models.Model):
 
     objects = PostManager()
 
-    def save(self, *args, **kwargs):
-        super(Post, self).save(*args, **kwargs)
-
-        img = Image.open(self.image.path)
-
-        if img.height > 300 or img.width > 300:
-            output_size = (300, 300)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
-
     class Meta:
         ordering = ('-date_posted', )
 
     def __str__(self):
-        return self.title
+        return self.content
 
     def get_absolute_url(self):
+        # return reverse('/post/{self.pk}/', kwargs={'pk': self.pk})
         return reverse('post_detail', kwargs={'pk': self.pk})
 
 
@@ -64,4 +56,4 @@ class Comment(models.Model):
         return reverse("post_list")
 
     def __str__(self):
-        return self.author
+        return self.post

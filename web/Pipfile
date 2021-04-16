@@ -20,7 +20,7 @@ pydotplus = "*"
 
 [scripts]
 s ="python manage.py runserver"
-rmdb = "rm -rf db.sqlite3 taffy/migrations/000* members/migrations/000*"
+rmdb = "rm -rf db.sqlite3 blog/migrations/000* members/migrations/000*"
 createdb = "python manage.py makemigrations python manage.py migrate"
 m = "python manage.py migrate"
 mk = "python manage.py makemigrations "

@@ -4,10 +4,10 @@ from .models import Post, Comment
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'content','image', 'author', 'date_posted')
-    list_display_links = ('id','image','content')
+    list_display = ('id', 'content', 'image', 'author', 'date_posted')
+    list_display_links = ('id', 'image', 'content')
     list_filter = ('author', 'date_posted')
-    search_fields = ( 'content', 'author')
+    search_fields = ('content', 'author')
     list_per_page = 20
 
 
@@ -25,6 +25,3 @@ class CommentAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Comment, CommentAdmin)
-
-
-

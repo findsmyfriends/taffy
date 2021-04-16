@@ -4,6 +4,9 @@ from datetime import date
 from django.db.models.constraints import UniqueConstraint
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+from PIL import Image
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class BloodType(models.Model):
@@ -96,25 +99,31 @@ def get_bloodtype():
 
 
 class Member(AbstractUser):
+    your_date = date(1998, 3, 11)
     GENDER = [('F', 'Female'), ('M', 'Male')]
+    description = models.TextField(null=True, blank=True)
+    phone_number = models.CharField(max_length=50, null=True, blank=True)
     gender = models.CharField(choices=GENDER, max_length=1, default='F')
     testes = models.CharField(
         choices=GENDER, max_length=1, default='M')  # sex of Testes
     profile_image = models.ImageField(
-        default='default.jpg', upload_to='profile_pics/', verbose_name='profile_image')
-    birthday = models.DateField(null=True, blank=True)
+        default='default.jpg', upload_to='profile_pics')
+    # YYYY-MM-DD
+    birthday = models.DateField(default=your_date, null=True, blank=True)
     bloodtype = models.ForeignKey(
-        BloodType, null=True, blank=True, verbose_name="หมู่เลือด", on_delete=models.CASCADE)
+        BloodType, default=1, verbose_name="หมู่เลือด", null=True, blank=True, on_delete=models.CASCADE)
 
-    # def __str__(self):
-    #     return f'{self.username},{self.first_name},{self.last_name}'
+    def __str__(self):
+        return f'{self.username},{self.gender},{self.testes}'
+
     class Meta:
         verbose_name = 'Member'
 
 
 class Profile(models.Model):
 
-    member = models.OneToOneField(Member, on_delete=models.CASCADE)
+    member = models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     age = models.IntegerField(null=True, blank=True)
     daysofweek = models.ForeignKey(
         DaysOfWeek, default=get_daysofweek, verbose_name='วันประจำวันเกิด', on_delete=models.CASCADE)
@@ -128,16 +137,17 @@ class Profile(models.Model):
     created = models.DateTimeField(auto_now_add=True)  # When it was create
     updated = models.DateTimeField(auto_now=True)  # When it was update
 
-    # scoredaysofweek = models.ForeignKey(ScoreDaysOfWeek,null=True,blank=True,related_name='scoredaysofweek',on_delete=models.CASCADE)
-    # scorenaksus = models.ForeignKey(ScoreNakSus,related_name='scorenaksus',null=True,blank=True,on_delete=models.CASCADE)
-    # scorerasi = models.ForeignKey(ScoreRaSi,related_name='scorerasi',null=True,blank=True,on_delete=models.CASCADE)
-    # scorebloodtype = models.ForeignKey(ScoreBloodType, related_name='scorebloodtype',null=True,blank=True,on_delete=models.CASCADE)
-
     def __str__(self):
         return f'{self.member.username} {self.member.first_name} {self.member.last_name} {self.age} '
 
-    class Meta:
-        verbose_name = 'Profile'
+    @receiver(post_save, sender=Member)
+    def create_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(member=instance)
+
+    @receiver(post_save, sender=Member)
+    def save_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
     def save(self, *args, **kwargs):
 
@@ -268,8 +278,8 @@ class Profile(models.Model):
             except:
                 rasi = None
 
-        # print(f'_______self.rasi_______{self.rasi}__________{year}_______')
         super(Profile, self).save(*args, **kwargs)
+        print(f'_______{self.member}_____________{year}_______')
 
 
 class Rating(models.Model):
@@ -277,7 +287,12 @@ class Rating(models.Model):
         Profile, on_delete=models.CASCADE, related_name='ratingUser')
     ratedUser = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='ratedUser')
-    like = models.BooleanField()
+
+    # testes and age for filter on the future
+    sex_ori = models.CharField(max_length=20, null=True, blank=True)
+    age = models.IntegerField(null=True, blank=True)
+
+    like = models.BooleanField(null=True, blank=True)
     ratingPoint = models.IntegerField(null=True, blank=True)
 
     class Meta:
@@ -304,7 +319,8 @@ class Match(models.Model):
 
 class Handler(models.Model):
     # block = models.BooleanField(default=False,blank=True,null=True)
-    user = models.ForeignKey(Member, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE)
     rejected = models.BooleanField(default=False)
     # แสดงให้คนคุยมากกว่า 1 weeks or คนที่คุยกันมากกว่า 50 times
     reviewe_value = models.IntegerField(blank=True, null=True)
@@ -320,9 +336,9 @@ class Handler(models.Model):
 
 class Message(models.Model):
     sender = models.ForeignKey(
-        Member, on_delete=models.CASCADE, related_name='sender')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sender')
     recipient = models.ForeignKey(
-        Member, on_delete=models.CASCADE, related_name='recipient')
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipient')
     text = models.CharField(max_length=280)
     sentDate = models.DateTimeField(auto_now=True)
 
