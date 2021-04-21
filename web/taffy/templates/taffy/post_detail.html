@@ -36,35 +36,22 @@
     <p class="lead">{{ object.content|safe|linebreaks }}</p>
     <hr>
 
-    <!-- Like -->
+      <!-- Like -->
     {% if user.is_authenticated %}
-     {% csrf_token %}
     <div class="text-center">
         <a id="like" style="cursor: pointer;" class="text-center" data-url="{% url 'like_api' object.pk %}"><i
                 style="color: red" class="
                 like-icon
-                {% if member in object.liked.all %}
-                fas fa-thumbs-up fa-3x
+                {% if user in object.liked.all %}
+                fas fa-heart fa-3x
                 {% else %}
-                far fa-thumbs-up fa-3x
+                far fa-heart fa-3x
                 {% endif %}
                 " id="like-icon"></i></a>
         <h6 id="likes_count" style="color: red">{{object.liked.count}}</h6>
     </div>
-       <div class="text-center">
-        <a id="dislike" style="cursor: pointer;" class="text-center" href=""><i
-                style="color: black" class="
-                dislike-icon
-                {% if member in object.liked.all %}
-                fas fa-thumbs-down fa-3x
-                {% else %}
-                far fa-thumbs-down fa-3x
-                {% endif %}
-                " id="dislike-icon"></i></a>
-        <h6 id="dislike_count" style="color: black"></h6>
-        <i class="fad fa-thumbs-down"></i>
-    </div>
     {% endif %}
+
 
 
     <!-- Comment Form -->

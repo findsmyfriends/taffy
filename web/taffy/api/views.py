@@ -18,5 +18,7 @@ class LikeToggleAPIView(APIView):
             is_liked = Post.objects.like_toggle(request.user, post_pk)
             liked_count = post_pk.liked.all().count()
             print(is_liked, liked_count)
-            return Response({'liked': is_liked, 'likes_count': liked_count}) and redirect(f'/public/post/{post_pk.pk}/')
+            return Response({'liked': is_liked, 'likes_count': liked_count})
+
+            # return Response({'liked': is_liked, 'likes_count': liked_count}) and redirect(f'/public/post/{post_pk.pk}/')
         return Response({"message": message}, status=400)
