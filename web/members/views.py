@@ -2,8 +2,7 @@ from typing import ContextManager
 from django import views
 from django.http import request
 from django.http.response import HttpResponseRedirect
-from members import models
-from members.models import BloodType, DaysOfWeek, Match, Message, NakSus, RaSi, ScoreBloodType, ScoreDaysOfWeek, ScoreNakSus, ScoreRaSi
+from members.models import *
 from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
@@ -158,21 +157,19 @@ def setting_view(request):
 
 
 class RatingView(LoginRequiredMixin, View):
+    models_class = Profile
+    models_class_bloodtype = BloodType
+    models_class_dayofweek = DaysOfWeek
+    models_class_naksus = NakSus
+    models_class_rasi = RaSi
+    models_class_scorebloodtype = ScoreBloodType
+    models_class_scoredayofweek = ScoreDaysOfWeek
+    models_class_scorenaksus = ScoreNakSus
+    models_class_scorerasi = ScoreRaSi
+    models_class_match = Match
+    form_class = MatchForm
     initial = {'key': 'value'}
     template_name = 'members/member_all.html'
-
-    def __init__(self,  *args, **kwargs):
-        self.models_class = Profile
-        self.models_class_bloodtype = BloodType
-        self.models_class_dayofweek = DaysOfWeek
-        self.models_class_naksus = NakSus
-        self.models_class_rasi = RaSi
-        self.models_class_scorebloodtype = ScoreBloodType
-        self.models_class_scoredayofweek = ScoreDaysOfWeek
-        self.models_class_scorenaksus = ScoreNakSus
-        self.models_class_scorerasi = ScoreRaSi
-        self.models_class_match = Match
-        self.form_class = MatchForm
 
     def get(self, request, * args, **kwargs):
 
@@ -245,6 +242,41 @@ class RatingView(LoginRequiredMixin, View):
                                                                  1] + naksuslist[own[0].naksus.id-1][member_excluded[i].naksus.id-1])*member_excluded[i].profile_score
                 profiles = member_excluded[i]
 
+                # print(f'___{type(profiles.member.id)}____')
+                # rating = get_object_or_404(Rating)
+                # print(f'___{profiles}____')
+
+                own_id = own[0].member.id
+                member_excluded_id = member_excluded[i].member.id
+                own_get = Member.objects.get(id=own_id)
+                member_excluded_get = get_object_or_404(
+                    Member, pk=member_excluded_id)
+                rating_all = Rating.objects.all()
+                # print(len(rating_all))
+                if len(rating_all) == 0:
+                    print(len(rating_all))
+
+                    # Rating(ratingUser=own_get, ratedUser=member_excluded_get,
+                    #        ratingPoint=rating).save()
+                # try:
+                #     test = Rating.objects.filter(id=member2.id)
+                #     if member2.id == ratedUser and rating == :
+                #         print('sane')
+                #     else:
+                #         print("no")
+                #         pass
+                #     print(
+
+                #         f'print in try_______{Rating.objects.all()}_____{member2.ratingPoint}')
+                # Rating(ratingUser=member, ratedUser=member2,
+                #        sex_ori=member_excluded[i].member.testes, age=member_excluded[i].age, ratingPoint=rating).save()
+                # except:
+                #     None
+                #     print(Rating.objects.filter(
+                #         ratedUser__member__username=member2.username))
+                # pass
+
+                # print(member.id, member2.id, ratingUser_id, ratedUser_id)
                 allMember.append(profiles)
                 allrating.append(rating)
 
@@ -273,7 +305,9 @@ class RatingView(LoginRequiredMixin, View):
 
                     sorted_dictCathode[r] = result_dict[r]
 
-        print(f'_____________{sorted_dict}_______________')
+        # print(f'_____________{sorted_dict}_______________')
+        # print(f'_____________{result_dict}_______________')
+        # print(f'___{allMember}_______{allrating}_________')
 
         context = {'form': form, 'own': own,
                    'member_excluded': member_excluded,
@@ -304,63 +338,15 @@ class RatingView(LoginRequiredMixin, View):
 
 
 class Match(LoginRequiredMixin, View):
+    models_class = Profile
     initial = {'key': 'value'}
+    form_class = MatchForm
     template_name = 'members/member_all.html'
-
-    def __init__(self,  *args, **kwargs):
-        self.models_class = Profile
-        self.models_class_scorebloodtype = ScoreBloodType
-        self.models_class_scoredayofweek = ScoreDaysOfWeek
-        self.models_class_scorenaksus = ScoreNakSus
-        self.models_class_scorerasi = ScoreRaSi
-        self.models_class_match = Match
-        self.form_class = MatchForm
-
-    pass
-
-
-class Conversation(LoginRequiredMixin, View):
-    initial = {'key': 'value'}
-    template_name = 'members/conversation.html'
-
-    def __init__(self,  *args, **kwargs):
-        self.models_class = Profile
-        self.models_class_scorebloodtype = ScoreBloodType
-        self.models_class_scoredayofweek = ScoreDaysOfWeek
-        self.models_class_scorenaksus = ScoreNakSus
-        self.models_class_scorerasi = ScoreRaSi
-        self.models_class_match = Match
-        self.form_class = MatchForm
-
-    @ login_required
-    def message(request, username):
-        currentProfile = request.user.profile
-        otherProfile = User.objects.get(username=username).profile
-
-        qr = Message.objects \
-            .raw('SELECT id, sender_id, text, sentDate \
-                FROM taffy_message \
-                WHERE sender_id = {0} AND recipient_id = {1} \
-                UNION \
-                SELECT id, sender_id, text, sentDate \
-                FROM taffy_message \
-                WHERE sender_id = {1} AND recipient_id = {0} \
-                ORDER BY sentDate'.format(currentProfile.id, otherProfile.id))
-
-        messages = [(Profile.objects.get(id=m.sender_id), m.text) for m in qr]
-
-        if request.method == 'POST':
-            form = MessageForm(request.POST)
-            if form.is_valid():
-                message = Message(
-                    sender=currentProfile, recipient=otherProfile, text=form.cleaned_data['text'])
-                message.save()
-                return redirect(request.path)
-        else:
-            form = MessageForm()
-
-        return render(request, 'taffy/message.html', {'messages': messages, 'form': form})
-    pass
+    models_class_scorebloodtype = ScoreBloodType
+    models_class_scoredayofweek = ScoreDaysOfWeek
+    models_class_scorenaksus = ScoreNakSus
+    models_class_scorerasi = ScoreRaSi
+    models_class_match = Match
 
 
 @login_required

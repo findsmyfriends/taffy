@@ -1,7 +1,14 @@
 from django.contrib import admin
 from .models import *
 from datetime import date
+import django.contrib.auth.admin
+import django.contrib.auth.models
+from django.contrib import auth
+
 admin.site.site_header = "Taffy Admin."
+admin.site.unregister(auth.models.Group)
+# admin.site.unregister(Group)
+# admin.site.unregister(Site)
 
 
 class MemberAdmin(admin.ModelAdmin):
@@ -73,13 +80,23 @@ admin.site.register(Profile, ProfileAdmin)
 
 
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ('id', 'member1', 'member2', 'rating')
-    list_display_links = ('id', 'member1')
-    list_filter = ('member1', 'member2', 'rating')
+    list_display = ('id', 'matcher1', 'matcher2', 'rating')
+    list_display_links = ('id', 'matcher1')
+    list_filter = ('matcher1', 'matcher2', 'rating')
     list_per_page = 50
 
 
 admin.site.register(Match, MatchAdmin)
+
+
+class NoMatchAdmin(admin.ModelAdmin):
+    list_display = ('id', 'nomatcher1', 'nomatcher2', 'rating')
+    list_display_links = ('id', 'nomatcher1')
+    list_filter = ('nomatcher1', 'nomatcher2', 'rating')
+    list_per_page = 50
+
+
+admin.site.register(NoMatch, NoMatchAdmin)
 
 
 class BloodTypeAdmin(admin.ModelAdmin):
@@ -117,9 +134,19 @@ class RaSiAdmin(admin.ModelAdmin):
 
 admin.site.register(RaSi, RaSiAdmin)
 
-admin.site.register(Handler)
 
-admin.site.register(Message)
+class RatingAdmin(admin.ModelAdmin):
+    list_display = ('id', 'ratingUser', 'ratedUser', 'ratingPoint')
+    list_display_links = ('id', 'ratingUser',)
+    list_filter = ('ratingUser',  'ratedUser')
+    search_fields = ('ratingUser',)
+    list_per_page = 50
+
+
+admin.site.register(Rating, RatingAdmin)
+# admin.site.register(Handler)
+
+# admin.site.register(Message)
 
 
 # admin.site.register(Personality,PersonalityAdmin)

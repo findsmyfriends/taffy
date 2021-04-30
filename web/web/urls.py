@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.contrib.auth import views as auth_views
 from members import views as member_views
+from members import tests
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -16,6 +17,10 @@ urlpatterns = [
         template_name='members/member_all.html'), name='member_all'),
     path('match/', member_views.match, name='Match Page'),
     path('setting/', member_views.setting_view, name='setting'),
+
+    # Members urls for tests.py
+    path('test/', tests.tests, name='test'),
+
 
     # Test urls
 

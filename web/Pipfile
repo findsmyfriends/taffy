@@ -15,18 +15,24 @@ django-filter = "*"
 django-dbml = "*"
 django-extensions = "*"
 pydotplus = "*"
+pip = "*"
+install = "*"
+graphviz = "*"
 
 [dev-packages]
+autopep8 = "*"
 
 [scripts]
 s ="python manage.py runserver"
-rmdb = "rm -rf db.sqlite3 blog/migrations/000* members/migrations/000*"
-createdb = "python manage.py makemigrations python manage.py migrate"
+rmdb = "bash -c 'rm -rf db.sqlite3 taffy/migrations/000*  members/migrations/000*'"
+mkm = "bash -c 'python manage.py makemigrations; python manage.py migrate'"
+loaddb = "bash -c 'python manage.py loaddb; python manage.py loadpoint;python manage.py createsuperuser;python manage.py loadmember;python manage.py runserver'"
+
+loadpoint = "python manage.py loadpoint"
+loadmember = "python manage.py loadmember"
 m = "python manage.py migrate"
 mk = "python manage.py makemigrations "
 super = "python manage.py createsuperuser"
-loaddb = "python manage.py loaddb"
-loadpoint = "python manage.py loadpoint"
-loadmember = "python manage.py loadmember"
+
 [requires]
 python_version = "3.8"

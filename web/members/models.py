@@ -107,11 +107,11 @@ class Member(AbstractUser):
     testes = models.CharField(
         choices=GENDER, max_length=1, default='M')  # sex of Testes
     profile_image = models.ImageField(
-        default='default.jpg', upload_to='profile_pics')
+        default='default.jpg', upload_to='profile_pics')  # default='default.jpg', ทำไว้เผื่อ Auto dump data Command
     # YYYY-MM-DD
     birthday = models.DateField(default=your_date, null=True, blank=True)
     bloodtype = models.ForeignKey(
-        BloodType, default=1, verbose_name="หมู่เลือด", null=True, blank=True, on_delete=models.CASCADE)
+        BloodType, default=3, verbose_name="หมู่เลือด", null=True, blank=True, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.username},{self.gender},{self.testes}'
@@ -148,6 +148,9 @@ class Profile(models.Model):
     @receiver(post_save, sender=Member)
     def save_profile(sender, instance, **kwargs):
         instance.profile.save()
+
+    def calbirthday(self, *args, **kwargs):
+        pass
 
     def save(self, *args, **kwargs):
 
@@ -284,63 +287,72 @@ class Profile(models.Model):
 
 class Rating(models.Model):
     ratingUser = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='ratingUser')
+        Member, on_delete=models.CASCADE, related_name='ratingUser')
     ratedUser = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='ratedUser')
-
-    # testes and age for filter on the future
-    sex_ori = models.CharField(max_length=20, null=True, blank=True)
-    age = models.IntegerField(null=True, blank=True)
-
-    like = models.BooleanField(null=True, blank=True)
+        Member, on_delete=models.CASCADE, related_name='ratedUser')
     ratingPoint = models.IntegerField(null=True, blank=True)
 
     class Meta:
         unique_together = ('ratingUser', 'ratedUser')
 
     def __str__(self):
-        return str(self.ratingUser) + ' ' + str(self.ratedUser) + ' ' + str(self.like)
+        return str(self.ratingUser) + ' ' + str(self.ratedUser) + ' ' + str(self.ratingPoint)
 
 
 class Match(models.Model):
-    member1 = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='member1')
-    member2 = models.ForeignKey(
-        Profile, on_delete=models.CASCADE, related_name='member2')
+    matcher1 = models.ForeignKey(
+        Member, on_delete=models.CASCADE, related_name='matcher1', null=True, blank=True)
+    matcher2 = models.ForeignKey(
+        Member, on_delete=models.CASCADE, related_name='matcher2', null=True, blank=True)
     rating = models.FloatField(null=True, blank=True)
 
     class Meta:
-        unique_together = ('member1', 'member2')
-        unique_together = ('member2', 'member1')
+        unique_together = ('matcher1', 'matcher2')
+        unique_together = ('matcher2', 'matcher1')
 
     def __str__(self):
-        return str(self.member1) + ' ' + str(self.member2 + " " + (str(self.rating)))
+        return str(self.matcher1) + ' ' + str(self.matcher2 + " " + (str(self.rating)))
 
 
-class Handler(models.Model):
-    # block = models.BooleanField(default=False,blank=True,null=True)
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE)
-    rejected = models.BooleanField(default=False)
-    # แสดงให้คนคุยมากกว่า 1 weeks or คนที่คุยกันมากกว่า 50 times
-    reviewe_value = models.IntegerField(blank=True, null=True)
-    created = models.DateTimeField(auto_now_add=True)  # When it was create
-    updated = models.DateTimeField(auto_now=True)  # When i was update
-
-    def __str__(self) -> str:
-        return f' {self.reviewe_value} {self.rejected}'
+class NoMatch(models.Model):
+    nomatcher1 = models.ForeignKey(
+        Member, on_delete=models.CASCADE, related_name='nomatcher1', null=True, blank=True)
+    nomatcher2 = models.ForeignKey(
+        Member, on_delete=models.CASCADE, related_name='nomatcher2', null=True, blank=True)
+    rating = models.FloatField(null=True, blank=True)
 
     class Meta:
-        verbose_name = "Handler"
-
-
-class Message(models.Model):
-    sender = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sender')
-    recipient = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipient')
-    text = models.CharField(max_length=280)
-    sentDate = models.DateTimeField(auto_now=True)
+        unique_together = ('nomatcher1', 'nomatcher2')
+        unique_together = ('nomatcher2', 'nomatcher1')
 
     def __str__(self):
-        return str(self.sender) + ' ' + str(self.recipient) + ' ' + self.text
+        return str(self.nomatcher1) + ' ' + str(self.nomatcher2 + " " + (str(self.rating)))
+
+
+# class Handler(models.Model):
+#     # block = models.BooleanField(default=False,blank=True,null=True)
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL,
+#                              on_delete=models.CASCADE)
+#     rejected = models.BooleanField(default=False)
+#     # แสดงให้คนคุยมากกว่า 1 weeks or คนที่คุยกันมากกว่า 50 times
+#     reviewe_value = models.IntegerField(blank=True, null=True)
+#     created = models.DateTimeField(auto_now_add=True)  # When it was create
+#     updated = models.DateTimeField(auto_now=True)  # When i was update
+
+#     def __str__(self) -> str:
+#         return f' {self.reviewe_value} {self.rejected}'
+
+#     class Meta:
+#         verbose_name = "Handler"
+
+
+# class Message(models.Model):
+#     sender = models.ForeignKey(
+#         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='sender')
+#     recipient = models.ForeignKey(
+#         settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='recipient')
+#     text = models.CharField(max_length=280)
+#     sentDate = models.DateTimeField(auto_now=True)
+
+#     def __str__(self):
+#         return str(self.sender) + ' ' + str(self.recipient) + ' ' + self.text
