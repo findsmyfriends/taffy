@@ -13,7 +13,7 @@ urlpatterns = [
 
     # Members urls
 
-    path('', member_views.RatingView.as_view(
+    path('', member_views.GetRatingView.as_view(
         template_name='members/member_all.html'), name='member_all'),
     path('match/', member_views.match, name='Match Page'),
     path('setting/', member_views.setting_view, name='setting'),

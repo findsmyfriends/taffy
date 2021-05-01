@@ -286,47 +286,47 @@ class Profile(models.Model):
 
 
 class Rating(models.Model):
-    ratingUser = models.ForeignKey(
-        Member, on_delete=models.CASCADE, related_name='ratingUser')
-    ratedUser = models.ForeignKey(
-        Member, on_delete=models.CASCADE, related_name='ratedUser')
+    member_owner = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='member_owner')
+    member_excluded = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='member_excluded')
     ratingPoint = models.IntegerField(null=True, blank=True)
 
     class Meta:
-        unique_together = ('ratingUser', 'ratedUser')
+        unique_together = ('member_owner', 'member_excluded')
 
     def __str__(self):
-        return str(self.ratingUser) + ' ' + str(self.ratedUser) + ' ' + str(self.ratingPoint)
+        return str(self.member_owner) + ' ' + str(self.member_excluded) + ' ' + str(self.ratingPoint)
 
 
 class Match(models.Model):
-    matcher1 = models.ForeignKey(
-        Member, on_delete=models.CASCADE, related_name='matcher1', null=True, blank=True)
-    matcher2 = models.ForeignKey(
-        Member, on_delete=models.CASCADE, related_name='matcher2', null=True, blank=True)
+    matcher_owner = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='matcher_owner', null=True, blank=True)
+    matcher_excluded = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='matcher_excluded', null=True, blank=True)
     rating = models.FloatField(null=True, blank=True)
 
     class Meta:
-        unique_together = ('matcher1', 'matcher2')
-        unique_together = ('matcher2', 'matcher1')
+        unique_together = ('matcher_owner', 'matcher_excluded')
+        unique_together = ('matcher_excluded', 'matcher_owner')
 
     def __str__(self):
-        return str(self.matcher1) + ' ' + str(self.matcher2 + " " + (str(self.rating)))
+        return str(self.matcher_owner) + ' ' + str(self.matcher_excluded + " " + (str(self.rating)))
 
 
 class NoMatch(models.Model):
-    nomatcher1 = models.ForeignKey(
-        Member, on_delete=models.CASCADE, related_name='nomatcher1', null=True, blank=True)
-    nomatcher2 = models.ForeignKey(
-        Member, on_delete=models.CASCADE, related_name='nomatcher2', null=True, blank=True)
+    nomatcher_owner = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='nomatcher_owner', null=True, blank=True)
+    nomatcher_excluded = models.ForeignKey(
+        Profile, on_delete=models.CASCADE, related_name='nomatcher_excluded', null=True, blank=True)
     rating = models.FloatField(null=True, blank=True)
 
     class Meta:
-        unique_together = ('nomatcher1', 'nomatcher2')
-        unique_together = ('nomatcher2', 'nomatcher1')
+        unique_together = ('nomatcher_owner', 'nomatcher_excluded')
+        unique_together = ('nomatcher_excluded', 'nomatcher_owner')
 
     def __str__(self):
-        return str(self.nomatcher1) + ' ' + str(self.nomatcher2 + " " + (str(self.rating)))
+        return str(self.nomatcher_owner) + ' ' + str(self.nomatcher_excluded + " " + (str(self.rating)))
 
 
 # class Handler(models.Model):

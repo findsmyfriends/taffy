@@ -1,4 +1,4 @@
-from members.forms import ProfileUpdateForm, UserUpdateForm
+from members.forms import *
 from members.models import Member, Profile
 from .models import Post, Comment
 from django.shortcuts import render, redirect, get_object_or_404

@@ -400,7 +400,13 @@
     
     <!-- Page content -->
         <!-- Page content -->
-         
+       
+     
+        {%for i in allrating %}
+       <h1>{{i.member_excluded.member.username}} {{i.member_excluded.member.gender}}</h1>
+        {%endfor%}
+
+      
     <div class="container-fluid mt--8">
    
       {% for key, value in sorted_dict.items %} 

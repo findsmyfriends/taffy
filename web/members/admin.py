@@ -80,9 +80,9 @@ admin.site.register(Profile, ProfileAdmin)
 
 
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ('id', 'matcher1', 'matcher2', 'rating')
-    list_display_links = ('id', 'matcher1')
-    list_filter = ('matcher1', 'matcher2', 'rating')
+    list_display = ('id', 'matcher_owner', 'matcher_excluded', 'rating')
+    list_display_links = ('id', 'matcher_owner')
+    list_filter = ('matcher_owner', 'matcher_excluded', 'rating')
     list_per_page = 50
 
 
@@ -90,9 +90,9 @@ admin.site.register(Match, MatchAdmin)
 
 
 class NoMatchAdmin(admin.ModelAdmin):
-    list_display = ('id', 'nomatcher1', 'nomatcher2', 'rating')
-    list_display_links = ('id', 'nomatcher1')
-    list_filter = ('nomatcher1', 'nomatcher2', 'rating')
+    list_display = ('id', 'nomatcher_owner', 'nomatcher_excluded', 'rating')
+    list_display_links = ('id', 'nomatcher_owner')
+    list_filter = ('nomatcher_owner', 'nomatcher_excluded', 'rating')
     list_per_page = 50
 
 
@@ -136,10 +136,10 @@ admin.site.register(RaSi, RaSiAdmin)
 
 
 class RatingAdmin(admin.ModelAdmin):
-    list_display = ('id', 'ratingUser', 'ratedUser', 'ratingPoint')
-    list_display_links = ('id', 'ratingUser',)
-    list_filter = ('ratingUser',  'ratedUser')
-    search_fields = ('ratingUser',)
+    list_display = ('id', 'member_owner', 'member_excluded', 'ratingPoint')
+    list_display_links = ('id', 'member_owner',)
+    list_filter = ('member_owner',  'member_excluded')
+    search_fields = ('member_owner',)
     list_per_page = 50
 
 

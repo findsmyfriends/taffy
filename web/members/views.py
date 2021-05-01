@@ -6,7 +6,6 @@ from members.models import *
 from django.shortcuts import get_list_or_404, get_object_or_404, render, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from .forms import MemberRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth import authenticate, update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -156,8 +155,9 @@ def setting_view(request):
     return render(request, 'members/setting.html', context)
 
 
-class RatingView(LoginRequiredMixin, View):
+class GetRatingView(LoginRequiredMixin, View):
     models_class = Profile
+    models_class_member = Member
     models_class_bloodtype = BloodType
     models_class_dayofweek = DaysOfWeek
     models_class_naksus = NakSus
@@ -167,6 +167,7 @@ class RatingView(LoginRequiredMixin, View):
     models_class_scorenaksus = ScoreNakSus
     models_class_scorerasi = ScoreRaSi
     models_class_match = Match
+    models_class_rating = Rating
     form_class = MatchForm
     initial = {'key': 'value'}
     template_name = 'members/member_all.html'
@@ -184,6 +185,7 @@ class RatingView(LoginRequiredMixin, View):
         scoredaysofweek = self.models_class_scoredayofweek.objects.all()
         scorenaksus = self.models_class_scorenaksus.objects.all()
         scorerasi = self.models_class_scorerasi.objects.all()
+        rating = self.models_class_rating.objects.all()
 
         lenbloodtype = int(len(bloodtype))
         lendaysofweek = int(len(daysofweek))
@@ -234,92 +236,162 @@ class RatingView(LoginRequiredMixin, View):
             rasiwhile += lenrasi
 
         for i in range(len(member_excluded)):  # 0,1,2,3,
+            # print(i)
 
             if own[0].member.id != member_excluded[i].member.id and own[0].member.testes == member_excluded[i].member.gender:
 
-                rating = (rasilist[own[0].rasi.id-1][member_excluded[i].rasi.id-1] + bloodtypelist[own[0].bloodtype.id-1][member_excluded[i].bloodtype.id-1] +
-                          daysofweeklist[own[0].daysofweek.id-1][member_excluded[i].daysofweek.id -
-                                                                 1] + naksuslist[own[0].naksus.id-1][member_excluded[i].naksus.id-1])*member_excluded[i].profile_score
+                rating_score = (rasilist[own[0].rasi.id-1][member_excluded[i].rasi.id-1] + bloodtypelist[own[0].bloodtype.id-1][member_excluded[i].bloodtype.id-1] +
+                                daysofweeklist[own[0].daysofweek.id-1][member_excluded[i].daysofweek.id -
+                                                                       1] + naksuslist[own[0].naksus.id-1][member_excluded[i].naksus.id-1])*member_excluded[i].profile_score
                 profiles = member_excluded[i]
-
-                # print(f'___{type(profiles.member.id)}____')
-                # rating = get_object_or_404(Rating)
-                # print(f'___{profiles}____')
 
                 own_id = own[0].member.id
                 member_excluded_id = member_excluded[i].member.id
-                own_get = Member.objects.get(id=own_id)
+
+                own_get = self.models_class.objects.get(
+                    id=request.user.id)
                 member_excluded_get = get_object_or_404(
-                    Member, pk=member_excluded_id)
-                rating_all = Rating.objects.all()
-                # print(len(rating_all))
-                if len(rating_all) == 0:
-                    print(len(rating_all))
+                    self.models_class, pk=member_excluded_id)
 
-                    # Rating(ratingUser=own_get, ratedUser=member_excluded_get,
-                    #        ratingPoint=rating).save()
-                # try:
-                #     test = Rating.objects.filter(id=member2.id)
-                #     if member2.id == ratedUser and rating == :
-                #         print('sane')
-                #     else:
-                #         print("no")
-                #         pass
-                #     print(
+                if rating_score != 0:
+                    # rating_get_get = get_object_or_404(
+                    #     self.models_class_rating, pk=own_id)
+                    rating_get = Rating(
+                        member_owner=own_get, member_excluded=member_excluded_get, ratingPoint=rating_score)
+                    # print(rating_get)
+                    print(self.models_class_rating)
+                    # print(rating_get.member_excluded.member.username,
+                    #       rating_get.ratingPoint)
+                    # print(member_excluded_get.member.username, rating_score)
+                    # if rating_get_get.ratingPoint != rating_get.ratingPoint:
+                    #     print("no")
 
-                #         f'print in try_______{Rating.objects.all()}_____{member2.ratingPoint}')
-                # Rating(ratingUser=member, ratedUser=member2,
-                #        sex_ori=member_excluded[i].member.testes, age=member_excluded[i].age, ratingPoint=rating).save()
-                # except:
-                #     None
-                #     print(Rating.objects.filter(
-                #         ratedUser__member__username=member2.username))
-                # pass
+                    # print(
+                    #     f'{rating_get_get.member_excluded}{type(rating_get_get.ratingPoint)}_______')
+                    # print(rating_get)
+                    # if rating_get_get.ratingPoint != rating_score:
+                    #     print("not same")
+                    # rating_get_get.delete()
+                    #
+                    # pass
 
-                # print(member.id, member2.id, ratingUser_id, ratedUser_id)
-                allMember.append(profiles)
-                allrating.append(rating)
+                    # elif rating_get.ratingPoint == rating_score:
+                    #     print("same")
+                    # get_object_or_404(
+                    #     self.models_class_rating, member_excluded=member_excluded_id).save()
+                    # rating_get.save()
+                    #
+                    # else:
+                    # print(member_excluded_get.member.username,
+                    #       rating_get.member_excluded.member.username)
+                    # print(rating_score,
+                    #       rating_get.ratingPoint)
+                    # None
+                    allrating.append(rating_get)
 
-            result = zip(allMember, allrating)
-            result_dict = dict(result)
-            sorted_dict = {}
-            sorted_dictAnode = {}
-            sorted_dictCathode = {}
-            # [1, 2, 3] reverse=True => 3,2,1
-            sorted_keys = sorted(
-                result_dict, key=result_dict.get, reverse=True)
+                # return rating_get
 
-            for w in sorted_keys:
+            # try:
+            #     if rating_score != 0:
 
-                if result_dict[w] > 0 or result_dict[w] < 0:
-                    sorted_dict[w] = result_dict[w]
-                    # print(sorted_dict[w])
+            #         Rating(member_owner=own_get, member_excluded=member_excluded_get,
+            #                ratingPoint=rating_score).save()
 
-            for e in sorted_keys:
-                if result_dict[w] > 0:
+            # except:
+            #     None
+            # print(len(Rating.objects.all()))
+            # for j in range(len(Rating.objects.all())):
+            #     print(j)
+            # super(Rating(member_owner=own_get, member_excluded=member_excluded_get,
+            #              ratingPoint=rating_score).delete(*args, **kwargs))
 
-                    sorted_dictAnode[e] = result_dict[e]
+            #     allMember.append(profiles)
+            #     allrating.append(rating_score)
 
-            for r in sorted_keys:
-                if result_dict[w] < 0:
+            # result = zip(allMember, allrating)
+            # result_dict = dict(result)
+            # sorted_dict = {}
+            # sorted_dictAnode = {}
+            # sorted_dictCathode = {}
+            # # [1, 2, 3] reverse=True => 3,2,1
+            # sorted_keys = sorted(
+            #     result_dict, key=result_dict.get, reverse=True)
 
-                    sorted_dictCathode[r] = result_dict[r]
+            # for w in sorted_keys:
+
+            #     if result_dict[w] > 0 or result_dict[w] < 0:
+            #         sorted_dict[w] = result_dict[w]
+            #         # print(sorted_dict[w])
+
+            # for e in sorted_keys:
+            #     if result_dict[w] > 0:
+
+            #         sorted_dictAnode[e] = result_dict[e]
+
+            # for r in sorted_keys:
+            #     if result_dict[w] < 0:
+
+            #         sorted_dictCathode[r] = result_dict[r]
+        # for i in self.models_class_rating.objects.all():
+        #     print(i.ratedUser.id)
 
         # print(f'_____________{sorted_dict}_______________')
         # print(f'_____________{result_dict}_______________')
         # print(f'___{allMember}_______{allrating}_________')
+        # for i in allrating:
+        #     print(
+        #         f'_______________{i.member_excluded.member.gender}__________')
 
-        context = {'form': form, 'own': own,
-                   'member_excluded': member_excluded,
-                   'result_dict': result_dict,
-                   'sorted_dict': sorted_dict,
-                   'sorted_dictAnode': sorted_dictAnode,
-                   'sorted_dictCathode': sorted_dictCathode,
-                   }
+            # ages = i.objects.filter(
+            #     member_excluded__age__range=(20, 30)).order_by("-ratingPoint")
+            # print(f'_______________{ages}__________')
+
+        if 'min_age' in request.GET:
+            filter_age1 = request.GET.get('min_age')
+            filter_age2 = request.GET.get('max_age')
+            rating = request.GET.get('rating')
+            gender = request.GET.get('gender')
+            anode = request.GET.get('anode')
+            cathode = request.GET.get('cathode')
+
+            if gender is None:
+                gender = "F"
+            if filter_age1 == "":
+                filter_age1 = 0
+            if filter_age2 == '':
+                filter_age2 = Profile.objects.all().aggregate(Max('age'))[
+                    'age__max']
+
+            if anode is None and cathode is not None:
+                cathode = -1
+                ages = Profile.objects.filter(
+                    age__range=(filter_age1, filter_age2)).order_by("age") & Profile.objects.filter(member__gender=gender) & Profile.objects.filter(profile_score__lte=cathode).order_by("profile_score")
+                print(f'__________{anode}________/{cathode}_______')
+
+            elif anode is not None and cathode is None:
+                anode = 1
+                ages = Profile.objects.filter(
+                    age__range=(filter_age1, filter_age2)).order_by("age") & Profile.objects.filter(member__gender=gender) & Profile.objects.filter(profile_score__gte=anode).order_by("-profile_score")
+                print(f'__________{anode}________/{cathode}_______')
+            else:
+                ages = Profile.objects.filter(
+                    age__range=(filter_age1, filter_age2)).order_by("-profile_score") & Profile.objects.filter(member__gender=gender)
+
+        context = {
+            'form': form,
+            'own': own,
+            'member_excluded': member_excluded,
+            'allrating': allrating,
+
+            # 'result_dict': result_dict,
+            # 'sorted_dict': sorted_dict,
+            # 'sorted_dictAnode': sorted_dictAnode,
+            # 'sorted_dictCathode': sorted_dictCathode,
+        }
 
         return render(request, self.template_name, context)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request,  *args, **kwargs):
         form = self.form_class(request.POST)
 
         if form.is_valid():

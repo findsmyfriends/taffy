@@ -65,27 +65,6 @@ class AccountDeleteForm(forms.ModelForm):
         fields = []
 
 
-class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
-
-    class Meta:
-        model = Member
-        fields = ['username', 'email']
-
-
-class ProfileUpdateForm(forms.ModelForm):
-    class Meta:
-        model = Profile
-        # fields = ['image']
-        fields = '__all__'
-
-
-# class ProfileOtherUpdateForm(forms.ModelForm):
-#     class Meta:
-#         model = Profile
-#         fields = ['gender','testes','birthday','age','rasi','bloodtype','naksus']
-        # fields = '__all__'
-
 class MessageForm(forms.Form):
     text = forms.CharField(widget=forms.Textarea, label='')
 
