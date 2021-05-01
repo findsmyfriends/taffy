@@ -141,6 +141,12 @@ STATICFILES_DIRS = [
 # Media Files
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+# MEDIA_URL = '/media/female/'
+MEDIA_DIRS = [
+    os.path.join(BASE_DIR, '/media/male/'),
+    os.path.join(BASE_DIR, '/media/female/')
+]
+
 
 # Crispy Settings
 

@@ -185,7 +185,7 @@ class GetRatingView(LoginRequiredMixin, View):
         scoredaysofweek = self.models_class_scoredayofweek.objects.all()
         scorenaksus = self.models_class_scorenaksus.objects.all()
         scorerasi = self.models_class_scorerasi.objects.all()
-        rating = self.models_class_rating.objects.all()
+        
 
         lenbloodtype = int(len(bloodtype))
         lendaysofweek = int(len(daysofweek))
@@ -244,149 +244,73 @@ class GetRatingView(LoginRequiredMixin, View):
                                 daysofweeklist[own[0].daysofweek.id-1][member_excluded[i].daysofweek.id -
                                                                        1] + naksuslist[own[0].naksus.id-1][member_excluded[i].naksus.id-1])*member_excluded[i].profile_score
                 profiles = member_excluded[i]
+                allMember.append(profiles)
+                allrating.append(rating_score)
 
                 own_id = own[0].member.id
                 member_excluded_id = member_excluded[i].member.id
-
+            
                 own_get = self.models_class.objects.get(
                     id=request.user.id)
                 member_excluded_get = get_object_or_404(
                     self.models_class, pk=member_excluded_id)
+                
+              
+                
+                try:
+                    
+                    Rating(member_owner=own_get, member_excluded=member_excluded_get,
+                        ratingPoint=rating_score).save()
+          
+                except :
+                    print("update(ratingPoint=rating_score)")
+                    # rr = self.models_class_rating.objects.objects.all()
+                    Rating.objects.filter(member_excluded_id=member_excluded_id).update(ratingPoint=rating_score)
 
-                if rating_score != 0:
-                    # rating_get_get = get_object_or_404(
-                    #     self.models_class_rating, pk=own_id)
-                    rating_get = Rating(
-                        member_owner=own_get, member_excluded=member_excluded_get, ratingPoint=rating_score)
-                    # print(rating_get)
-                    print(self.models_class_rating)
-                    # print(rating_get.member_excluded.member.username,
-                    #       rating_get.ratingPoint)
-                    # print(member_excluded_get.member.username, rating_score)
-                    # if rating_get_get.ratingPoint != rating_get.ratingPoint:
-                    #     print("no")
+                       
 
-                    # print(
-                    #     f'{rating_get_get.member_excluded}{type(rating_get_get.ratingPoint)}_______')
-                    # print(rating_get)
-                    # if rating_get_get.ratingPoint != rating_score:
-                    #     print("not same")
-                    # rating_get_get.delete()
-                    #
-                    # pass
+            result = zip(allMember, allrating)
+            result_dict = dict(result)
+            sorted_dict = {}
+            sorted_dictAnode = {}
+            sorted_dictCathode = {}
+            # [1, 2, 3] reverse=True => 3,2,1
+            sorted_keys = sorted(
+                result_dict, key=result_dict.get, reverse=True)
 
-                    # elif rating_get.ratingPoint == rating_score:
-                    #     print("same")
-                    # get_object_or_404(
-                    #     self.models_class_rating, member_excluded=member_excluded_id).save()
-                    # rating_get.save()
-                    #
-                    # else:
-                    # print(member_excluded_get.member.username,
-                    #       rating_get.member_excluded.member.username)
-                    # print(rating_score,
-                    #       rating_get.ratingPoint)
-                    # None
-                    allrating.append(rating_get)
+            for w in sorted_keys:
 
-                # return rating_get
+                if result_dict[w] > 0 or result_dict[w] < 0:
+                    sorted_dict[w] = result_dict[w]
+                    # print(sorted_dict[w])
 
-            # try:
-            #     if rating_score != 0:
+            for e in sorted_keys:
+                if result_dict[w] > 0:
 
-            #         Rating(member_owner=own_get, member_excluded=member_excluded_get,
-            #                ratingPoint=rating_score).save()
+                    sorted_dictAnode[e] = result_dict[e]
 
-            # except:
-            #     None
-            # print(len(Rating.objects.all()))
-            # for j in range(len(Rating.objects.all())):
-            #     print(j)
-            # super(Rating(member_owner=own_get, member_excluded=member_excluded_get,
-            #              ratingPoint=rating_score).delete(*args, **kwargs))
+            for r in sorted_keys:
+                if result_dict[w] < 0:
 
-            #     allMember.append(profiles)
-            #     allrating.append(rating_score)
-
-            # result = zip(allMember, allrating)
-            # result_dict = dict(result)
-            # sorted_dict = {}
-            # sorted_dictAnode = {}
-            # sorted_dictCathode = {}
-            # # [1, 2, 3] reverse=True => 3,2,1
-            # sorted_keys = sorted(
-            #     result_dict, key=result_dict.get, reverse=True)
-
-            # for w in sorted_keys:
-
-            #     if result_dict[w] > 0 or result_dict[w] < 0:
-            #         sorted_dict[w] = result_dict[w]
-            #         # print(sorted_dict[w])
-
-            # for e in sorted_keys:
-            #     if result_dict[w] > 0:
-
-            #         sorted_dictAnode[e] = result_dict[e]
-
-            # for r in sorted_keys:
-            #     if result_dict[w] < 0:
-
-            #         sorted_dictCathode[r] = result_dict[r]
-        # for i in self.models_class_rating.objects.all():
-        #     print(i.ratedUser.id)
+                    sorted_dictCathode[r] = result_dict[r]
+   
 
         # print(f'_____________{sorted_dict}_______________')
         # print(f'_____________{result_dict}_______________')
         # print(f'___{allMember}_______{allrating}_________')
-        # for i in allrating:
-        #     print(
-        #         f'_______________{i.member_excluded.member.gender}__________')
-
-            # ages = i.objects.filter(
-            #     member_excluded__age__range=(20, 30)).order_by("-ratingPoint")
-            # print(f'_______________{ages}__________')
-
-        if 'min_age' in request.GET:
-            filter_age1 = request.GET.get('min_age')
-            filter_age2 = request.GET.get('max_age')
-            rating = request.GET.get('rating')
-            gender = request.GET.get('gender')
-            anode = request.GET.get('anode')
-            cathode = request.GET.get('cathode')
-
-            if gender is None:
-                gender = "F"
-            if filter_age1 == "":
-                filter_age1 = 0
-            if filter_age2 == '':
-                filter_age2 = Profile.objects.all().aggregate(Max('age'))[
-                    'age__max']
-
-            if anode is None and cathode is not None:
-                cathode = -1
-                ages = Profile.objects.filter(
-                    age__range=(filter_age1, filter_age2)).order_by("age") & Profile.objects.filter(member__gender=gender) & Profile.objects.filter(profile_score__lte=cathode).order_by("profile_score")
-                print(f'__________{anode}________/{cathode}_______')
-
-            elif anode is not None and cathode is None:
-                anode = 1
-                ages = Profile.objects.filter(
-                    age__range=(filter_age1, filter_age2)).order_by("age") & Profile.objects.filter(member__gender=gender) & Profile.objects.filter(profile_score__gte=anode).order_by("-profile_score")
-                print(f'__________{anode}________/{cathode}_______')
-            else:
-                ages = Profile.objects.filter(
-                    age__range=(filter_age1, filter_age2)).order_by("-profile_score") & Profile.objects.filter(member__gender=gender)
-
+        rating_all = self.models_class_rating.objects.all()
+        
+       
         context = {
             'form': form,
-            'own': own,
-            'member_excluded': member_excluded,
-            'allrating': allrating,
+            # 'own': own,
+            # 'member_excluded': member_excluded,
+            # 'allrating': allrating,
 
-            # 'result_dict': result_dict,
-            # 'sorted_dict': sorted_dict,
-            # 'sorted_dictAnode': sorted_dictAnode,
-            # 'sorted_dictCathode': sorted_dictCathode,
+            'result_dict': result_dict,
+            'sorted_dict': sorted_dict,
+            'sorted_dictAnode': sorted_dictAnode,
+            'sorted_dictCathode': sorted_dictCathode,
         }
 
         return render(request, self.template_name, context)

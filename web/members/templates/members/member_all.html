@@ -106,8 +106,8 @@
   position: absolute;
   width: 65px;
   height: 65px;
-  margin: 139px 0 0 -9px;
-  left: 78%;
+  margin: 139px 0 0 -15.6px;
+  left: 77.8%;
 }
 .action-button0 {
   position: fixed;
@@ -285,7 +285,38 @@
     opacity: 0
 }
 
+/* The Close Button */
+.close {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+.text {
+  color: #f2f2f2;
+  font-size: 35px;
+  padding: 8px 12px;
+  position: absolute;
+  top: 55px;
+  width: 100%;
+  text-align: center;
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.4); /* Black background with 0.5 opacity */
+  
+}
+
   </style>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 </head>
 
 <body class="bg-white">
@@ -323,7 +354,7 @@
            <li class="nav-item">
             <a href="/public/" class="nav-link">
             <i class="fas fa-pen-square"></i>
-              <span class="nav-link-inner--text">Public Area</span>
+              <span class="nav-link-inner--text">Blog's Love</span>
             </a>
           </li>
             <li class="nav-item">
@@ -415,7 +446,7 @@
         <div class="col-lg-4 col-md-8">
            <a href="{{key.member.username}}"data-toggle="modal" data-target="#{{key.member.username}}" data-backdrop="static" data-keyboard="false"><div class='multi-action4' >
            <span class="action-button4" alt="Avatar"  >
-           <img class="viewprofile imageshake" src="{{ key.member.profile_image.url }}" width=50>
+           <img class="viewprofile imageshake" src="{{ key.member.profile_image.url }}" width=50 >
            </span>
              </div></a>
            <div class='multi-action3'>
@@ -432,12 +463,20 @@
       
 
 <div class="containerr">
-  <img class="imageshake profileview" src="{{ key.member.profile_image.url }}" width=300px height=450px style='object-fit: cover; width:100%; height:550px;' alt="Avatar"">
+  <img class="imageshake profileview" src="{{ key.member.profile_image.url }}" width=300px height=450px style="object-fit: cover; width:100%; height:550px;cursor:zoom-in;" alt="Avatar"  onclick="document.getElementById('{{key.member.username}}{{key.member.username}}').style.display='block'">
   <div class="contentt">
     <h1 style='color:white'>{{key.member.username}}</h1>
      {%if key.member.description == None%}<p>......</p>{%endif%}
     {%if key.member.description != None%}<p>{{key.member.description}}</p>{%endif%}
   </div>
+       <div id="{{key.member.username}}{{key.member.username}}" class="w3-modal" onclick="this.style.display='none'">
+   
+                    <div class="w3-modal-content w3-animate-zoom ">
+                    <span class="close">&times;</span>
+                      <img src="{{key.member.profile_image.url}}" style="object-fit: cover; width:100%; height:650px;">
+                      <div class="text">{{key.member.username}},{{key.age}}</div>
+                    </div>
+                  </div>
 </div>
  
         
@@ -466,14 +505,21 @@
       </div>
       
       <div class="modal-body">
-
+     <div id="{{key.member.username}}{{key.member.username}}2" class="w3-modal" onclick="this.style.display='none'">
+   
+                    <div class="w3-modal-content w3-animate-zoom ">
+                    <span class="close">&times;</span>
+                      <img src="{{key.member.profile_image.url}}" style="object-fit: cover; width:100%; height:650px;">
+                       <div class="text">{{key.member.username}},{{key.age}}</div>
+                    </div>
+                  </div>
             <img src="{% static 'img/theme/img-1-1000x600.jpg' %}" alt="Image placeholder" class="card-img-top imageshake">
             <div class="row justify-content-center">
               <div class="col-lg-4 order-lg-8">
                 <div class="card-profile-image" >
-                  <a href="#">
-                    <img src="{{key.member.profile_image.url}}" alt="Avatar"   class="rounded-circle" >
-                  </a>
+                 
+                    <img src="{{key.member.profile_image.url}}" alt="Avatar"   class="rounded-circle" style="cursor:zoom-in;"onclick="document.getElementById('{{key.member.username}}{{key.member.username}}2').style.display='block'" >
+              
                 </div>
               </div>
             </div>

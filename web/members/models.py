@@ -7,8 +7,8 @@ from django.conf import settings
 from PIL import Image
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-
+import os
+from random import *
 class BloodType(models.Model):
 
     bloodtype = models.CharField(max_length=10)
@@ -97,6 +97,13 @@ def get_rasi():
 def get_bloodtype():
     return BloodType.objects.get(id=1)
 
+def random_image():    
+    directory = os.path.join(settings.BASE_DIR, 'media')
+    files = os.listdir(directory)
+    images = [file for file in files if os.path.isfile(os.path.join(directory, file))]
+    rand = choice(images)
+    print(f'Random Profile:{rand}')
+    return rand
 
 class Member(AbstractUser):
     your_date = date(1998, 3, 11)
@@ -107,7 +114,7 @@ class Member(AbstractUser):
     testes = models.CharField(
         choices=GENDER, max_length=1, default='M')  # sex of Testes
     profile_image = models.ImageField(
-        default='default.jpg', upload_to='profile_pics')  # default='default.jpg', ทำไว้เผื่อ Auto dump data Command
+        default=random_image, upload_to='profile_pics')  # default='default.jpg', ทำไว้เผื่อ Auto dump data Command https://campus.campus-star.com/app/uploads/2018/04/TopLazyLoxy17.jpg
     # YYYY-MM-DD
     birthday = models.DateField(default=your_date, null=True, blank=True)
     bloodtype = models.ForeignKey(
