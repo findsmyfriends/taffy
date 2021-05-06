@@ -10,7 +10,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     # Taffy ADMIN urls
     path('admin/', admin.site.urls),
-
+    path('tinymce/', include('tinymce.urls')),
     # Members urls
 
     path('', member_views.GetRatingView.as_view(
@@ -32,11 +32,11 @@ urlpatterns = [
 
     # API urls
 
-    path('api-taffy/', include('taffy.api.urls')),
+    path('api-taffy/', include('blog.api.urls')),
 
     # taffy Post urls
 
-    path('public/', include('taffy.urls')),
+    path('blog/', include('blog.urls')),
 
 
     # Authentication Urls
@@ -68,11 +68,13 @@ urlpatterns = [
         template_name='members/password_change.html'), name='password_change'),
     path('password-change/done/', auth_views.PasswordChangeDoneView.as_view(
         template_name='members/password_change_done.html'), name='password_change_done'),
-]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
-# if settings.DEBUG:
-#     # import debug_toolbar
-#     # urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
-#     urlpatterns += static(settings.MEDIA_URL,
-#                           document_root=settings.MEDIA_ROOT)
+if settings.DEBUG:
+    # import debug_toolbar
+    # urlpatterns += [path('__debug__/', include(debug_toolbar.urls))]
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)
+    urlpatterns += static(settings.STATIC_URL,
+                          document_root=settings.STATIC_ROOT)
 

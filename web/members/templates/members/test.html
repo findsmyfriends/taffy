@@ -31,10 +31,11 @@
 
 
 <div class="container">
+
 <form method="GET">
 
-<input type="text" name="min_age" maxlength="6" size="6" >
-to <input type="text" name="max_age" maxlength="6" size="6"> 
+<input type="number" name="min_age" maxlength="6" size="6" >
+to <input type="number" name="max_age" maxlength="6" size="6"> 
 <br>
 <br>
  <input type="radio" id="male" name="gender" value="M">
@@ -51,12 +52,21 @@ to <input type="text" name="max_age" maxlength="6" size="6">
 
   <input class="btn btn btn-info" type="submit" value="Go Filter">
 </form>
-<hr> 
+ 
 {%if ages%}
-{% for j in ages%}
-<h2>{{ j.member.username }} | Age {{ j.age }} | Points {{j.profile_score}} | Gender {{j.member.gender}}</h2>
+{% for i in ages%}
+<h2>{{ i.member_excluded.member.username }} | Age {{ i.member_excluded.age }} | Points {{i.ratingPoint}} | Gender {{i.member_excluded.member.gender}}</h2>
 {%endfor%}
-{%endif%} 
+{%endif%}
+
+<hr> 
+{%if profile%}
+{% for i in profile%}
+<h2>{{ i.member_excluded.member.username }} | Age {{ i.member_excluded.age }} | Points {{i.ratingPoint}} | Gender {{i.member_excluded.member.gender}}</h2>
+{%endfor%}
+{%endif%}
+
+
 </div>
 
   </div>

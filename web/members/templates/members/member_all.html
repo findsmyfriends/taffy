@@ -37,8 +37,9 @@
   background: rgba(0, 0, 0, 0.4); /* Black background with 0.5 opacity */
   color: #f1f1f1; /* Grey text */
   width: 100%; /* Full width */
- 
-  padding: 38px; /* Some padding */
+  height: 190px;
+  margin: 0px 50 0 -0px;
+  padding: 14px; /* Some padding */
 }  
 }
   .profileview{
@@ -305,9 +306,9 @@
 .text {
   color: #f2f2f2;
   font-size: 35px;
-  padding: 8px 12px;
+  padding: 50px 20px;
   position: absolute;
-  top: 55px;
+  bottom: 8px;
   width: 100%;
   text-align: center;
   background: rgb(0, 0, 0); /* Fallback color */
@@ -352,7 +353,7 @@
         </div>
         <ul class="navbar-nav mr-auto">
            <li class="nav-item">
-            <a href="/public/" class="nav-link">
+            <a href="{% url 'blog'  %}" class="nav-link">
             <i class="fas fa-pen-square"></i>
               <span class="nav-link-inner--text">Blog's Love</span>
             </a>
@@ -431,256 +432,462 @@
     
     <!-- Page content -->
         <!-- Page content -->
-       
-     
-        {%for i in allrating %}
-       <h1>{{i.member_excluded.member.username}} {{i.member_excluded.member.gender}}</h1>
-        {%endfor%}
+
 
       
     <div class="container-fluid mt--8">
+       {%if filter_ages%}
+               {% for key in filter_ages %} 
+                <!-- Table -->
+                <div class="row justify-content-center">
+                  <div class="col-lg-4 col-md-8">
+                    <a href="{{key.member_excluded.member.username}}"data-toggle="modal" data-target="#{{key.member_excluded.member.username}}" data-backdrop="static" data-keyboard="false"><div class='multi-action4' >
+                    <span class="action-button4" alt="Avatar"  >
+                    <img class="viewprofile imageshake" src="{{ key.member_excluded.member.profile_image.url }}" width=50 >
+                    </span>
+                      </div></a>
+                    <div class='multi-action3'>
+                    <button class='action-button3'><span>{{key.ratingPoint}}</span></button>
+                      </div>
+                      <a href="/nope/"><div class='multi-action2'>
+                    <button class='action-button2'><span class='fa fa-times'></span></button>
+                      </div></a>
+                    <a href="/like/"><div class='multi-action'>
+                    <button class='action-button'><span class='fa fa-heart'></span></button>
+                      </div></a>
+
+                      <div class="card-body  px-lg-5 py-lg-2">  
+                
+
+                            <div class="containerr">
+                              <img class="imageshake profileview" src="{{ key.member_excluded.member.profile_image.url }}" width=300px height=450px style="object-fit: cover; width:100%; height:550px;cursor:zoom-in;" alt="Avatar"  onclick="document.getElementById('{{key.member_excluded.member.username}}{{key.member_excluded.member.username}}').style.display='block'">
+                              <div class="contentt">
+                                <h1 style='font-size: 27px;color:white'>{{key.member_excluded.member.username}},{{key.member_excluded.age}}</h1>
+                                <small style='color:white'>ความสนใจ: {{key.member_excluded.member.testes}}-{{key.member_excluded.member.gender}} <span style='color:white' class='fa fa-heart'></span></small>
+                                {%if key.member_excluded.member.description == None%}<p>......</p>{%endif%}
+                                {%if key.member_excluded.member.description != None%}<p>{{key.member_excluded.member.description}}</p>{%endif%}
+                              
+                              </div>
+                                  <div id="{{key.member_excluded.member.username}}{{key.member_excluded.member.username}}" class="w3-modal" onclick="this.style.display='none'">
+                              
+                                                <div class="w3-modal-content w3-animate-zoom ">
+                                                <span class="close">&times;</span>
+                                                  <img src="{{key.member_excluded.member.profile_image.url}}" style="object-fit: cover; width:100%; height:650px;">
+                                                  <div class="text">{{key.member_excluded.member.username}},{{key.member_excluded.age}}<br><small style='color:white'>ความสนใจ: {{key.member_excluded.member.testes}}-{{key.member_excluded.member.gender}} <span style='color:white' class='fa fa-heart'></span></small><br>                                          
+                                                    {%if key.member_excluded.member.description == None%}<p>......</p>{%endif%}
+                                                      {%if key.member_excluded.member.description != None%}<p>{{key.member_excluded.member.description}}</p>{%endif%}</div>
+
+                                                </div>
+                                              </div>
+                                              </div>
+                            
+                                    
+                                        </div>
+                                      
+                                    </div>
+                                  </div>
+                      
+                        {%endfor%}
+                        {%endif%}
    
-      {% for key, value in sorted_dict.items %} 
-      <!-- Table -->
-      <div class="row justify-content-center">
-        <div class="col-lg-4 col-md-8">
-           <a href="{{key.member.username}}"data-toggle="modal" data-target="#{{key.member.username}}" data-backdrop="static" data-keyboard="false"><div class='multi-action4' >
-           <span class="action-button4" alt="Avatar"  >
-           <img class="viewprofile imageshake" src="{{ key.member.profile_image.url }}" width=50 >
-           </span>
-             </div></a>
-           <div class='multi-action3'>
-           <button class='action-button3'><span>{{value}}</span></button>
-             </div>
-            <a href="/nope/"><div class='multi-action2'>
-           <button class='action-button2'><span class='fa fa-times'></span></button>
-             </div></a>
-          <a href="/like/"><div class='multi-action'>
-           <button class='action-button'><span class='fa fa-heart'></span></button>
-             </div></a>
-
-            <div class="card-body  px-lg-5 py-lg-2">  
-      
-
-<div class="containerr">
-  <img class="imageshake profileview" src="{{ key.member.profile_image.url }}" width=300px height=450px style="object-fit: cover; width:100%; height:550px;cursor:zoom-in;" alt="Avatar"  onclick="document.getElementById('{{key.member.username}}{{key.member.username}}').style.display='block'">
-  <div class="contentt">
-    <h1 style='color:white'>{{key.member.username}}</h1>
-     {%if key.member.description == None%}<p>......</p>{%endif%}
-    {%if key.member.description != None%}<p>{{key.member.description}}</p>{%endif%}
-  </div>
-       <div id="{{key.member.username}}{{key.member.username}}" class="w3-modal" onclick="this.style.display='none'">
    
-                    <div class="w3-modal-content w3-animate-zoom ">
-                    <span class="close">&times;</span>
-                      <img src="{{key.member.profile_image.url}}" style="object-fit: cover; width:100%; height:650px;">
-                      <div class="text">{{key.member.username}},{{key.age}}</div>
-                    </div>
-                  </div>
-</div>
- 
-        
-            </div>
-          
-        </div>
-      </div>
-    
-      {%endfor%}
-    </div>
+   {%if rating_all%}
+      {% for key in rating_all %} 
+                <!-- Table -->
+                <div class="row justify-content-center">
+                  <div class="col-lg-4 col-md-8">
+                    <a href="{{key.member_excluded.member.username}}"data-toggle="modal" data-target="#{{key.member_excluded.member.username}}" data-backdrop="static" data-keyboard="false"><div class='multi-action4' >
+                    <span class="action-button4" alt="Avatar"  >
+                    <img class="viewprofile imageshake" src="{{ key.member_excluded.member.profile_image.url }}" width=50 >
+                    </span>
+                      </div></a>
+                    <div class='multi-action3'>
+                    <button class='action-button3'><span>{{key.ratingPoint}}</span></button>
+                      </div>
+                      <a href="/nope/"><div class='multi-action2'>
+                    <button class='action-button2'><span class='fa fa-times'></span></button>
+                      </div></a>
+                    <a href="/like/"><div class='multi-action'>
+                    <button class='action-button'><span class='fa fa-heart'></span></button>
+                      </div></a>
 
-  </div>
+                      <div class="card-body  px-lg-5 py-lg-2">  
+                
+
+                            <div class="containerr">
+                              <img class="imageshake profileview" src="{{ key.member_excluded.member.profile_image.url }}" width=300px height=450px style="object-fit: cover; width:100%; height:550px;cursor:zoom-in;" alt="Avatar"  onclick="document.getElementById('{{key.member_excluded.member.username}}{{key.member_excluded.member.username}}').style.display='block'">
+                              <div class="contentt">
+                                <h1 style='font-size: 27px;color:white'>{{key.member_excluded.member.username}},{{key.member_excluded.age}}</h1>
+                                <small style='color:white'>ความสนใจ: {{key.member_excluded.member.testes}}-{{key.member_excluded.member.gender}} <span style='color:white' class='fa fa-heart'></span></small>
+                                {%if key.member_excluded.member.description == None%}<p>......</p>{%endif%}
+                                {%if key.member_excluded.member.description != None%}<p>{{key.member_excluded.member.description}}</p>{%endif%}
+                              
+                              </div>
+                                  <div id="{{key.member_excluded.member.username}}{{key.member_excluded.member.username}}" class="w3-modal" onclick="this.style.display='none'">
+                              
+                                                <div class="w3-modal-content w3-animate-zoom ">
+                                                <span class="close">&times;</span>
+                                                  <img src="{{key.member_excluded.member.profile_image.url}}" style="object-fit: cover; width:100%; height:650px;">
+                                                  <div class="text">{{key.member_excluded.member.username}},{{key.member_excluded.age}}<br><small style='color:white'>ความสนใจ: {{key.member_excluded.member.testes}}-{{key.member_excluded.member.gender}} <span style='color:white' class='fa fa-heart'></span></small><br>                                          
+                                                    {%if key.member_excluded.member.description == None%}<p>......</p>{%endif%}
+                                                      {%if key.member_excluded.member.description != None%}<p>{{key.member_excluded.member.description}}</p>{%endif%}</div>
+
+                                                </div>
+                                              </div>
+                                              </div>
+                            
+                                    
+                                        </div>
+                                      
+                                    </div>
+                                  </div>
+                      
+                        {%endfor%}
+                        {%endif%}
 
 
-<!-- Modal -->
-
-  {% for key, value in sorted_dict.items %}
-<div class="modal fade" id="{{key.member.username}}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLongTitle"><strong>{{key.member.first_name}} {{key.member.last_name}}, {{key.age}}</strong></h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      
-      <div class="modal-body">
-     <div id="{{key.member.username}}{{key.member.username}}2" class="w3-modal" onclick="this.style.display='none'">
-   
-                    <div class="w3-modal-content w3-animate-zoom ">
-                    <span class="close">&times;</span>
-                      <img src="{{key.member.profile_image.url}}" style="object-fit: cover; width:100%; height:650px;">
-                       <div class="text">{{key.member.username}},{{key.age}}</div>
-                    </div>
-                  </div>
-            <img src="{% static 'img/theme/img-1-1000x600.jpg' %}" alt="Image placeholder" class="card-img-top imageshake">
-            <div class="row justify-content-center">
-              <div class="col-lg-4 order-lg-8">
-                <div class="card-profile-image" >
-                 
-                    <img src="{{key.member.profile_image.url}}" alt="Avatar"   class="rounded-circle" style="cursor:zoom-in;"onclick="document.getElementById('{{key.member.username}}{{key.member.username}}2').style.display='block'" >
-              
-                </div>
-              </div>
-            </div>
-            <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
            
-            </div>
-            <div class="card-body pt-0">
-              <div class="row">
-                <div class="col">
-                  <div class="card-profile-stats d-flex justify-content-center">
-                    <div>
-                      <span class="heading">  <a href="#" class="btn btn btn-default">Nope</a></span>
+                      </div>
+
+                    </div>
+
+
+                            <!-- Modal -->
+                            {% if rating_all %}
+                            {% for key in rating_all %}
+                                      <div class="modal fade" id="{{key.member_excluded.member.username}}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLongTitle"><strong>{{key.member_excluded.member.first_name}} {{key.member_excluded.member.last_name}}, {{key.member_excluded.age}}</strong></h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        
+                                        <div class="modal-body">
+                                      <div id="{{key.member_excluded.member.username}}{{key.member_excluded.member.username}}2" class="w3-modal" onclick="this.style.display='none'">
+                        
+                                          <div class="w3-modal-content w3-animate-zoom ">
+                                          <span class="close">&times;</span>
+                                            <img src="{{key.member_excluded.member.profile_image.url}}" style="object-fit: cover; width:100%; height:650px;">
+                                          <div class="text">{{key.member_excluded.member.username}},{{key.member_excluded.age}}<br><small style='color:white'>ความสนใจ: {{key.member_excluded.member.testes}}-{{key.member_excluded.member.gender}} <span style='color:white' class='fa fa-heart'></span></small><br>                                          
+                                           {%if key.member_excluded.member.description == None%}<p>......</p>{%endif%}
+                                            {%if key.member_excluded.member.description != None%}<p>{{key.member_excluded.member.description}}</p>{%endif%}
+                                            </div>
+                                          </div>
+                                        </div>
+                                  <img src="{% static 'img/theme/img-1-1000x600.jpg' %}" alt="Image placeholder" class="card-img-top imageshake">
+                                  <div class="row justify-content-center">
+                                    <div class="col-lg-4 order-lg-8">
+                                      <div class="card-profile-image" >
+                                      
+                                          <img src="{{key.member_excluded.member.profile_image.url}}" alt="Avatar"   class="rounded-circle" style="cursor:zoom-in;"onclick="document.getElementById('{{key.member_excluded.member.username}}{{key.member_excluded.member.username}}2').style.display='block'" >
+                                    
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                                
+                                  </div>
+                                  <div class="card-body pt-0">
+                                    <div class="row">
+                                      <div class="col">
+                                        <div class="card-profile-stats d-flex justify-content-center">
+                                          <div>
+                                            <span class="heading">  <a href="#" class="btn btn btn-default">Nope</a></span>
+                                          
+                                          </div>
+                                          <div>
+                                            <span class="heading">{{key.ratingPoint}}</span>
+                                            <span class="description">Rating Score</span>
+                                          </div>
+                                          <div>
+                                            <span class="heading"><a href="#" class="btn btn btn-info  ">Like</a></span>
+                                          
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="text-center">
+                                      <h5 class="h3">
+                                        วัน/เดือน/ปีเกิด <span class="font-weight-light">,(อายุ)</span>
+                                      </h5>
+                                      <div class="h5 font-weight-300">
+                                        <i class="ni location_pin mr-2"></i>{{key.member_excluded.member.birthday|date:"d F Y"}} ,{{key.member_excluded.age}} ปี
+                                      </div>
+                                      <hr>
+                                      <h5 class="h3">
+                                        วันประจำวันเกิด,ราศี,นักษัดร,กรู๊ปเลือด
+                                      </h5>
+                                      <div class="h5 font-weight-300">
+                                        <i class="ni location_pin mr-2"></i>{{key.member_excluded.daysofweek}}, {{key.member_excluded.rasi}}, {{key.member_excluded.naksus}}, {{key.member_excluded.bloodtype}} 
+                                      </div>
+                                          <hr>
+                                          <h5 class="h3">
+                                                            รสนิยม,เพศสภาพ 
+                                                          </h5>
+                                                          {%if key.member_excluded.member.gender == "M" and key.member_excluded.member.testes == "F"  %}
+                                                          <div class="h5 font-weight-300">
+                                                            <i class="ni location_pin mr-2"></i>หญิง,ชาย
+                                                          </div>
+                                                            {% endif %}
+                                                          {%if key.member_excluded.member.gender == "F" and key.member_excluded.member.testes == "M"  %}
+                                                          <div class="h5 font-weight-300">
+                                                          <i class="ni location_pin mr-2"></i> ชาย, หญิง
+                                                          </div>
+                                                          {% endif %}
+                                                            {%if key.member_excluded.member.gender == "M" and key.member_excluded.member.testes == "M"  %}
+                                                          <div class="h5 font-weight-300">
+                                                          <i class="ni location_pin mr-2"></i> ชาย,ชาย
+                                                          </div>
+                                                          {% endif %}
+                                                              {%if key.member_excluded.member.gender == "F" and key.member_excluded.member.testes == "F"  %}
+                                                          <div class="h5 font-weight-300">
+                                                          <i class="ni location_pin mr-2"></i> หญิง,หญิง
+                                                          </div>
+                                                          {% endif %}
+
+                                                        </div>
+                                                      </div>
+                                                  
+                                                </div>
+                                                
+
+                                            </div>
+                                          </div>
+                                        </div>
+
+                            {%endfor%}
+                            {%endif%}
+                              <!-- Modal -->
+                            {% if filter_ages %}
+                            {% for key in filter_ages %}
+                                      <div class="modal fade" id="{{key.member_excluded.member.username}}"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                      <div class="modal-content">
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="exampleModalLongTitle"><strong>{{key.member_excluded.member.first_name}} {{key.member_excluded.member.last_name}}, {{key.member_excluded.age}}</strong></h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        
+                                        <div class="modal-body">
+                                      <div id="{{key.member_excluded.member.username}}{{key.member_excluded.member.username}}2" class="w3-modal" onclick="this.style.display='none'">
+                        
+                                          <div class="w3-modal-content w3-animate-zoom ">
+                                          <span class="close">&times;</span>
+                                            <img src="{{key.member_excluded.member.profile_image.url}}" style="object-fit: cover; width:100%; height:650px;">
+                                          <div class="text">{{key.member_excluded.member.username}},{{key.member_excluded.age}}<br><small style='color:white'>ความสนใจ: {{key.member_excluded.member.testes}}-{{key.member_excluded.member.gender}} <span style='color:white' class='fa fa-heart'></span></small><br>                                          
+                                           {%if key.member_excluded.member.description == None%}<p>......</p>{%endif%}
+                                            {%if key.member_excluded.member.description != None%}<p>{{key.member_excluded.member.description}}</p>{%endif%}</div>
+                                          </div>
+                                        </div>
+                                  <img src="{% static 'img/theme/img-1-1000x600.jpg' %}" alt="Image placeholder" class="card-img-top imageshake">
+                                  <div class="row justify-content-center">
+                                    <div class="col-lg-4 order-lg-8">
+                                      <div class="card-profile-image" >
+                                      
+                                          <img src="{{key.member_excluded.member.profile_image.url}}" alt="Avatar"   class="rounded-circle" style="cursor:zoom-in;"onclick="document.getElementById('{{key.member_excluded.member.username}}{{key.member_excluded.member.username}}2').style.display='block'" >
+                                    
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="card-header text-center border-0 pt-8 pt-md-4 pb-0 pb-md-4">
+                                
+                                  </div>
+                                  <div class="card-body pt-0">
+                                    <div class="row">
+                                      <div class="col">
+                                        <div class="card-profile-stats d-flex justify-content-center">
+                                          <div>
+                                            <span class="heading">  <a href="#" class="btn btn btn-default">Nope</a></span>
+                                          
+                                          </div>
+                                          <div>
+                                            <span class="heading">{{key.ratingPoint}}</span>
+                                            <span class="description">Rating Score</span>
+                                          </div>
+                                          <div>
+                                            <span class="heading"><a href="#" class="btn btn btn-info  ">Like</a></span>
+                                          
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div class="text-center">
+                                      <h5 class="h3">
+                                        วัน/เดือน/ปีเกิด <span class="font-weight-light">,(อายุ)</span>
+                                      </h5>
+                                      <div class="h5 font-weight-300">
+                                        <i class="ni location_pin mr-2"></i>{{key.member_excluded.member.birthday.day}}/{{key.member_excluded.member.birthday.month}}/{{key.member_excluded.member.birthday.year}} ,{{key.member_excluded.age}} ปี
+                                      </div>
+                                      <hr>
+                                      <h5 class="h3">
+                                        วันประจำวันเกิด,ราศี,นักษัดร,กรู๊ปเลือด
+                                      </h5>
+                                      <div class="h5 font-weight-300">
+                                        <i class="ni location_pin mr-2"></i>{{key.member_excluded.daysofweek}}, {{key.member_excluded.rasi}}, {{key.member_excluded.naksus}}, {{key.member_excluded.bloodtype}} 
+                                      </div>
+                                          <hr>
+                                          <h5 class="h3">
+                                                            รสนิยม,เพศสภาพ 
+                                                          </h5>
+                                                          {%if key.member_excluded.member.gender == "M" and key.member_excluded.member.testes == "F"  %}
+                                                          <div class="h5 font-weight-300">
+                                                            <i class="ni location_pin mr-2"></i>หญิง,ชาย
+                                                          </div>
+                                                            {% endif %}
+                                                          {%if key.member_excluded.member.gender == "F" and key.member_excluded.member.testes == "M"  %}
+                                                          <div class="h5 font-weight-300">
+                                                          <i class="ni location_pin mr-2"></i> ชาย, หญิง
+                                                          </div>
+                                                          {% endif %}
+                                                            {%if key.member_excluded.member.gender == "M" and key.member_excluded.member.testes == "M"  %}
+                                                          <div class="h5 font-weight-300">
+                                                          <i class="ni location_pin mr-2"></i> ชาย,ชาย
+                                                          </div>
+                                                          {% endif %}
+                                                              {%if key.member_excluded.member.gender == "F" and key.member_excluded.member.testes == "F"  %}
+                                                          <div class="h5 font-weight-300">
+                                                          <i class="ni location_pin mr-2"></i> หญิง,หญิง
+                                                          </div>
+                                                          {% endif %}
+
+                                                        </div>
+                                                      </div>
+                                                  
+                                                </div>
+                                                
+
+                                            </div>
+                                          </div>
+                                        </div>
+
+                            {%endfor%}
+                            {%endif%}
+                            
+
+
+                      <a href="#"  class="float" data-toggle="modal"  data-target="#exampleModalCenter"  data-backdrop="static" data-keyboard="false">
+                      <i class="fas fa-filter my-float" data-toggle="tooltip" data-original-title="การหาคู่และการแสดงคู่ในระบบ"></i>
+
+                      </a>
+                      <div class="label-container">
+                      <div class="label-text">การกรองเนื้อคู่ของคุณ</div>
+                      <i class="fa fa-play label-arrow"></i>
+
+                      </div>
+              <!-- Modal -->
+              <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                    <div class="modal-title col-6 collapse-brand" id="exampleModalLongTitle">
+                            
+                              <img src="{% static 'img/brand/redtaffy.png' %}" width=100>
+                          
+                          </div>
                     
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
                     </div>
-                    <div>
-                      <span class="heading">{{value}}</span>
-                      <span class="description">Rating Score</span>
-                    </div>
-                    <div>
-                      <span class="heading"><a href="#" class="btn btn btn-info  ">Like</a></span>
-                     
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="text-center">
-                <h5 class="h3">
-                  วัน/เดือน/ปีเกิด <span class="font-weight-light">,(อายุ)</span>
-                </h5>
-                <div class="h5 font-weight-300">
-                  <i class="ni location_pin mr-2"></i>{{key.member.birthday.day}}/{{key.member.birthday.month}}/{{key.member.birthday.year}} ,{{key.age}} ปี
-                </div>
-                <hr>
-                <h5 class="h3">
-                  วันประจำวันเกิด,ราศี,นักษัดร,กรู๊ปเลือด
-                </h5>
-                <div class="h5 font-weight-300">
-                  <i class="ni location_pin mr-2"></i>{{key.daysofweek}}, {{key.rasi}}, {{key.naksus}}, {{key.bloodtype}} 
-                </div>
- <hr>
- <h5 class="h3">
-                  รสนิยม,เพศสภาพ 
-                </h5>
-                 {%if key.member.gender == "M" and key.member.testes == "F"  %}
-                <div class="h5 font-weight-300">
-                  <i class="ni location_pin mr-2"></i>หญิง,ชาย
-                </div>
-                   {% endif %}
-                {%if key.member.gender == "F" and key.member.testes == "M"  %}
-                <div class="h5 font-weight-300">
-                <i class="ni location_pin mr-2"></i> ชาย, หญิง
-                </div>
-                {% endif %}
-                  {%if key.member.gender == "M" and key.member.testes == "M"  %}
-                <div class="h5 font-weight-300">
-                <i class="ni location_pin mr-2"></i> ชาย,ชาย
-                </div>
-                {% endif %}
-                    {%if key.member.gender == "F" and key.member.testes == "F"  %}
-                <div class="h5 font-weight-300">
-                <i class="ni location_pin mr-2"></i> หญิง,หญิง
-                </div>
-                {% endif %}
+                     <div class="modal-body">
+                        <form  method="GET">
+                                {% comment %} {% csrf_token %} {% endcomment %}
+                                          
 
-              </div>
-            </div>
-         
-      </div>
-      
+                                <span><strong>กรองด้วยขั้วบวกและลบ &nbsp;<a data-toggle="modal"  data-target="#QuestionCenter"><i class="fa fa-question-circle" aria-hidden="true"></i></a></strong></span><br><br>
+                                <center>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" id="anode" name="anode" value="anode"checked>
+                                  <label class="form-check-label" for="anode">กรองจากขั้วบวก</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                  <input class="form-check-input" type="checkbox" id="cathode" name="cathode" value="cathode"checked>
+                                  <label class="form-check-label" for="cathode">กรองจากขั้วลบ</label>
+                                </div>
 
-    </div>
-  </div>
-</div>
+                                </center>
+                                <br><br>
 
-  {%endfor%}
-<a href="#"  class="float" data-toggle="modal"  data-target="#exampleModalCenter"  data-backdrop="static" data-keyboard="false">
-<i class="fas fa-filter my-float" data-toggle="tooltip" data-original-title="การหาคู่และการแสดงคู่ในระบบ"></i>
+                                <span><strong>กรองด้วยอายุ&nbsp;<i class="fa fa-question-circle" aria-hidden="true"></i></strong></span> <br><br>
+                                
 
-</a>
-<div class="label-container">
-<div class="label-text">การกรองเนื้อคู่ของคุณ</div>
-<i class="fa fa-play label-arrow"></i>
+                                      <div class="row">
+                                    
+                                        <div class="col-lg-6">
+                                          <div class="form-group">
+                                        
+                                          <input type="number" name="min_age" placeholder="min_age: {{filter_age1}}"  maxlength="6" size="6" >
+                                         
+                                          </div>
+                                        </div>
+                                      
+                                      
+                                        <div class="col-lg-6">
+                                        
+                                          <div class="form-group">
+                                          
+                                            <input type="number" name="max_age"  placeholder="max_age: {{filter_age2}}"  maxlength="6" size="6"> 
+                                            
+                                          </div>
+                                        </div>
+                                      </div> 
+                                    {% comment %} <div class="mt-5">
+                                      <!-- Range slider container -->
+                                      <div id="input-slider-range" step="5" data-range-value-min="{{filter_age1}}" data-range-value-max="{{filter_age2}}"></div>
+                                      <!-- Range slider values -->
+                                      <div class="row">
+                                          <div class="col-6">
+                                              <span class="range-slider-value value-low" data-range-value-low="{{filter_age1}}"  step="1" name="min_age"   maxlength="6" size="6" id="input-slider-range-value-low"></span>
+                                          </div>
+                                          <div class="col-6 text-right">
+                                              <span class="range-slider-value value-high" data-range-value-high="{{filter_age2}}"  step="1" name="max_age"  maxlength="6" size="6" id="input-slider-range-value-high"></span>
+                                          </div>
+                                      </div>
+                                    </div> {% endcomment %}
 
-</div>
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-       <div class="modal-title col-6 collapse-brand" id="exampleModalLongTitle">
-              
-                <img src="{% static 'img/brand/redtaffy.png' %}" width=100>
-             
-            </div>
-      
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form role="form"  method="POST">
-{% csrf_token %}
-<span><strong>Personality &nbsp;<a data-toggle="modal"  data-target="#QuestionCenter"><i class="fa fa-question-circle" aria-hidden="true"></i></a></strong></span><br><br>
-<center>
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="checkbox" id="inlineCheckChecked1" value="option1" checked>
-  <label class="form-check-label" for="inlineCheckChecked1">กรองจากขั้วบวก</label>
-</div>
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2" checked>
-  <label class="form-check-label" for="inlineCheckbox2">กรองจากขั้วลบ</label>
-</div>
-
-<br><br>
- </center>
- <span><strong>Testes &nbsp;<i class="fas fa-venus-mars"></i></a></strong></span><br><br>
-
- <center>
- <div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-  <label class="form-check-label" for="inlineRadio1">Male</label>
-</div>
-<div class="form-check form-check-inline">
-  <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-  <label class="form-check-label" for="inlineRadio2">Femele</label>
-</div>
- 
- </center>
-              <div class="modal-footer">
-        
-        <button  type="submit"  class="btn btn-danger btn-lg btn-block rounded-pill" >กรองเนื้อคู่ของคุณ</button>
-      </div>
-      </form>
-    </div>
-  </div>
-</div>
-<!-- Modal -->
-<div class="modal fade" id="QuestionCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-       <div class="modal-title col-8 collapse-brand" id="exampleModalLongTitle">
-             <i class="fa fa-question-circle" aria-hidden="true">Personality คือ </i>
-            </div>
-        </button>
-      </div>
-      <div class="modal-body">
+                                                  <center>
+                                                  <small>*** หากสมาชิกต้องการเปลี่ยนรสนิยมไปที่ <a href="/setting/"> &nbsp;<i class="fas fa-user-cog"></i> การตั้งค่า</a></small>
+                                                  </center>
+                                                                <div class="modal-footer">
+                                                          
+                                                          <button  type="submit"  class="btn btn-danger btn-lg btn-block rounded-pill" value="Go Filter" >กรองเนื้อคู่ของคุณ</button>
+                                                        </div>
+                            </form>
+                                  
+                                  
+                                  
+                                  
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- Modal -->
+                              <div class="modal fade" id="QuestionCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                    <div class="modal-title col-8 collapse-brand" id="exampleModalLongTitle">
+                                          <i class="fa fa-question-circle" aria-hidden="true">Personality คือ </i>
+                                          </div>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body">
 
 
-              <div class="modal-footer">
-              </div>
-       
-    </div>
-  </div>
-</div>
+                                            <div class="modal-footer">
+                                            </div>
+                                    
+                                  </div>
+                                </div>
+                              </div>
 
 
-  <!-- Argon Scripts -->
-  <!-- Core -->
-
-  <script src="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.js"></script>
+  
+   <script src="{% static 'vendor/nouislider/distribute/nouislider.min.js' %}"></script>
   <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
   <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
   <script src="{% static 'vendor/js-cookie/js.cookie.js' %}"></script>

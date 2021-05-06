@@ -13,12 +13,12 @@ admin.site.unregister(auth.models.Group)
 
 class MemberAdmin(admin.ModelAdmin):
     list_display = ('id', 'username', 'first_name',
-                    'last_name', 'birthday', 'gender', 'testes', 'description', 'is_staff', 'is_active')
-    list_display_links = ('id', 'username')
+                    'last_name', 'birthday', 'gender', 'testes', 'description', 'is_staff', 'is_active','profile_image')
+    list_display_links = ('id', )
     list_filter = ('username', 'birthday', 'testes',
                    'gender', 'is_staff', 'is_active')
-    list_editable = ('is_staff',  'is_active')
-    search_fields = ('testes',)
+    list_editable = ( 'birthday', 'gender', 'testes', 'is_staff', 'is_active','profile_image')
+    search_fields = ('testes','username')
     list_per_page = 20
 
 
@@ -71,8 +71,9 @@ class ProfileAdmin(admin.ModelAdmin):
                     'rasi', 'bloodtype', 'naksus', 'profile_score',)
     list_display_links = ('id', 'member')
     list_filter = ('member', 'age', 'bloodtype', 'naksus', 'daysofweek')
-    list_editable = ('profile_score',)
-    search_fields = ('age',)
+    list_editable = ( 'age', 'daysofweek',
+                    'rasi', 'bloodtype', 'naksus', 'profile_score','profile_score',)
+    search_fields = ('age','member__username',)
     list_per_page = 50
 
 
@@ -138,12 +139,15 @@ admin.site.register(RaSi, RaSiAdmin)
 class RatingAdmin(admin.ModelAdmin):
     list_display = ('id', 'member_owner', 'member_excluded', 'ratingPoint')
     list_display_links = ('id', 'member_owner',)
-    list_filter = ('member_owner',  'member_excluded')
-    search_fields = ('member_owner',)
+    list_filter = ('member_owner', 'member_excluded', 'member_owner__age','member_excluded__age','ratingPoint')
+    search_fields = ('member_owner__member__username','member_excluded__age','ratingPoint')
     list_per_page = 50
 
 
 admin.site.register(Rating, RatingAdmin)
+
+
+
 # admin.site.register(Handler)
 
 # admin.site.register(Message)

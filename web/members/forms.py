@@ -29,11 +29,12 @@ class MemberRegisterForm(UserCreationForm):
 #
         widgets = {
 
-
-            # 'profile_image':forms.TextInput(attrs={'class':'form-controls-file','type':'file',}),
+            'first_name': forms.TextInput(attrs={'class': 'form-controls', 'type': 'text', 'name': 'first_name','id': 'firstname',}),
+            'last_name': forms.TextInput(attrs={'class': 'form-controls', 'type': 'text', 'name': 'first_name','id': 'lastname'}),
             'gender': forms.TextInput(attrs={'class': 'form-check-input', 'type': 'radio', 'name': 'gender'}),
             'testes': forms.TextInput(attrs={'class': 'form-check-input', 'type': 'radio', 'neme': 'testes'}),
             'birthday': DateInput(attrs={'class': 'form-control', 'type': 'date', 'value': '11-03-1998', 'id': 'birthday', 'name': 'birthday'}),
+            'profile_image':forms.TextInput(attrs={'class':'custom-file-input','type':'file','id':'id_profile_image','name': 'profile_image'}),
 
         }
 

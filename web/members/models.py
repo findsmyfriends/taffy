@@ -4,11 +4,12 @@ from datetime import date
 from django.db.models.constraints import UniqueConstraint
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
-from PIL import Image
+
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import os
 from random import *
+from django.shortcuts import render, redirect, get_object_or_404
 class BloodType(models.Model):
 
     bloodtype = models.CharField(max_length=10)
@@ -97,20 +98,40 @@ def get_rasi():
 def get_bloodtype():
     return BloodType.objects.get(id=1)
 
-def random_image():    
-    directory = os.path.join(settings.BASE_DIR, 'media')
-    files = os.listdir(directory)
-    images = [file for file in files if os.path.isfile(os.path.join(directory, file))]
-    rand = choice(images)
-    print(f'Random Profile:{rand}')
-    return rand
+def random_image():  
+ 
 
+
+    try:
+        mm = Member.objects.all()
+        for m in mm:
+            # print(m.username)
+            if m.gender == "M":
+                dir = os.path.join(settings.BASE_DIR,'media/male')
+                # print(dir,f'____{m.username}___________')
+            if m.gender == "F":
+                dir = os.path.join(settings.BASE_DIR, 'media/female')
+               
+            files = os.listdir(dir)
+            images = [file for file in files if os.path.isfile(os.path.join(dir, file))]
+            rand = choice(images)
+        return rand
+
+    except:
+        directory = os.path.join(settings.BASE_DIR, 'media/male')
+        files = os.listdir(directory)
+        images = [file for file in files if os.path.isfile(os.path.join(directory, file))]
+        rand = choice(images)
+        return rand
+           
+     
+    
 class Member(AbstractUser):
     your_date = date(1998, 3, 11)
     GENDER = [('F', 'Female'), ('M', 'Male')]
     description = models.TextField(null=True, blank=True)
     phone_number = models.CharField(max_length=50, null=True, blank=True)
-    gender = models.CharField(choices=GENDER, max_length=1, default='F')
+    gender = models.CharField(choices=GENDER, max_length=1, default='M')
     testes = models.CharField(
         choices=GENDER, max_length=1, default='M')  # sex of Testes
     profile_image = models.ImageField(
@@ -289,7 +310,7 @@ class Profile(models.Model):
                 rasi = None
 
         super(Profile, self).save(*args, **kwargs)
-        print(f'_______{self.member}_____________{year}_______')
+        # print(f'_______{self.member}_____________{year}_______')
 
 
 class Rating(models.Model):

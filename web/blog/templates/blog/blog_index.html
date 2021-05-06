@@ -1,0 +1,850 @@
+
+{% load static %}
+<!DOCTYPE html>
+{% load crispy_forms_tags %}
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Taffy - Blog's Love</title>
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="{% static 'vendor/nucleo/css/nucleo.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" type="text/css">
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="{% static 'css/argon.css' %}" type="text/css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.css" rel="stylesheet" />
+  {% comment %} <script src="https://cdn.tiny.cloud/1/invalid-origin/tinymce/5.7.1-108/tinymce.min.js" rel="text/js"/> {% endcomment %}
+  <style>
+
+.containerr {
+  position: relative;
+  max-width: 800px; /* Maximum width */
+  margin: 0 auto; /* Center it */
+}
+
+.containerr .contentt{
+  position: absolute; /* Position the background text */
+  bottom: 0; /* At the bottom. Use top:0 to append it to the top */
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.4); /* Black background with 0.5 opacity */
+  color: #f1f1f1; /* Grey text */
+  width: 100%; /* Full width */
+  height: 190px;
+  margin: 0px 50 0 -0px;
+  padding: 14px; /* Some padding */
+}  
+}
+  .profileview{
+  width: 100%;
+  height: 500px;
+  border: 5;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  object-fit: cover;
+
+  }
+  .viewprofile {
+ 
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  border: 5;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin: -2px 0 0 -5px;
+  left: 74%;
+  object-fit: cover;
+ 
+}
+  .multi-action0 {
+  display: block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 89px 0 0 -19px;
+  right: 79%;
+}
+  .multi-action {
+  display: inline-block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 378px 0 0 -19px;
+  left: 79%;
+}
+.multi-action2 {
+  display: inline-block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 300px 0 0 -19px;
+  left: 79%;
+}
+.multi-action3 {
+  display: inline-block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 229px 0 0 -19px;
+  left: 79%;
+}
+.multi-action4 {
+  display: inline-block;
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  margin: 139px 0 0 -15.6px;
+  left: 77.8%;
+}
+.action-button0 {
+  position: fixed;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 24px;
+  color: black;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+  
+}
+
+.action-button {
+  position:fixed;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 24px;
+  color: red;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+  
+}
+
+.action-button2 {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FCFCFC;
+  font-size: 24px;
+  color: green;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+}
+.action-button3 {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+}
+.action-button4 {
+  position: absolute;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  border: 20;
+  outline: 10;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  z-index: 2;
+  transition: all .3s;
+  
+}
+
+  
+
+.label-container{
+	position:fixed;
+	bottom:48px;
+	right:105px;
+	display:table;
+	visibility: hidden;
+}
+
+.label-text{
+	color:#FFF;
+	background:rgba(51,51,51,0.5);
+	display:table-cell;
+	vertical-align:middle;
+	padding:10px;
+	border-radius:3px;
+}
+
+.label-arrow{
+	display:table-cell;
+	vertical-align:middle;
+	color:#333;
+	opacity:0.5;
+}
+
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	left:40px;
+	background-color:  #f3a4b5 ;
+	color:#FFFFFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+  margin: 100px 0 0 -19px;
+  left: 87%;
+
+}
+
+.my-float{
+	font-size:24px;
+	margin-top:18px;
+  right: 80%;
+  
+}
+
+.float1{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:120px;
+	background-color:  red;
+	color:#FFFFFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+  margin: 100px 0 0 -19px;
+  left: 87%;
+
+}
+
+.my-float1{
+	font-size:24px;
+	margin-top:18px;
+  right: 80%;
+  
+}
+
+.imageshake:hover {
+  animation: shake 1.05s;
+  animation-iteration-count: 5.0s;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+.rounded-circle{
+  width:145px;
+	height:145px;
+	border-radius:50px;
+  object-fit: cover;
+
+}
+
+.toast {
+    transition: 0.32s all ease-in-out
+}
+
+.toast-container--fade {
+    right: 0;
+    bottom: 0
+}
+
+.toast-container--fade .toast-wrapper {
+    display: inline-block
+}
+
+.toast.fade-init {
+    opacity: 0
+}
+
+.toast.fade-show {
+    opacity: 1
+}
+
+.toast.fade-hide {
+    opacity: 0
+}
+
+/* The Close Button */
+.closesed {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.closesed:hover,
+.closesed:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+.text {
+  color: #f2f2f2;
+  font-size: 35px;
+  padding: 50px 20px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.4); /* Black background with 0.5 opacity */
+  
+}
+  input[type=text] {
+    width: 100%;
+    box-sizing: border-box;
+    border: 0px solid #f2f2f2;
+    border-radius: 8px;
+    font-size: 20px;
+    position: relative;
+    background-color: #f2f2f2;  
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 20px;
+    -webkit-transition: width 0.5s ease-in-out;
+    transition: width 0.5s ease-in-out;
+  }
+
+  input[type=text]:focus {
+    width: 100%;
+  }
+  h1 {
+  font-size: 20px;
+  }
+
+  h2 {
+    font-size: 15px;
+  }
+
+  p {
+    font-size: 10px;
+}
+
+  </style>
+  <script>var editor = new MediumEditor('.editable');</script>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body class="bg-white">
+
+
+
+  <!-- Navbar -->
+  <nav id="navbar-main" class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light "style="position: -webkit-sticky;  position: sticky; position: fixed; background: linear-gradient(87deg, #f3a4b5 0, #f3b4a4 100%) ">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'blog'  %}">
+         
+         <span style="font-size:24px"  ><i class="fas fa-pen-square"></i>&nbsp;ประสบการณ์ความรัก</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="navbar-collapse navbar-custom-collapse collapse" id="navbar-collapse">
+        <div class="navbar-collapse-header">
+          <div class="row">
+            <div class="col-6 collapse-brand">
+              <a href="/">
+                <img  src="{% static 'img/brand/redtaffy.png' %}">
+               
+              </a>
+            </div>
+            <div class="col-6 collapse-close">
+              <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+            
+          </div>
+        </div>
+        
+        <ul class="navbar-nav mr-auto">
+           <li class="nav-item">
+            <a href="{% url 'member_all'  %}" class="nav-link">
+           <i class="fas fa-heart"></i>
+              <span class="nav-link-inner--text">ค้นหาคู่ของคุณ</span>
+            </a>
+          </li>
+            <li class="nav-item">
+            <a href="/chat/" class="nav-link">
+            <i class="fas fa-comment-alt"></i>
+              <span class="nav-link-inner--text">Chat</span>
+            </a>
+          </li>
+           <li class="nav-item">
+            <a href="/profile/" class="nav-link">
+             <i class="fas fa-user"></i>
+              <span class="nav-link-inner--text">Proflie</span>
+            </a>
+          </li>
+          {% if messages %}
+          {% for message in messages %}
+              <li class="nav-item">
+            <a href="#" class="nav-link">
+             
+              <span class="alert alert-{{ message.tags }} nav-link-inner--text "><i class="fas fa-bell"></i>{{ message }}</span>
+            </a>
+          </li>
+          {% endfor %}
+       {% endif%}
+        
+
+         
+        </ul>
+       <hr class="d-lg-none" />
+
+        <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+             <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="https://github.com/taffy63/taffy" target="_blank" data-toggle="tooltip" data-original-title="Source Code on Github">
+              <i class="fab fa-github"></i>
+              <span class="nav-link-inner--text d-lg-none">Github Source Code </span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="/setting/"  data-toggle="tooltip" data-original-title="การตั้งค่าการกรองเนื้อคู่">
+             <i class="fas fa-user-cog"></i>
+              <span class="nav-link-inner--text d-lg-none">การตั้งค่า</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="/profile/" data-toggle="tooltip" data-original-title="การเปลี่ยนแปลงข้อมูลส่วนตัว">
+              <i class="fas fa-user-edit"></i>
+              <span class="nav-link-inner--text d-lg-none">แก้ไขโปรไพล์</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="/logout/"  data-toggle="tooltip" data-original-title="ออกจากระบบ">
+              <i class="fas fa-sign-out-alt"></i>
+              <span class="nav-link-inner--text d-lg-none">ออกจากระบบ</span>
+            </a>
+          </li>
+
+ 
+        </ul>
+      </div>
+    </div>
+  </nav>
+    
+  <!-- Main content -->
+  <div class="main-content">
+
+    <div class="header bg-gradient-pink py-8 py-lg-9  pt-lg-6">
+           <div class="container">
+        <div class="header-body text-center mb-4">
+          <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-4 col-md-0 px-5">
+            
+           
+            </div>
+            
+       
+          </div>
+        </div>
+      </div>
+ 
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2490 90" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-white" points="2490 0 2490 90 0 90"></polygon>
+        </svg>
+      </div>
+    </div>
+    
+     <!-- Page content -->
+    <div class="container mt--8 pb-5">
+      
+      <!-- Table -->
+      <div class="row justify-content-center">
+        <div class="col-lg-12 col-md-8">
+        
+        {% for post in posts%}
+ 
+           
+          <div class="card bg-white border-0">
+            <div class="card-header border-0">
+              
+             
+                <div class="media mb-0">
+                  <span class="avatar avatar-sm rounded-circle "  style="width:75px;height:75px;">
+                    <img  class="imageshake"  alt="Image placeholder" src="{{ post.author.profile_image.url }}" style="width:65px">
+               
+                  </span>
+            
+              
+               </ul>
+    
+            
+                <div class="col mb-0">
+                  
+               <a  href="{% url 'user_posts' post.author.username %}"> White by <h1 class="h3 mb-2" style="font-size:20px; font-weight:bold">{{ post.author.username }} ,{{ post.author.gender }} </h1></a>
+               <h6 class="text-uppercase text-muted ls-4 mb-1" style="font-size:15px;">{{ post.date_posted|date:"d F  h:i:s A" }}</h6>
+            
+                </div>
+                          <div class="dropdown show">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <i class="fas fa-ellipsis-v fa-2x"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow" x-placement="bottom-end" style="position: absolute; transform: translate3d(-160px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                      </div>
+            </div>
+          
+            <div class="card-header bg-transparent pb-5 ">
+            
+              <div class="text-center ">
+               {% if post.image %}
+                   <img style="cursor:zoom-in;"onclick="document.getElementById('{{post.author.username}}{{post.id}}').style.display='block'"   class="imageshake img-fluid rounded" src="{{post.image.url}}" alt="">
+              {% else %}
+                  
+              {% endif %} 
+            </div>
+          
+            <div class="card-body px-lg-8 py-lg-4">
+                  <h1 style="font-weight:bold;font-size:25px;text-align:center;"><a class="article-title"  >{{ post.title|safe }}</a></h1>
+                  {%if post.description%}
+               <a style="font-size:15px;h2{font-size: 15px}" class="article-title" href="{% url 'post_detail' post.pk %}" data-toggle="modal"  data-target="#LargeModalXLS2{{post.id}}"  data-backdrop="static" data-keyboard="false" >{{ post.description|safe|truncatewords:"40"|linebreaks }} <br<button type="button" class="btn btn-outline-info btn-round">Read More...</button></a>
+                {% else %}
+
+                {%endif%}
+   
+            </div>
+      <div class="text-muted text-start mt-0 mb-0"><small class="align-items-start btn btn-link text-danger"><i class="fas fa-heart fa-3x"></i> &nbsp;<span style="font-size:15px;">5</span><span style="font-size:7px;">ถูกใจ</span></small><small class="align-items-end  btn btn-link text-default" type="button" data-toggle="collapse" data-target="#collapseExample{{ post.id }}" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-comment fa-3x"></i><span style="font-size:15px;">5</span><span style="font-size:7px;">ความคิดเห็น</span></small></div>
+       
+</p>
+<div class="collapse" id="collapseExample{{ post.id }}">
+ <form>
+  
+  <textarea class="form-control" rows="3" placeholder="Write a large text here ..."></textarea>
+  <br>
+   <div class="text-right">
+   <a href="{% url 'blog'%}" class="btn btn-primary btn-round" >แสดงความคิดเห็น</a></div>
+</form>
+<br>
+  <div class="card card-body">
+  
+      <div class="media mb-0">
+                  <span class="avatar avatar-sm rounded-circle "  style="width:50px;height:50px;">
+                    <img  alt="Image placeholder" src="{{ post.author.profile_image.url }}" class="imageshake"  style="width:40px">
+               
+                  </span>
+            
+              
+               </ul>
+    
+            
+                <div class="col mb-0">
+                  
+               <a  href="{% url 'user_posts' post.author.username %}">{{ post.author.username }} ,{{ post.author.gender }}</a>
+               <h6 class="text-uppercase text-muted ls-4 mb-1" style="font-size:8px;">{{ post.date_posted|date:"d F  h:i:s A" }}</h6>
+               <h1 class="h3 text-muted " style="font-size:15px; font-weight:bold">&nbsp; &nbsp;&nbsp;<i class="fas fa-reply-all"></i>&nbsp;น่ารักมาาา </h1>
+            
+                </div>
+                          <div class="dropdown show">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow" x-placement="bottom-end" style="position: absolute; transform: translate3d(-160px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                      </div>
+            </div>
+</div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div> 
+ {% endfor %}
+         <!-- Modal -->
+             {% for post in posts%}
+
+               
+              <div class="modal fade bd-example-modal-xl" id="LargeModalXLS2{{post.id}}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2" aria-hidden="true">
+              
+                <div class="modal-dialog modal-xl">
+                      
+    
+
+                  <div class="modal-content">
+                    {%if post.image %}
+             <div id="{{post.author.username}}{{post.id}}" class="w3-modal " onclick="this.style.display='none'">
+                <div class="w3-modal-content w3-animate-zoom ">
+                <span class="closesed">&times;</span>
+                
+                  <img src="{{post.image.url}}" style="object-fit: cover; width:100%; height:650px;">
+
+                </div>
+              </div>
+             {%endif%}
+                    <div class="modal-header">
+                    <div class="modal-title col-6 collapse-brand" id="exampleModalLongTitle2">
+                            
+                            <img style="cursor:zoom-in;"onclick="document.getElementById('{{post.author.username}}{{post.id}}').style.display='block'" src="{% static 'img/brand/redtaffy.png' %}" width=100 class="imageshake" >
+                          
+                          </div>
+                    
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                      
+                    </div>
+                            <a class="nav-link pr-1" href="javascript:">
+                <div class="media mb-0">
+                  <span class="avatar avatar-sm rounded-circle "  style="width:75px;height:75px;" >
+                    <img  class="imageshake"  alt="Image placeholder" src="{{ post.author.profile_image.url }}" style="width:65px"  data-container="body" data-toggle="popover" data-color="warning"  data-placement="bottom" 
+                    data-content="{{ post.author.username }} ,{{ post.author.gender }}" aria-haspopup="true" aria-expanded="false">
+               
+                  </span>
+            
+              </a>
+               </ul>
+    
+            
+                <div class="col mb-0">
+                  
+               <a  href="{% url 'user_posts' post.author.username %}"> White by <h1 class="h3 mb-2" style="font-size:20px; font-weight:bold">{{ post.author.username }} ,{{ post.author.gender }} </h1></a>
+               <h6 class="text-uppercase text-muted ls-4 mb-1" style="font-size:15px;">{{ post.date_posted|date:"d F  h:i:s A" }}</h6>
+            
+                </div>
+                          <div class="dropdown show">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <i class="fas fa-ellipsis-v fa-2x"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow" x-placement="bottom-end" style="position: absolute; transform: translate3d(-160px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                      </div>
+            </div>
+                     <div class="modal-body">
+
+                       <div class="text-center ">
+               {% if post.image %}
+                   <img style="cursor:zoom-in;"onclick="document.getElementById('{{post.author.username}}{{post.id}}').style.display='block'" style="" class="img-fluid rounded imageshake" " src="{{post.image.url}}" alt="">
+              {% else %}
+                  
+              {% endif %} 
+            </div>
+            <div class="card-body px-lg-8 py-lg-4">
+                     <h1 style="font-weight:bold;font-size:25px;text-align:center;"><a class="article-title"  >{{ post.title|safe }}</a></h1>
+                    
+                  {%if post.description%}
+               <a style="font-size:15px;h2{font-size: 15px}" class="article-title" >{{ post.description|safe }}</a> </div>
+                {% else %}
+
+                {%endif%}               
+                    </div>   
+                     <div class="text-muted text-start mt-0 mb-0"><small class="align-items-start btn btn-link text-danger"><i class="fas fa-heart fa-3x"></i> &nbsp;<span style="font-size:15px;">5</span><span style="font-size:7px;">ถูกใจ</span></small><small class="align-items-end  btn btn-link text-default" type="button" data-toggle="collapse" data-target="#collapseExample{{ post.id }}" aria-expanded="false" aria-controls="collapseExample"><i class="fas fa-comment fa-3x"></i><span style="font-size:15px;">5</span><span style="font-size:7px;">ความคิดเห็น</span></small></div>
+       
+</p>
+<div class="collapse" id="collapseExample{{ post.id }}">
+ <form>
+  
+  <textarea class="form-control" rows="3" placeholder="Write a large text here ..."></textarea>
+  <br>
+   <div class="text-right">
+   <a href="{% url 'blog'%}" class="btn btn-primary btn-round" >แสดงความคิดเห็น</a></div>
+</form>
+<br>
+  <div class="card card-body">
+  
+      <div class="media mb-0">
+                  <span class="avatar avatar-sm rounded-circle "  style="width:50px;height:50px;">
+                    <img style="cursor:zoom-in;"onclick="document.getElementById('{{po}}{{post.id}}2').style.display='block'" class="imageshake" alt="Image placeholder" src="{{ post.author.profile_image.url }}" style="width:40px">
+               
+                  </span>
+            
+              
+               </ul>
+    
+            
+                <div class="col mb-0">
+                  
+               <a  href="{% url 'user_posts' post.author.username %}">{{ post.author.username }} ,{{ post.author.gender }}</a>
+               <h6 class="text-uppercase text-muted ls-4 mb-1" style="font-size:8px;">{{ post.date_posted|date:"d F  h:i:s A" }}</h6>
+               <h1 class="h3 text-muted " style="font-size:15px; font-weight:bold">&nbsp; &nbsp;&nbsp;<i class="fas fa-reply-all"></i>&nbsp;น่ารักมาาา </h1>
+            
+                </div>
+                          <div class="dropdown show">
+                        <a class="btn btn-sm btn-icon-only text-light" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow" x-placement="bottom-end" style="position: absolute; transform: translate3d(-160px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
+                          <a class="dropdown-item" href="#">Action</a>
+                          <a class="dropdown-item" href="#">Another action</a>
+                          <a class="dropdown-item" href="#">Something else here</a>
+                        </div>
+                      </div>
+            </div>
+</div>
+          </div>
+        </div>
+      </div>
+
+
+
+    </div>               
+                                  
+          </div>
+        </div>
+        
+      </div>
+      
+      </div>
+      
+{%endfor%}
+      
+    <div class="container-fluid mt--8 ">
+    <!-- page content + floating button -->
+ 
+                  <a href="#"  class="float" data-toggle="modal"  data-target="#LargeModalXLS"  data-backdrop="static" data-keyboard="false">
+                     <i class="fas fa-pen my-float" data-toggle="tooltip" data-original-title="สร้างโฟสต์ของคุณได้ที่นี้"></i>
+                     
+                  </a>
+                      <a href="#"  class="float1" data-toggle="modal"  data-target="#QuestionCenter" data-backdrop="static" data-keyboard="false">
+                     <i class="fas fa-search fa-2x my-float1" data-toggle="tooltip" data-original-title="ค้นหาโพสต์ได้ที่นี้"></i>
+
+                  </a>
+        
+
+                  <div class="label-container">
+                  <div class="label-text">สร้างโพสต์ของคุณ</div>
+                  <i class="fas fa-pen"></i>
+                  </div>
+ 
+         <!-- Modal -->
+            
+              <div class="modal fade bd-example-modal-xl" id="LargeModalXLS" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel1" aria-hidden="true">
+                <div class="modal-dialog modal-xl">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                    <div class="modal-title col-6 collapse-brand" id="exampleModalLongTitle2">
+                            
+                            <img style="cursor:zoom-in;"onclick="document.getElementById('{{post.author.username}}{{post.id}}').style.display='block'" src="{% static 'img/brand/redtaffy.png' %}" width=100>
+                          
+                          </div>
+                    
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                     <div class="modal-body">
+
+                        <form method="POST" enctype="multipart/form-data">
+                               {% csrf_token %} 
+                               <div class="content-section">
+                                  {{ form.media }}
+                                  {{ form|crispy }}
+
+
+                                 </div> 
+                    <div class="modal-footer">
+                          
+                              <button  type="submit"  class="btn btn-danger btn-lg btn-block rounded-pill" value="Go Filter" >โพสต์เลย</button>
+                          </div>
+                        </form>
+                                  
+                                  
+                                  
+                                  
+          </div>
+        </div>
+        
+      </div>
+      
+      </div>
+
+ <!-- Modal -->
+                              <div class="modal fade " id="QuestionCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+
+                                 <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+                                  <div class="modal-content bg-gradient-danger">
+                                    <div class="modal-header">
+                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                        <div class="modal-title col-8 collapse-brand" id="exampleModalLongTitle">
+                                        <img style="cursor:zoom-in;"onclick="document.getElementById('{{post.author.username}}{{post.id}}').style.display='block'" src="{% static 'img/brand/whitetaffy.png' %}" width=100> &nbsp;
+                                          <i class="fa fa-search" style="color:white;" aria-hidden="true">&nbsp;ค้นหาโพสต์</i>
+                                                
+                                          </div>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body center">
+                                    
+                                                  <form>
+                                                  <input type="text" name="search" placeholder="Search..">
+                                                </form> 
+                  
+                                  </div>
+                                </div>
+                              </div>
+
+  
+   <script src="{% static 'vendor/nouislider/distribute/nouislider.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/js-cookie/js.cookie.js' %}"></script>
+  <script src="{% static 'vendor/jquery.scrollbar/jquery.scrollbar.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js' %}"></script>
+  <!-- Argon JS -->
+  <script src="{% static 'js/argon.js' %}"></script>
+  
+
+</body>
+
+</html>
