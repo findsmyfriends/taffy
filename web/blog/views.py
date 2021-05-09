@@ -1,159 +1,241 @@
-from members.forms import *
-from members.models import Member, Profile
 from .models import Post, Comment
+from members.models import *
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.db.models import Q
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .forms import PostForm
+from .forms import PostForm,CommentForm
 from django.views.generic import (
+    ListView, DetailView,  View
+)
+from django.views.generic.edit import (
     CreateView,
-    ListView,
-    DetailView,
     UpdateView,
     DeleteView
 )
-from django.views import View
+
 from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class PostView(View):
+    model_comment_class = Comment
     model_class = Post
     form_class = PostForm
     initial = {'key': 'value'}
     template_name = 'blog/blog_index.html'
+    success_url = '/blog/'
+    
+    
+    def render(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
 
     def get(self, request, *args, **kwargs):
-        form = self.form_class(initial=self.initial)
-        post = self.model_class.objects.all()
-        page = request.GET.get('page', 1)
-        # print(form)
-        paginator = Paginator(post, 9)
+        self.form = self.form_class(initial=self.initial) 
         try:
-            posts = paginator.page(page)
-        except PageNotAnInteger:
-            posts = paginator.page(1)
-        except EmptyPage:
-            posts = paginator.page(paginator.num_pages)
-
-        context = {'form':form,'posts':posts}
-        return render(request, self.template_name, context)
-
-    def post(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            form = self.form_class(request.POST, request.FILES)
-            if form.is_valid():
-                print(form)
-                form.instance.author = self.request.user
-                form.save()
-                messages.success(
-                    request, f' created success!')
-                return redirect('/blog/')
-            else:
-                form = self.form_class(instance=self.request.user)
-            context = {'form':form}
-            return render(request, self.template_name, context)
-
-class PostListView(ListView):
-    model = Post
-    template_name = 'blog/blog_index.html'
-    context_object_name = 'posts'
-    paginate_by = 9
-    print(context_object_name)
-    def get_queryset(self):
-        try:
-            keyword = self.request.GET['q']
+            self.keyword = self.request.GET['q']
         except:
-            keyword = ''
-        if (keyword != ''):
-            object_list = self.model.objects.filter(
-                Q(user__icontains=keyword) | Q(age__icontains=keyword))
+            self.keyword = ''
+        if (self.keyword != ''):
+            self.post = self.model_class.objects.filter(
+                Q(content__icontains=self.keyword) | Q(title__icontains=self.keyword) | Q(author__username__icontains=self.keyword))
         else:
-            object_list = self.model.objects.all()
-        return object_list
+            self.post = self.model_class.objects.all()
+        
+        page = request.GET.get('page', 1)
+        paginator = Paginator(self.post, 3)
+        try:
+            self.posts = paginator.page(page)
+        except PageNotAnInteger:
+            self.posts = paginator.page(1)
+        except EmptyPage:
+            self.posts = paginator.page(paginator.num_pages)
 
 
-class UserPostListView(ListView):
+        self.context = {
+            'form':self.form,
+            'posts':self.posts,
+            
+        }
+        return self.render(request)
+    
+   
+    def post(self, request, *args, **kwargs):
+ 
+        self.form = self.form_class(request.POST, request.FILES)
+        if self.form.is_valid():
+            
+            self.form.instance.author = self.request.user
+            self.form.save()
+            messages.success(
+                request, ' created success!')
+            return redirect(self.success_url)
+           
+        else:
+            self.form = self.form_class(instance=self.request.user)
+        self.context = {'form':self.form}
+        return self.render(request)
+        
+class DetailPostView(View):
+    model_class = Post
+    model_comment_class =Comment
+    form_class = CommentForm
+    initial = {'key': 'value'}
+    template_name = 'blog/detail.html'
+
+
+
+    def render(self, request,pk, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+
+    def get(self, request, pk,*args, **kwargs):
+        self.form = self.form_class(initial=self.initial)
+        self.post = self.model_class.objects.filter(pk=pk)
+        self.comment = self.model_comment_class.objects.filter(post__id=pk).order_by("-created_date")
+        
+        self.context = {'form':self.form,'posts':self.post,'comments':self.comment}
+        return self.render(request,pk)
+
+    def post(self, request, pk, *args, **kwargs):
+        self.post = self.model_class.objects.get(pk=pk)
+        self.form = self.form_class(request.POST)
+        if self.form.is_valid():
+            self.form.instance.author = self.request.user
+            self.form.instance.post = self.post
+            self.form.save()
+            messages.success(
+                request, f'You have successfully commented.')
+            return redirect('post_detail' , pk)
+        else:
+            messages.info(request,"Something wrong")
+        
+        self.context={'form':self.form}
+        return self.render(request,pk)
+        
+        
+
+class DeleteCommentView(View):
+    model_class = Comment
+    model_post_class = Post
+    
+
+    def get(self, request, pk,*args, **kwargs):
+        self.comment = self.model_class.objects.get(pk=pk)
+        print(self.comment.post.id)
+        if self.request.user == self.comment.author:
+            self.model_class.objects.filter(pk=pk).delete()
+            messages.success(request, 'delete CM success!')
+            return redirect('post_detail',self.comment.post.id)
+        messages.warning(request, 'คุณเป็นใคร')
+        return redirect('post_detail',self.comment.post.id)
+        
+    
+
+class DeletePostView(View):
+    model_class = Post
+    success_url = '/blog/'
+
+    def redirect(self, request,pk, *args, **kwargs):
+        return redirect(self.success_url)
+
+    def get(self, request, pk,*args, **kwargs):
+        self.post = self.model_class.objects.get(pk=pk)
+        print(self.post)
+        if self.request.user == self.post.author:
+            self.model_class.objects.filter(pk=pk).delete()
+            messages.success(request, 'delete success!')
+            return self.redirect(self, request,pk)
+        messages.warning(request, 'คุณเป็นใครจะมาลบของฉัน')
+        return self.redirect(self, request,pk)
+        
+
+class UpdatePostView(View):
+    model_class = Post
+    success_url = "/blog/"
+    form_class = PostForm
+    template_name = 'blog/update.html'
+    initial = {'key': 'value'}
+
+    def redirect(self, request,pk, *args, **kwargs):
+        return redirect(self.success_url)
+        
+    def render(self, request,pk, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+
+    def get(self, request,pk, *args, **kwargs):
+        self.post =self.model_class.objects.get(pk=pk)
+        if self.request.user == self.post.author:
+            self.form = self.form_class(instance=self.post)
+        else:
+            messages.info(request, "ของคนอื่นแก้ไม่ได้")
+            return self.redirect(request,pk)
+        self.context = {'form':self.form,'posts':self.post}
+        return self.render(request, pk)
+
+    def post(self, request,pk,*args, **kwargs):
+        self.post =self.model_class.objects.get(pk=pk)
+        if self.request.user == self.post.author:
+            self.form = PostForm( request.POST, request.FILES, instance=self.post)
+            if self.form.is_valid():
+                self.form.instance.author = self.request.user
+                self.form.save()
+                messages.success(request, "Your account has been updated!")
+                return self.redirect(request,pk)
+            else:
+                messages.success(request, "จะไปแก้ของคนอื่นได้ไง")
+           
+        else:
+            self.form = PostForm( instance=self.post)
+           
+        self.context = {'form':self.form}
+        return self.render(request,pk)
+
+class MemberPostListView(View):
+    model_class = Member
+    model_post_class =Post
+    model_coment_class = Comment
+    template_name = 'blog/member_posts.html'
+    paginate_by = 5
+
+    def render(self, request,username,*args,**kwargs):
+        return render(request, self.template_name, self.context)
+        
+    def get(self, request,username,*args, **kwargs):
+        self.member = get_object_or_404(self.model_class,username=username)
+        self.post = self.model_post_class.objects.filter(author=self.member).order_by("-date_posted")
+        self.comment = self.model_coment_class.objects.filter(author=self.member)
+        print(self.post[0].liked)
+        self.context = {'member':self.member,'posts':self.post,'comments':self.comment}
+        return self.render(request,username)
+
+
+class UserPostListView(LoginRequiredMixin,ListView):
     model = Post
-    template_name = 'blog/user_posts.html'
+    template_name = ''
     context_object_name = 'posts'
     paginate_by = 5
 
     def get_queryset(self):
-        user = get_object_or_404(Member, username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user).order_by('-date_posted')
+        member = get_object_or_404(Member, username=self.kwargs.get('username'))
+        print(type(member))
+        return self.model.objects.filter(author=member).order_by('-date_posted')
 
 
 class PostDetailView(DetailView):
     model = Post
 
 
-# class PostCreateView(LoginRequiredMixin, CreateView):
-#     model = Post
-#     form_class = PostForm
-#     template_name = 'blog/blog_index.html'
-#     login_url = '/blog/'
-
-#     def form_valid(self, form):
-#         form.instance.author = self.request.user
-#         return super().form_valid(form)
-
-
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
-    model = Post
-    fields = ['title', 'description', 'image']
-
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        return super().form_valid(form)
-
-    def test_func(self):
-        post = self.get_object()
-        if self.request.user == post.author:
-            return True
-        return False
-
-
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
-    model = Post
-    success_url = '/'
-
-    def test_func(self):
-        post = self.get_object()
-        if self.request.user == post.author:
-            return True
-        return False
-
-
-@login_required
-def postpostviews(request):
-    """Process images uploaded by users"""
-    if request.method == 'POST':
-        form = PostForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            # Get the current instance object to display in the template
-            img_obj = form.instance
-            return render(request, 'blog/post_detail.html', {'form': form, 'img_obj': img_obj})
-    else:
-        form = PostForm()
-    return render(request, 'blog/post_detail.html', {'form': form})
 
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
 
+# class PostListView(ListView):
+#     model = Post
+#     template_name = 'blog/index.html'
+#     context_object_name = 'posts'
+#     paginate_by = 5
 
-@login_required
-def add_comment(request, pk):
-    post = get_object_or_404(Post, pk=pk)
-    if request.method == 'POST':
-        member = Member.objects.get(id=request.POST.get('user_id'))
-        text = request.POST.get('text')
-        Comment(author=member, post=post, text=text).save()
-        messages.success(request, "Your comment has been added successfully.")
-    else:
-        return redirect('post_detail', pk=pk)
-    return redirect('post_detail', pk=pk)
+#     def get_queryset(self):
+

@@ -1,7 +1,13 @@
-from django.urls import path
+from django.urls import include,path
+from rest_framework import routers
+from .views import LikeToggleAPIView ,CommentViewSet
+from rest_framework import routers
+router = routers.DefaultRouter()
+router.register(r'comment', CommentViewSet)
 
-from .views import LikeToggleAPIView
 urlpatterns = [
-    path('<int:pk>/like/', LikeToggleAPIView.as_view(), name='like_api')
-    # path('<int:pk>/nope/', NopeToggleAPIView.as_view(), name='nope_api')
+    path('<int:pk>/like/', LikeToggleAPIView.as_view(), name='like_api'),
+    path('', include(router.urls)),
+   
+   
 ]

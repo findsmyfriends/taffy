@@ -422,7 +422,7 @@
             <div class="row justify-content-center">
               <div class="col-lg-8 order-lg-2">
                 <div class="card-profile-image">
-          
+                  <a>
                     <img src="{{i.member.profile_image.url}}" class="rounded-circle" style="cursor:zoom-in;"onclick="document.getElementById('{{i.member.username}}{{i.member.username}}2').style.display='block'" >
                   </a>
                 </div>
@@ -432,7 +432,7 @@
               <div class="d-flex justify-content-between">
                 
                 <a href="/setting/" class="btn  btn-default">การตั้งค่า</a>
-                <a href="{%url 'user_posts' i.member.username%}" class="btn  btn-info  mr-4 ">โพสต์ของคุณ</a>
+                <a href="{%url 'member_posts' i.member.username%}" class="btn  btn-info  mr-4 ">โพสต์ของคุณ</a>
               </div>
             </div>
             <div class="card-body pt-0">

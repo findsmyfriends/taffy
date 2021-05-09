@@ -7,12 +7,17 @@ from .views import *
 urlpatterns = [
    
     path('', PostView.as_view(), name='blog'),
-    path('user/<str:username>/', UserPostListView.as_view(), name='user_posts'),
-    path('post/<int:pk>/', PostDetailView.as_view(), name='post_detail'),
-    # path('post/new/', PostCreateView.as_view(), name='post_create'),
-    path('post/<int:pk>/update/', PostUpdateView.as_view(), name='post_update'),
-    path('post/<int:pk>/delete/', PostDeleteView.as_view(), name='post_delete'),
+    path('member/<str:username>/', MemberPostListView.as_view(), name='member_posts'),
+    path('post/<int:pk>/', DetailPostView.as_view(), name='post_detail'),
     path('about/', views.about, name='about'),
-    path('post/<int:pk>/comment/', add_comment, name='add_comment'),
+    path('post/<int:pk>/update/', UpdatePostView.as_view(), name='post_update'),
+    path('post/delete/<int:pk>/',DeletePostView.as_view(), name='delete_post'),
+    path('comment/delete/<int:pk>/',DeleteCommentView.as_view(), name='delete_comment'),
+    # path('user/<str:username>/', UserPostListView.as_view(), name='user_posts'),
+# path('post/delete/<int:pk>/', views.delete_post_view,name='delete_post'),
+    # path('post/new/', PostCreateView.as_view(), name='post_create'),
+    # path('post/<int:pk>/update/', views.update_post_view, name='post_update'),
+    # path('post/delete/<int:pk>/', PostDeleteView.as_view(), name='post_delete'),
+    #  path('post/<int:pk>/comment/', add_comment, name='add_comment'),
     
 ]

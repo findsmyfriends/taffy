@@ -2,9 +2,13 @@ from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.response import Response
-
-from blog.models import Post
-
+from django.http import HttpResponse
+from rest_framework import routers, serializers, viewsets
+from blog.models import Post, Comment
+from django.contrib.auth.models import User, Group
+from rest_framework import viewsets
+from rest_framework import permissions
+from .serializers import CommentSerializer
 
 class LikeToggleAPIView(APIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -22,3 +26,12 @@ class LikeToggleAPIView(APIView):
 
             # return Response({'liked': is_liked, 'likes_count': liked_count}) and redirect(f'/public/post/{post_pk.pk}/')
         return Response({"message": message}, status=400)
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
+    permission_classes = [permissions.IsAuthenticated]

@@ -1,31 +1,78 @@
-{% extends "blog/base.html" %}
+
+{% load static %}
+<!DOCTYPE html>
 {% load crispy_forms_tags %}
-{% block content %}
-<div class="content-section">
-    {% comment %} <form method="post" enctype="multipart/form-data">
-        {% csrf_token %}
-        
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Create Post</legend>
-            {{ form|crispy }}
-        </fieldset>
-        <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Post</button>
-        </div>
-    </form> {% endcomment %}
+<html>
 
-    <form method="post" enctype="multipart/form-data">
-    <br><br><br><br>
-  {% csrf_token %}
-   {{ form|crispy }}
-  <button class="btn btn-outline-info" type="submit">Upload</button>
-</form>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Taffy - Blog's Love</title>
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="{% static 'vendor/nucleo/css/nucleo.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" type="text/css">
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="{% static 'css/argon.css' %}" type="text/css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.css" rel="stylesheet" />
+  {% comment %} <script src="https://cdn.tiny.cloud/1/invalid-origin/tinymce/5.7.1-108/tinymce.min.js" rel="text/js"/> {% endcomment %}
+  <style>
 
-{% comment %} {% if img_obj %}
-  <h3>Succesfully uploaded : {{img_obj.title}}</h3>
-  <img src="{{ img_obj.image.url}}" alt="connect" style="max-height:300px">
-{% endif %} {% endcomment %}
-</div>
-<!-- Medium Editor -->
-<script>var editor = new MediumEditor('.editable');</script>
-{% endblock content %}
+.containerr {
+  position: relative;
+  max-width: 800px; /* Maximum width */
+  margin: 0 auto; /* Center it */
+}
+
+.containerr .contentt{
+  position: absolute; /* Position the background text */
+  bottom: 0; /* At the bottom. Use top:0 to append it to the top */
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.4); /* Black background with 0.5 opacity */
+  color: #f1f1f1; /* Grey text */
+  width: 100%; /* Full width */
+  height: 190px;
+  margin: 0px 50 0 -0px;
+  padding: 14px; /* Some padding */
+}  
+
+
+  </style>
+  <script>var editor = new MediumEditor('.editable');</script>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body class="bg-white">
+
+                        <form method="POST" enctype="multipart/form-data">
+                               {% csrf_token %} 
+                               <div class="content-section">
+                                  {{ form.media }}
+                                  {{ form|crispy }}
+
+
+                                 </div> 
+                    <div class="modal-footer" style="position: sticky;bottom: 0;" >
+                          
+                              <button  type="submit"  class="btn btn-danger btn-lg btn-block rounded-pill" >Update</button>
+                          </div>
+                        </form>
+                          
+
+   <script src="{% static 'vendor/nouislider/distribute/nouislider.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/js-cookie/js.cookie.js' %}"></script>
+  <script src="{% static 'vendor/jquery.scrollbar/jquery.scrollbar.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js' %}"></script>
+  <!-- Argon JS -->
+  <script src="{% static 'js/argon.js' %}"></script>
+</body>
+
+</html>

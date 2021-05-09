@@ -33,7 +33,8 @@ urlpatterns = [
     # API urls
 
     path('api-taffy/', include('blog.api.urls')),
-
+    path('api-blog/', include('blog.api.urls')),
+    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # taffy Post urls
 
     path('blog/', include('blog.urls')),

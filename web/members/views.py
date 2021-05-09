@@ -41,6 +41,8 @@ class LoginView(View):
     template_name = 'members/wellcome.html'
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('member_all')
         form = self.form_class(initial=self.initial)
         context = {'form': form}
         return render(request, self.template_name, context)
@@ -52,6 +54,8 @@ class LoginView(View):
         password = request.POST.get('password', '')
         user = authenticate(username=username, password=password)
         # if request.method == 'POST':
+        if request.user.is_authenticated:
+            return redirect('member_all')
         if user is not None:
 
             if user.is_active:
@@ -80,6 +84,8 @@ class RegisterView(View):
     template_name = 'members/register.html'
 
     def get(self, request, *args, **kwargs):
+        if request.user.is_authenticated:
+            return redirect('member_all')
         form = self.form_class(initial=self.initial)
         print(form)
         context = {'form': form}
@@ -87,6 +93,8 @@ class RegisterView(View):
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST, request.FILES,)
+        if request.user.is_authenticated:
+            return redirect('member_all')
         if form.is_valid():
             print(f'________________{form}______________')
             form.save()

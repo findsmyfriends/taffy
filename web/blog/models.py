@@ -20,7 +20,7 @@ class Post(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(blank=True,null=True,upload_to='post_image')
     title = models.CharField(max_length=100)
-    description = HTMLField(blank=True,null=True,)
+    content = HTMLField(blank=True,null=True,)
     # description = models.TextField(blank=True,null=True)
     liked = models.ManyToManyField(
         settings.AUTH_USER_MODEL, blank=True, related_name='liked')
@@ -44,7 +44,7 @@ class Comment(models.Model):
         Post, related_name='comments', on_delete=models.CASCADE)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    text = models.TextField()
+    text = HTMLField()
     created_date = models.DateTimeField(default=timezone.now)
     approved_comment = models.BooleanField(default=True)
 

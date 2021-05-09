@@ -1,0 +1,512 @@
+
+{% load static %}
+<!DOCTYPE html>
+{% load crispy_forms_tags %}
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Start your development with a Dashboard for Bootstrap 4.">
+  <meta name="author" content="Creative Tim">
+  <title>Taffy - Blog's Love</title>
+  <!-- Favicon -->
+  <link rel="icon" href="{% static 'img/brand/favicon.png' %}" type="image/png">
+  <!-- Fonts -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+  <!-- Icons -->
+  <link rel="stylesheet" href="{% static 'vendor/nucleo/css/nucleo.css' %}" type="text/css">
+  <link rel="stylesheet" href="{% static 'vendor/@fortawesome/fontawesome-free/css/all.min.css' %}" type="text/css">
+  <!-- Argon CSS -->
+  <link rel="stylesheet" href="{% static 'css/argon.css' %}" type="text/css">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link href="https://res.cloudinary.com/dxfq3iotg/raw/upload/v1557232134/toasty.css" rel="stylesheet" />
+  {% comment %} <script src="https://cdn.tiny.cloud/1/invalid-origin/tinymce/5.7.1-108/tinymce.min.js" rel="text/js"/> {% endcomment %}
+  <style>
+
+.containerr {
+  position: relative;
+  max-width: 800px; /* Maximum width */
+  margin: 0 auto; /* Center it */
+}
+
+.containerr .contentt{
+  position: absolute; /* Position the background text */
+  bottom: 0; /* At the bottom. Use top:0 to append it to the top */
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.4); /* Black background with 0.5 opacity */
+  color: #f1f1f1; /* Grey text */
+  width: 100%; /* Full width */
+  height: 190px;
+  margin: 0px 50 0 -0px;
+  padding: 14px; /* Some padding */
+}  
+}
+  .profileview{
+  width: 100%;
+  height: 500px;
+  border: 5;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  object-fit: cover;
+
+  }
+
+  .viewprofile {
+ 
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  border: 5;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  margin: -2px 0 0 -5px;
+  left: 74%;
+  object-fit: cover;
+ 
+}
+  .multi-action0 {
+  display: block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 89px 0 0 -19px;
+  right: 79%;
+}
+  .multi-action {
+  display: inline-block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 378px 0 0 -19px;
+  left: 79%;
+}
+.multi-action2 {
+  display: inline-block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 300px 0 0 -19px;
+  left: 79%;
+}
+.multi-action3 {
+  display: inline-block;
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  margin: 229px 0 0 -19px;
+  left: 79%;
+}
+.multi-action4 {
+  display: inline-block;
+  position: absolute;
+  width: 65px;
+  height: 65px;
+  margin: 139px 0 0 -15.6px;
+  left: 77.8%;
+}
+.action-button0 {
+  position: fixed;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 24px;
+  color: black;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+  
+}
+
+.action-button {
+  position:fixed;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 24px;
+  color: red;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+  
+}
+
+.action-button2 {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FCFCFC;
+  font-size: 24px;
+  color: green;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+}
+.action-button3 {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 0;
+  outline: 0;
+  background: #FFFFFF;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+  z-index: 2;
+  box-shadow: 0 2px 10px 0 rgba(0, 0, 0, 0.16), 0 2px 5px 0 rgba(0, 0, 0, 0.26);
+  transition: all .3s;
+}
+.action-button4 {
+  position: absolute;
+  width: 66px;
+  height: 66px;
+  border-radius: 50%;
+  border: 20;
+  outline: 10;
+  font-size: 18px;
+  font-weight: bold;
+  color: white;
+  z-index: 2;
+  transition: all .3s;
+  
+}
+
+  
+
+.label-container{
+	position:fixed;
+	bottom:48px;
+	right:105px;
+	display:table;
+	visibility: hidden;
+}
+
+.label-text{
+	color:#FFF;
+	background:rgba(51,51,51,0.5);
+	display:table-cell;
+	vertical-align:middle;
+	padding:10px;
+	border-radius:3px;
+}
+
+.label-arrow{
+	display:table-cell;
+	vertical-align:middle;
+	color:#333;
+	opacity:0.5;
+}
+
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:40px;
+	left:40px;
+	background-color:  #f3a4b5 ;
+	color:#FFFFFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+  margin: 100px 0 0 -19px;
+  left: 87%;
+
+}
+
+.my-float{
+	font-size:24px;
+	margin-top:18px;
+  right: 80%;
+  
+}
+
+.float1{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:120px;
+	background-color: #f3b3a4;
+	color:#FFFFFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
+  margin: 100px 0 0 -19px;
+  left: 87%;
+
+}
+
+.my-float1{
+  color:red;
+	font-size:24px;
+	margin-top:18px;
+  right: 80%;
+  
+}
+
+.imageshake:hover {
+  animation: shake 1.05s;
+  animation-iteration-count: 5.0s;
+}
+
+@keyframes shake {
+  0% { transform: translate(1px, 1px) rotate(0deg); }
+  10% { transform: translate(-1px, -2px) rotate(-1deg); }
+  20% { transform: translate(-3px, 0px) rotate(1deg); }
+  30% { transform: translate(3px, 2px) rotate(0deg); }
+  40% { transform: translate(1px, -1px) rotate(1deg); }
+  50% { transform: translate(-1px, 2px) rotate(-1deg); }
+  60% { transform: translate(-3px, 1px) rotate(0deg); }
+  70% { transform: translate(3px, 1px) rotate(-1deg); }
+  80% { transform: translate(-1px, -1px) rotate(1deg); }
+  90% { transform: translate(1px, 2px) rotate(0deg); }
+  100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+.rounded-circle{
+  width:145px;
+	height:145px;
+	border-radius:50px;
+  object-fit: cover;
+
+}
+
+.toast {
+    transition: 0.32s all ease-in-out
+}
+
+.toast-container--fade {
+    right: 0;
+    bottom: 0
+}
+
+.toast-container--fade .toast-wrapper {
+    display: inline-block
+}
+
+.toast.fade-init {
+    opacity: 0
+}
+
+.toast.fade-show {
+    opacity: 1
+}
+
+.toast.fade-hide {
+    opacity: 0
+}
+
+/* The Close Button */
+.closesed {
+  position: absolute;
+  top: 15px;
+  right: 35px;
+  color: #f1f1f1;
+  font-size: 40px;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.closesed:hover,
+.closesed:focus {
+  color: #bbb;
+  text-decoration: none;
+  cursor: pointer;
+}
+.text {
+  color: #f2f2f2;
+  font-size: 35px;
+  padding: 50px 20px;
+  position: absolute;
+  bottom: 8px;
+  width: 100%;
+  text-align: center;
+  background: rgb(0, 0, 0); /* Fallback color */
+  background: rgba(0, 0, 0, 0.4); /* Black background with 0.5 opacity */
+  
+}
+  input[type=text] {
+    width: 100%;
+    box-sizing: border-box;
+    border: 0px solid #f2f2f2;
+    border-radius: 8px;
+    font-size: 20px;
+    position: relative;
+    background-color: #f2f2f2;  
+    background-repeat: no-repeat;
+    padding: 12px 20px 12px 20px;
+    -webkit-transition: width 0.5s ease-in-out;
+    transition: width 0.5s ease-in-out;
+  }
+
+  input[type=text]:focus {
+    width: 100%;
+  }
+  h1 {
+  font-size: 40px;
+  }
+
+  h2 {
+    font-size: 25px;
+  }
+
+  p {
+    font-size: 22px;
+}
+
+  </style>
+  <script>var editor = new MediumEditor('.editable');</script>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+
+<body class="bg-white">
+
+
+
+  <!-- Navbar -->
+  <nav id="navbar-main" class="navbar navbar-horizontal navbar-transparent navbar-main navbar-expand-lg navbar-light "style="position: -webkit-sticky;  position: sticky; position: fixed; background: linear-gradient(87deg, #f3a4b5 0, #f3b4a4 100%) ">
+    <div class="container">
+    {%if user.is_authenticated%}
+   
+      <a class="navbar-brand" href="{% url 'post_detail' posts.id %}">
+    
+    {% elif user.is_anonymous %}
+    
+     <a class="navbar-brand" id="bornborn"  data-toggle="modal" data-target="#modal-notification-anonymous" data-backdrop="static" data-keyboard="false">
+     <div>คุณสามารถเลือกอ่านได้ไม่เกิน <span id="time"></span> วินาที</div>
+
+     {% endif%}
+         <span style="font-size:24px"  ><i class="fas fa-arrow-left"></i>&nbsp;แก้ไขโพสต์ทาฟฟี่</span>
+      </a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <div class="navbar-collapse navbar-custom-collapse collapse" id="navbar-collapse">
+        <div class="navbar-collapse-header">
+          <div class="row">
+            <div class="col-6 collapse-brand">
+            
+              <a href="/">
+                <img  src="{% static 'img/brand/redtaffy.png' %}">
+               
+              </a>
+            </div>
+            <div class="col-6 collapse-close">
+              <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+            
+          </div>
+        </div>
+     
+
+        <ul class="navbar-nav align-items-lg-center ml-lg-auto">
+             
+          {% if user.is_authenticated %}
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="{% url 'member_all'  %}"  data-toggle="tooltip" data-original-title="ค้นหาคู่ของคุณ">
+              <i class="fas fa-heart"></i>
+              <span class="nav-link-inner--text d-lg-none">ค้นหาคู่ของคุณ</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href="/chat/" data-toggle="tooltip" data-original-title="สนทนา">
+            <i class="fas fa-comment-alt"></i>
+              <span class="nav-link-inner--text d-lg-none">สนทนา</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link nav-link-icon" href=""/profile/""  data-toggle="tooltip" data-original-title="แก้ไขโปรไพล์">
+               <i class="fas fa-user"></i>
+              <span class="nav-link-inner--text d-lg-none">แก้ไขโปรไพล์</span>
+            </a>
+          </li>
+ {%endif%}
+        </ul>
+        
+      </div>
+    </div>
+  </nav>
+    
+  <!-- Main content -->
+  <div class="main-content">
+
+    <div class="header bg-gradient-pink py-8 py-lg-9  pt-lg-6">
+           <div class="container">
+        <div class="header-body text-center mb-4">
+          <div class="row justify-content-center">
+            <div class="col-xl-5 col-lg-4 col-md-0 px-5">
+            
+           
+           <h2>{{post.author.username}}</h2>
+          
+            </div>
+            
+       
+          </div>
+        </div>
+      </div>
+ 
+      <div class="separator separator-bottom separator-skew zindex-100">
+        <svg x="0" y="0" viewBox="0 0 2490 90" preserveAspectRatio="none" version="1.1" xmlns="http://www.w3.org/2000/svg">
+          <polygon class="fill-white" points="2490 0 2490 90 0 90"></polygon>
+        </svg>
+      </div>
+    </div>
+    
+     <!-- Page content -->
+    <div class="container mt--9 pb-5">
+      
+      <!-- Table -->
+      <div class="row justify-content-center">
+        <div class="col-lg-12 col-md-4">
+
+        <form method="POST" enctype="multipart/form-data">
+                               {% csrf_token %} 
+                               <div class="content-section">
+                                  {{ form.media }}
+                                  {{ form|crispy }}
+
+
+                                 </div> 
+                    <div class="modal-footer" style="position: sticky;bottom: 0;" >
+                          
+                              <button  type="submit"  class="btn btn-danger btn-lg btn-block rounded-pill" >แก้ไขโพสต์ทาฟฟี่</button>
+                          </div>
+                        </form>
+
+        </div>
+      </div>
+    </div>
+        
+        
+
+   <script src="{% static 'vendor/nouislider/distribute/nouislider.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery/dist/jquery.min.js' %}"></script>
+  <script src="{% static 'vendor/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+  <script src="{% static 'vendor/js-cookie/js.cookie.js' %}"></script>
+  <script src="{% static 'vendor/jquery.scrollbar/jquery.scrollbar.min.js' %}"></script>
+  <script src="{% static 'vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js' %}"></script>
+  <!-- Argon JS -->
+  <script src="{% static 'js/argon.js' %}"></script>
+
+</body>
+
+</html>
