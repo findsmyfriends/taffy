@@ -81,37 +81,3 @@
 3. PythonAnywhere คือ เว็บที่ให้บริการเครื่องมือที่ใช้ในการพัฒนาโปรแกรม (IDE) และ เป็น web hosting service โดยใช้ภาษา Python 
 4. SQLite เป็นโปรแกรมฐานข้อมูลที่มีขนาดเล็ก เก็บฐานข้อมูลเป็นไฟล์โดยไม่จำเป็นต้องมีเซิร์ฟเวอร์ 
 
-
-### 1.6 แผนการดำเนินการ
-
-ในการสร้างทาฟฟี่เว็บแอปพลิเคชันเพื่อการหาคู่นี้ ผู้พัฒนาได้แบ่งขั้นตอน การดำเนินงานไว้ด้วยกัน 8 ขั้นตอน ดังตารางที่ 1.1 
-
-
-###### ตารางที่ 1.1: ขั้นตอนการดำเนินงาน
-
-  ## Table Styling in Markdown
-
-<style>
-.heatMap {
-    width: 70%;
-    text-align: center;
-}
-.heatMap th {
-background: grey;
-word-wrap: break-word;
-text-align: center;
-}
-.heatMap tr:nth-child(1) { background: red; }
-.heatMap tr:nth-child(2) { background: orange; }
-.heatMap tr:nth-child(3) { background: green; }
-</style>
-
-<div class="heatMap">
-
-| Everything | in this table | is Centered |  and the table will only take up 70% of the screen width  | 
-| -- | -- | -- | -- |
-| This | is | a | Red Row |
-| This | is | an | Orange Row |
-| This | is | a | Green Row |
-
-</div>
