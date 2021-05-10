@@ -20,8 +20,8 @@ from django.utils import timezone
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class PostView(View):
-    model_comment_class = Comment
-    model_class = Post
+    models_comment_class = Comment
+    models_class = Post
     form_class = PostForm
     initial = {'key': 'value'}
     template_name = 'blog/blog_index.html'
@@ -38,10 +38,10 @@ class PostView(View):
         except:
             self.keyword = ''
         if (self.keyword != ''):
-            self.post = self.model_class.objects.filter(
+            self.post = self.models_class.objects.filter(
                 Q(content__icontains=self.keyword) | Q(title__icontains=self.keyword) | Q(author__username__icontains=self.keyword))
         else:
-            self.post = self.model_class.objects.all()
+            self.post = self.models_class.objects.all()
         
         page = request.GET.get('page', 1)
         paginator = Paginator(self.post, 3)
@@ -77,9 +77,9 @@ class PostView(View):
         self.context = {'form':self.form}
         return self.render(request)
         
-class DetailPostView(View):
-    model_class = Post
-    model_comment_class =Comment
+class DetailPostView(LoginRequiredMixin,View):
+    models_class = Post
+    models_comment_class =Comment
     form_class = CommentForm
     initial = {'key': 'value'}
     template_name = 'blog/detail.html'
@@ -91,14 +91,14 @@ class DetailPostView(View):
 
     def get(self, request, pk,*args, **kwargs):
         self.form = self.form_class(initial=self.initial)
-        self.post = self.model_class.objects.filter(pk=pk)
-        self.comment = self.model_comment_class.objects.filter(post__id=pk).order_by("-created_date")
+        self.post = self.models_class.objects.filter(pk=pk)
+        self.comment = self.models_comment_class.objects.filter(post__id=pk).order_by("-created_date")
         
         self.context = {'form':self.form,'posts':self.post,'comments':self.comment}
         return self.render(request,pk)
 
     def post(self, request, pk, *args, **kwargs):
-        self.post = self.model_class.objects.get(pk=pk)
+        self.post = self.models_class.objects.get(pk=pk)
         self.form = self.form_class(request.POST)
         if self.form.is_valid():
             self.form.instance.author = self.request.user
@@ -115,16 +115,16 @@ class DetailPostView(View):
         
         
 
-class DeleteCommentView(View):
-    model_class = Comment
-    model_post_class = Post
+class DeleteCommentView(LoginRequiredMixin,View):
+    models_class = Comment
+    models_post_class = Post
     
 
     def get(self, request, pk,*args, **kwargs):
-        self.comment = self.model_class.objects.get(pk=pk)
+        self.comment = self.models_class.objects.get(pk=pk)
         print(self.comment.post.id)
         if self.request.user == self.comment.author:
-            self.model_class.objects.filter(pk=pk).delete()
+            self.models_class.objects.filter(pk=pk).delete()
             messages.success(request, 'delete CM success!')
             return redirect('post_detail',self.comment.post.id)
         messages.warning(request, 'คุณเป็นใคร')
@@ -132,26 +132,26 @@ class DeleteCommentView(View):
         
     
 
-class DeletePostView(View):
-    model_class = Post
+class DeletePostView(LoginRequiredMixin,View):
+    models_class = Post
     success_url = '/blog/'
 
     def redirect(self, request,pk, *args, **kwargs):
         return redirect(self.success_url)
 
     def get(self, request, pk,*args, **kwargs):
-        self.post = self.model_class.objects.get(pk=pk)
+        self.post = self.models_class.objects.get(pk=pk)
         print(self.post)
         if self.request.user == self.post.author:
-            self.model_class.objects.filter(pk=pk).delete()
+            self.models_class.objects.filter(pk=pk).delete()
             messages.success(request, 'delete success!')
             return self.redirect(self, request,pk)
         messages.warning(request, 'คุณเป็นใครจะมาลบของฉัน')
         return self.redirect(self, request,pk)
         
 
-class UpdatePostView(View):
-    model_class = Post
+class UpdatePostView(LoginRequiredMixin,View):
+    models_class = Post
     success_url = "/blog/"
     form_class = PostForm
     template_name = 'blog/update.html'
@@ -164,7 +164,7 @@ class UpdatePostView(View):
         return render(request, self.template_name, self.context)
 
     def get(self, request,pk, *args, **kwargs):
-        self.post =self.model_class.objects.get(pk=pk)
+        self.post =self.models_class.objects.get(pk=pk)
         if self.request.user == self.post.author:
             self.form = self.form_class(instance=self.post)
         else:
@@ -174,7 +174,7 @@ class UpdatePostView(View):
         return self.render(request, pk)
 
     def post(self, request,pk,*args, **kwargs):
-        self.post =self.model_class.objects.get(pk=pk)
+        self.post =self.models_class.objects.get(pk=pk)
         if self.request.user == self.post.author:
             self.form = PostForm( request.POST, request.FILES, instance=self.post)
             if self.form.is_valid():
@@ -191,10 +191,10 @@ class UpdatePostView(View):
         self.context = {'form':self.form}
         return self.render(request,pk)
 
-class MemberPostListView(View):
-    model_class = Member
-    model_post_class =Post
-    model_coment_class = Comment
+class MemberPostListView(LoginRequiredMixin,View):
+    models_class = Member
+    models_post_class =Post
+    models_coment_class = Comment
     template_name = 'blog/member_posts.html'
     paginate_by = 5
 
@@ -202,24 +202,15 @@ class MemberPostListView(View):
         return render(request, self.template_name, self.context)
         
     def get(self, request,username,*args, **kwargs):
-        self.member = get_object_or_404(self.model_class,username=username)
-        self.post = self.model_post_class.objects.filter(author=self.member).order_by("-date_posted")
-        self.comment = self.model_coment_class.objects.filter(author=self.member)
+        self.member = get_object_or_404(self.models_class,username=username)
+        self.post = self.models_post_class.objects.filter(author=self.member).order_by("-date_posted")
+        self.comment = self.models_coment_class.objects.filter(author=self.member)
         print(self.post[0].liked)
         self.context = {'member':self.member,'posts':self.post,'comments':self.comment}
         return self.render(request,username)
 
 
-class UserPostListView(LoginRequiredMixin,ListView):
-    model = Post
-    template_name = ''
-    context_object_name = 'posts'
-    paginate_by = 5
 
-    def get_queryset(self):
-        member = get_object_or_404(Member, username=self.kwargs.get('username'))
-        print(type(member))
-        return self.model.objects.filter(author=member).order_by('-date_posted')
 
 
 class PostDetailView(DetailView):
@@ -230,12 +221,3 @@ class PostDetailView(DetailView):
 
 def about(request):
     return render(request, 'blog/about.html', {'title': 'About'})
-
-# class PostListView(ListView):
-#     model = Post
-#     template_name = 'blog/index.html'
-#     context_object_name = 'posts'
-#     paginate_by = 5
-
-#     def get_queryset(self):
-

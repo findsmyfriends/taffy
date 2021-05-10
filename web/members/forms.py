@@ -34,7 +34,7 @@ class MemberRegisterForm(UserCreationForm):
             'gender': forms.TextInput(attrs={'class': 'form-check-input', 'type': 'radio', 'name': 'gender'}),
             'testes': forms.TextInput(attrs={'class': 'form-check-input', 'type': 'radio', 'neme': 'testes'}),
             'birthday': DateInput(attrs={'class': 'form-control', 'type': 'date', 'value': '11-03-1998', 'id': 'birthday', 'name': 'birthday'}),
-            'profile_image':forms.TextInput(attrs={'class':'custom-file-input','type':'file','id':'id_profile_image','name': 'profile_image'}),
+            
 
         }
 

@@ -177,8 +177,7 @@ class Profile(models.Model):
     def save_profile(sender, instance, **kwargs):
         instance.profile.save()
 
-    def calbirthday(self, *args, **kwargs):
-        pass
+   
 
     def save(self, *args, **kwargs):
 
@@ -312,7 +311,9 @@ class Profile(models.Model):
         super(Profile, self).save(*args, **kwargs)
         # print(f'_______{self.member}_____________{year}_______')
 
-
+    def calbirthday(self, *args, **kwargs):
+        pass
+    
 class Rating(models.Model):
     member_owner = models.ForeignKey(
         Profile, on_delete=models.CASCADE, related_name='member_owner')

@@ -40,26 +40,29 @@ class LoginView(View):
     initial = {'key': 'value'}
     template_name = 'members/wellcome.html'
 
+    def render(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
+        if self.request.user.is_authenticated:
             return redirect('member_all')
-        form = self.form_class(initial=self.initial)
-        context = {'form': form}
-        return render(request, self.template_name, context)
+        self.form = self.form_class(initial=self.initial)
+        self.context = {'form': self.form}
+        return self.render(request)
 
     def post(self, request, *args, **kwargs):
         next = self.request.GET.get('next')
-        form = self.form_class(request.POST)
-        username = request.POST.get('username', '')
-        password = request.POST.get('password', '')
-        user = authenticate(username=username, password=password)
+        self.form = self.form_class(request.POST)
+        self.username = request.POST.get('username', '')
+        self.password = request.POST.get('password', '')
+        self.user = authenticate(username=self.username, password=self.password)
         # if request.method == 'POST':
-        if request.user.is_authenticated:
+        if self.request.user.is_authenticated:
             return redirect('member_all')
-        if user is not None:
+        if self.user is not None:
 
-            if user.is_active:
-                auth_login(request, user)
+            if self.user.is_active:
+                auth_login(request, self.user)
                 messages.success(request, "You have logged in!")
                 if next == None:
                     return HttpResponseRedirect('/?anode=anode&cathode=cathode&min_age=&max_age=')
@@ -70,10 +73,10 @@ class LoginView(View):
                 return redirect('/login/')
         else:
             messages.warning(
-                request, "The username or password are not valid!")
+                request, "Warning!The username or password are not valid!")
             # return redirect('/login/')
-
-        return render(request, self.template_name, {'form': form})
+        self.context ={'form':self.form}
+        return self.render(request)
 
 
 class RegisterView(View):
@@ -83,85 +86,118 @@ class RegisterView(View):
     initial = {'key': 'value'}
     template_name = 'members/register.html'
 
+    def render(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+
     def get(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
+        if self.request.user.is_authenticated:
             return redirect('member_all')
-        form = self.form_class(initial=self.initial)
-        print(form)
-        context = {'form': form}
-        return render(request, self.template_name, context)
+
+        self.form = self.form_class(initial=self.initial)
+        print(self.form)
+        self.context = {'form': self.form}
+        return self.render(request)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES,)
-        if request.user.is_authenticated:
+        self.form = self.form_class(request.POST, request.FILES,)
+        if self.request.user.is_authenticated:
             return redirect('member_all')
-        if form.is_valid():
-            print(f'________________{form}______________')
-            form.save()
-            profile_image = form.cleaned_data.get('profile_image')
-            username = form.cleaned_data.get('username')
+
+        if self.form.is_valid():
+            
+            self.form.save()
+            self.profile_image = self.form.cleaned_data.get('profile_image')
+            self.username = self.form.cleaned_data.get('username')
             messages.success(
-                request, f'Your account:{username} has been created! Your ar now able to login.')
+                request, f'Your account:{self.username} has been created! Your ar now able to login.')
             return redirect('login')
         else:
-            form = self.form_class(initial=self.initial)
-            print(form)
-        return render(request, 'members/register.html', {'form': form})
+            self.form = self.form_class(initial=self.initial)
+            print(self.form)
+        self.context = {'form': self.form}
+        return self.render(request)
 
+class ProfileView(LoginRequiredMixin,View):
+    success_url = '/profile/'
+    template_name = 'members/profile.html'
+    models_class = Profile
+    models_member_class = Member
+    initial = {'key': 'value'}
+    form_class = MemberProfileUpdateForm
 
-@login_required
-def profile(request):
-    if request.method == 'POST':
-        form = MemberProfileUpdateForm(
-            request.POST, request.FILES, instance=request.user)
-        print(form)
-        if form.is_valid():
-            form.save()
+    def redirect(self, request, *args, **kwargs):
+        return redirect(self.success_url)
 
+    
+    def render(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
+
+   
+   
+    def get(self, request, *args, **kwargs):
+       
+        self.member = self.models_class.objects.filter(id=self.request.user.id)
+        self.form = self.form_class(instance=self.request.user)
+        # print(self.form)
+        self.context = {'form': self.form,'member':self.member}
+        return self.render(request)
+
+    def post(self, request, *args, **kwargs):
+        
+        self.form = self.form_class(self.request.POST,self.request.FILES,instance=self.request.user)
+        if self.form.is_valid():
+            self.form.save()
             messages.success(request, "Your account has been updated!")
-            return redirect('profile')
+            return self.redirect(request)
+        else:
+            self.form = self.form_class(instance=self.request.user)
+        context = {'form':self.form}
+        return self.render(request)
 
-    else:
-        form = MemberProfileUpdateForm(instance=request.user)
-        print(form)
-    context = {
+class SettingsUpdateView(LoginRequiredMixin,View):
+    template_name = 'members/setting.html'
+    success_url = '/setting/'
+    form_class = MemberSettingUpdateForm
+    delete_form_class = AccountDeleteForm
+    models_profile_class =Profile
 
-        'form': form,
-        'member':  Profile.objects.filter(id=request.user.id)
+    def redirect(self, request, *args, **kwargs):
+        return redirect(self.success_url)
 
-    }
-    return render(request, 'members/profile.html', context)
+    
+    def render(self, request, *args, **kwargs):
+        return render(request, self.template_name, self.context)
 
+   
+    def get(self, request, *args, **kwargs):
+       
+        self.member = self.models_profile_class.objects.filter(id=self.request.user.id)
+        self.form = self.form_class(instance=self.request.user)
+        # print(self.form)
+        self.context = {'form': self.form,'member':self.member}
+        return self.render(request)
 
-@login_required
-def setting_view(request):
-    if request.method == 'POST':
-        form = MemberSettingUpdateForm(
-            request.POST,  instance=request.user)
-        delete_form = AccountDeleteForm(request.POST, instance=request.user)
-        print(form)
-        if form.is_valid():
-            form.save()
-
+    def post(self, request, *args, **kwargs):
+        
+        self.delete_form =self.delete_form_class(request.POST, instance=request.user)
+        self.form = self.form_class(self.request.POST,self.request.FILES,instance=self.request.user)
+        if self.form.is_valid():
+            self.form.save()
             messages.success(request, "Setting updated!")
-            return redirect('setting')
-
-        elif delete_form.is_valid():
-            user = request.user
-            user.delete()
+            return self.redirect(request)
+        elif self.delete_form.is_valid():
+            self.user = self.request.user
+            self.user.delete()
             messages.info(request, 'Your account has been deleted.')
             return redirect('login')
+        else:
+            self.form = self.MemberSettingUpdateForm(instance=request.user)
+            self.delete_form = AccountDeleteForm(instance=request.user)
 
-    else:
-        form = MemberSettingUpdateForm(instance=request.user)
-        delete_form = AccountDeleteForm(instance=request.user)
+        context = {'form':self.form,'delete_form': self.delete_form}
+        return self.render(request)
 
-    context = {
-        'form': form,
-        'member':  Profile.objects.filter(id=request.user.id),
-        'delete_form': delete_form,
-    }
-    return render(request, 'members/setting.html', context)
+
 
 
 class GetRatingView(LoginRequiredMixin, View):

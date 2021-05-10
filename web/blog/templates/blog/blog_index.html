@@ -607,7 +607,7 @@
                 {%endif%}
    
             </div>
-            {% if user.is_authenticated %}
+           
 
       <div class="text-muted text-start mt-0 mb-0">
 
@@ -625,7 +625,7 @@
                      {% endif%}
 
 
-          {% endif %}
+          
         </div>
 
        
@@ -633,9 +633,9 @@
 
 
 
-    </div>  
- {% endfor %}
+    </div>  {% endfor %} 
 
+</div>
 {% if posts.has_other_pages %}
  <nav aria-label="Page navigation example">
   <ul class="pagination justify-content-center"> 
@@ -903,7 +903,7 @@ function startTimer(duration, display) {
 }
 
 
-startTimer(60, 'time').then(function(){
+startTimer(5, 'time').then(function(){
   
   $('#bornborn').trigger('click'); 
   

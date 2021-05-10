@@ -602,7 +602,7 @@
                         </a> 
                        
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow" x-placement="bottom-end" style="position: absolute; transform: translate3d(-160px, 31px, 0px); top: 0px; left: 0px; will-change: transform;">
-                          <a  class="dropdown-item" href='{% url 'comment_update' comment.pk %}'>แก้ไขโพสต์</a>
+                          <a  class="dropdown-item" href='{% url 'post_update' comment.post.pk %}'>แก้ไขโพสต์</a>
                           <a class="dropdown-item"  data-toggle="modal"  data-target="#modal-notification-auth{{comment.id}}" >ลบโพสต์</a>
                         </div> 
                          

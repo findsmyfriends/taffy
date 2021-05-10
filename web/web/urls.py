@@ -11,12 +11,18 @@ urlpatterns = [
     # Taffy ADMIN urls
     path('admin/', admin.site.urls),
     path('tinymce/', include('tinymce.urls')),
+
+    # taffy Blog urls
+
+    path('blog/', include('blog.urls')),
+
     # Members urls
 
     path('', member_views.GetRatingView.as_view(
         template_name='members/member_all.html'), name='member_all'),
     path('match/', member_views.match, name='Match Page'),
-    path('setting/', member_views.setting_view, name='setting'),
+    path('setting/', member_views.SettingsUpdateView.as_view(), name='setting'),
+    # path('setting/', member_views.setting_view, name='setting'),
 
     # Members urls for tests.py
     path('test/', tests.tests, name='test'),
@@ -35,9 +41,7 @@ urlpatterns = [
     path('api-taffy/', include('blog.api.urls')),
     path('api-blog/', include('blog.api.urls')),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    # taffy Post urls
 
-    path('blog/', include('blog.urls')),
 
 
     # Authentication Urls
@@ -47,13 +51,9 @@ urlpatterns = [
     path('login/', member_views.LoginView.as_view(
         template_name='members/wellcome.html'), name='login'),
     path('logout/', member_views.logout_views, name='logout'),
-    path('profile/', member_views.profile, name='profile'),
+    path('profile/', member_views.ProfileView.as_view(),name='profile'),
 
-    # path('profile/', member_views.MemberProfileUpdateView.as_view(
-    #     template_name='members/profile.html'), name='profile'),
-
-
-
+    # path('profile/', member_views.profile, name='profile'),
     # Resete Password Urls
 
     path('password-reset/', auth_views.PasswordResetView.as_view(
