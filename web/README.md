@@ -2,6 +2,27 @@
 
 <!-- Output copied to clipboard! -->
 
+<!-----
+NEW: Check the "Suppress top comment" option to remove this info from the output.
+
+Conversion time: 1.948 seconds.
+
+
+Using this Markdown file:
+
+1. Paste this output into your source file.
+2. See the notes and action items below regarding this conversion run.
+3. Check the rendered output (headings, lists, code blocks, tables) for proper
+   formatting and use a linkchecker before you publish this page.
+
+Conversion notes:
+
+* Docs to Markdown version 1.0β29
+* Sun May 09 2021 23:07:59 GMT-0700 (PDT)
+* Source doc: 60114440020 ทาฟฟี่เว็บแอปพลิเคชันเพื่อการหาคู่
+* This is a partial selection. Check to make sure intra-doc links work.
+----->
+
 
 <p style="color: red; font-weight: bold">>>>>>  gd2md-html alert:  ERRORs: 0; WARNINGs: 0; ALERTS: 5.</p>
 <ul style="color: red; font-weight: bold"><li>See top comment block for details on ERRORs and WARNINGs. <li>In the converted Markdown or HTML, search for inline alerts that start with >>>>>  gd2md-html alert:  for specific instances that need correction.</ul>
@@ -89,7 +110,7 @@
    </td>
   </tr>
 
-
+---
 ---
 
 
