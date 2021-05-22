@@ -1,4 +1,4 @@
-# Django Taffy Web
+﻿# Django Taffy Web
 
 | Topic              	| Taffy web Application for Dating                |
 |---------------------	|----------------------------------------------	|
@@ -29,32 +29,41 @@ Features
 - User Login & Logout
 - User Profile
 - Create, Update, Edit & Delete Profiles
-- Comments
+- Comments 
 - Search
 - User Change Password
-- Password Reset
 - Customized admin panel
+- Blog’s Love
+- Like Post
+- Find’s Love
+- Chat 
+- Rejected Lover
+- Review Lover
+- Nope
+- Like
+
 
 How To Use
 =
 ## Clone project & Install Requirements
 > Make sure you have already installed python3 and git.
 ```
-$ git clone https://github.com/taffy63/taffy.git && cd web
+$ git clone https://github.com/taffy63/taffy.git && cd taffy
+$ pipenv shell
 $ pipenv install 
 ```
-## Migrate & Collect Static
+## Make migrations && Migrate 
 ```
-$ pipenv run m
-$ python manage.py collectstatic
+$ pipenv run mkm
+
 ```
-## Create Admin User
+## Load date for Emulations data
 ```
-$ python manage.py createsuperuser
+$ pipenv run loaddb
 ```
 ## Run Server
 ```
-$ python manage.py runserver
+$ pipenv run s
 ```
 > Enter your browser http://localhost:8000/. You can login via admin in http://localhost:8000/admin/.
 
