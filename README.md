@@ -36,7 +36,7 @@ Features
 - Blog’s Love
 - Like Post
 - Find’s Love
-- Chat 
+- Chat form Django Rest Framework
 - Rejected Lover
 - Review Lover
 - Nope
