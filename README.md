@@ -20,7 +20,7 @@ Keywords: web application, web server, match, dating , Horoscope, Factors of bel
 [![](https://img.shields.io/badge/django-2.0%20%7C%202.1%20%7C%202.2-success.svg)](https://djangoproject.com/)
 
 
-Full-Featured Blog with Django web framework. 
+Full-Featured Blog’s Love and Find’s Love with Django web framework. 
 
 
 Features 
