@@ -123,13 +123,21 @@ def message_view(request, sender, receiver):
 
 @login_required
 def review_view(request,pk):
-    score = Match.objects.get(matcher_owner__id=request.user.id,matcher_excluded__id=pk)
-    print(score)
-    obj = Profile.objects.get(member__id=pk)
-    context ={
+    try:
+        score = Match.objects.get(matcher_owner__id=request.user.id,matcher_excluded__id=pk)
+        obj = Profile.objects.get(member__id=pk)
+        context ={
         'object': obj,
         'score':score,
-    }
+        }
+    except:
+        texts = "คุณยังไม่ได้กด LIKE ยังรีวิวไม่ได้และปฏิเสทไม่ได้"
+        obj = Profile.objects.get(member__id=pk)
+        
+        context ={
+            'object': obj,
+            'text':texts
+        }
     return render(request, 'chat/rejected.html', context)
 
 @login_required
@@ -173,6 +181,7 @@ class RejectedView(LoginRequiredMixin,View):
         get_owner = get_object_or_404(self.models_member_class,id=request.user.id)
         get_member = get_object_or_404(self.models_member_class,pk=pk)
         self.models_class.objects.filter(matcher_owner__id=get_owner.id,matcher_excluded__id=pk).delete()
+        self.models_class.objects.filter(matcher_owner__id=pk,matcher_excluded__id=get_owner.id).delete()
         return redirect(self.success_url)
             
       
